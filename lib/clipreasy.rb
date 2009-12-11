@@ -7,3 +7,4 @@ module CliPrEasy
   VERSION = "0.0.1".freeze
   
 end
+require 'clipreasy/engine'
