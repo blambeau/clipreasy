@@ -35,13 +35,13 @@ module CliPrEasy
       # Starts the decision node
       def start(context)
         my_context = context.started(self)
-        statements.collect {|s| s.start(my_context)}
+        statements.collect {|s| s.start(my_context)}.flatten
       end
       
       # Fired by children when they are ended
       def ended(child, child_context)
         my_context = child_context.close
-        parent.ended(self, my_context) if my_context.all_children_ended?
+        my_context.all_children_ended? ? parent.ended(self, my_context) : []
       end
           
     end # class Parallel

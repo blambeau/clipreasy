@@ -21,7 +21,7 @@ module CliPrEasy
       
       # Starts the activity
       def start(context)
-        context.started(self)
+        [context.started(self)]
       end
       
       # Closes this activity

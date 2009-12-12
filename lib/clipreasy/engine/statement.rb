@@ -7,7 +7,10 @@ module CliPrEasy
     class Statement
       include Markable
       
-      # Statement identifier
+      # Unique token for this statement
+      attr_accessor :statement_token
+      
+      # Parent statement, or the process itself
       attr_reader :id
       
       # Parent statement, or the process itself
@@ -43,7 +46,8 @@ module CliPrEasy
       end
       
       #
-      # Starts the statement with an execution context.
+      # Starts the statement inside an execution context. Returns terminal execution contexts
+      # that have been started due to this start.
       #
       # This method MUST be implemented bu sublasses and raises an exception 
       # by default.
@@ -53,7 +57,8 @@ module CliPrEasy
       end
       
       #
-      # Fired by children when they are ended
+      # Fired by children when they are ended. Returns terminal execution contexts
+      # that have been started due to this end.
       #
       def ended(child, child_context)
         raise "ended MUST by implemented by Engine::Statement subclasses (#{self.class} was missing)"
@@ -63,7 +68,8 @@ module CliPrEasy
       # Inspects this statement
       #  
       def inspect
-        "#{process.inspect}/#{self.class}::#{id}"
+        self.class.name =~ /::([a-zA-Z0-9]+)$/
+        @id ? "#{$1}:#{id}" : "#{$1}"
       end      
       
     end # class Statement

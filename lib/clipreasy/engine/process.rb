@@ -27,6 +27,17 @@ module CliPrEasy
         self
       end
       
+      # Returns a statement by its token
+      def statement(token)
+        unless @statements
+          @statements = {}
+          depth_first_search do |s|
+            @statements[s.statement_token] = s
+          end
+        end
+        @statements[token]
+      end
+      
       # Recursively visits the process
       def depth_first_search(&block)
         yield self
@@ -43,19 +54,15 @@ module CliPrEasy
       #############################################################################################
       
       # Starts the process with a given context
-      def start(context=nil)
-        if context.nil?
-          my_context = ProcessContext.new(nil, self)
-        else
-          my_context = context.started(self)
-        end
-        main.start(my_context)
+      def start(context)
+        main.start(context)
       end
       
       # Fired by children when they are ended
       def ended(child, child_context)
         my_context = child_context.close
         my_context.close
+        []
       end
       
     end # class Process

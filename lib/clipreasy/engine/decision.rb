@@ -33,17 +33,13 @@ module CliPrEasy
         my_context = context.started(self)
         value = my_context.evaluate(condition)
         
-        # see clauses
-        found = false
-        clauses.each do |clause|
+        # see clauses and start the good ones
+        started = clauses.collect do |clause|
           clause_value = my_context.evaluate(clause.value)
-          if value==clause_value
-            clause.start(my_context)
-            found = true
-          end
-        end
+          value==clause_value ? clause.start(my_context) : nil
+        end.flatten.compact
         
-        parent.ended(self, my_context) unless found
+        started.empty? ? parent.ended(self, my_context) : started
       end
             
       # Fired by children when they are ended

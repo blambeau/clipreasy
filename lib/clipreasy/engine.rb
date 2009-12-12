@@ -12,3 +12,5 @@ require 'clipreasy/engine/process'
 require 'clipreasy/engine/process_xml_decoder'
 
 require 'clipreasy/engine/process_context'
+require 'clipreasy/engine/default_process_context'
+require 'clipreasy/engine/backend_process_context'

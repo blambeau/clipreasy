@@ -47,7 +47,12 @@ module CliPrEasy
       # Decodes a XML encoding of a workflow
       def self.decode(xml)
         xml_doc = REXML::Document.new(xml.strip) unless REXML::Document===xml
-        decode_element(xml_doc.root)
+        process = decode_element(xml_doc.root)
+        token = -1
+        process.depth_first_search do |statement|
+          statement.statement_token = (token += 1)
+        end
+        process
       end
       
       # Decodes a process whose XML definition is inside a file

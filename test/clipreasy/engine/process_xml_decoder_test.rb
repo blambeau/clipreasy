@@ -8,7 +8,7 @@ module CliPrEasy
         File.join(File.dirname(__FILE__), path)
       end
       
-      def test_strcture_on_example_1
+      def test_structure_on_example_1
         process = ProcessXMLDecoder.decode_file(relative_file('example_1.cpe'))
         assert Process===process
         assert_equal "work_and_cofee", process.id
@@ -51,6 +51,12 @@ module CliPrEasy
         assert_equal process, work.process
         assert_equal par, drink.parent
         assert_equal process, drink.process
+        
+        tokens = []
+        process.depth_first_search{|s| tokens << s.statement_token}
+        assert_equal 7, tokens.size
+        assert_equal [0, 1, 2, 3, 4, 5, 6], tokens
+        assert process==process.statement(0)
       end
       
       def test_activities_on_example_1

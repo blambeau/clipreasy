@@ -2,12 +2,15 @@ module CliPrEasy
   module Engine
     
     #
-    # Provides the precise API for being a process execution context.
+    # Implements ProcessContext for situation where the process state cannot fit in memory.
     #
-    # This class is intended to be duck-typed or sublcassed to implement specific 
-    # process execution context strategies (in memory, backed on disked, etc.)
-    #
-    class ProcessContext
+    class BackendProcessContext < ProcessContext
+      
+      # Creates a process context with a given backend, statement and attached attributes
+      def initialize(backend, statement, attributes)
+        raise ArgumentError if backend.nil? or statement.nil? or attributes.nil?
+        @backend, @statement, @attributes = backend, statement, attributes
+      end
       
       ###################################################################################
       ### About execution context link to process statements
@@ -15,13 +18,7 @@ module CliPrEasy
       
       # Returns the process statement attached to this execution context
       def statement
-        raise "ProcessContext.statement should be implemented by subclasses"
-      end
-      
-      # Returns the process under execution. This method calls statement.process as an
-      # a default implementation
-      def process
-        statement.process
+        @statement
       end
       
       ###################################################################################
@@ -30,12 +27,22 @@ module CliPrEasy
       
       # Returns the parent execution context
       def parent
-        raise "ProcessContext.parent should be implemented by subclasses"
+        return @parent if @parent
+        parent_attrs = @backend.parent_of(@attributes)
+        if parent_attrs and @statement.parent
+          @parent = BackendProcessContext.new(@backend, 
+                                              @statement.parent, 
+                                              parent_attrs)
+        else
+          nil
+        end                                    
       end
       
       # Returns children execution contexts, an empty array if no one
       def children
-        raise "ProcessContext.children should be implemented by subclasses"
+        @children ||= backend.children_of(@attributes).collect do |child_attrs|
+          BackendProcessContext.new(@backend, self, child_attrs)
+        end 
       end
       
       ###################################################################################
@@ -44,19 +51,19 @@ module CliPrEasy
       
       # Returns true if this execution context is currently pending, false otherwise
       def pending?
-        raise "ProcessContext.pending? should be implemented by subclasses"
+        @backend.pending?(@attributes)
       end
       
       # Returns true if this execution context is ended, false otherwise
       def ended?
-        raise "ProcessContext.ended? should be implemented by subclasses"
+        @backend.ended?(@attributes)
       end
       
       # Checks if all children execution context are ended
       # This method is implemented by default through the children accesssor but may
       # be overriden for better strategies.
       def all_children_ended?
-        children.all?{|c| c.ended?}
+        @backend.children_of(@attributes).all?{|c| @backend.ended?(c)}
       end
       
       ###################################################################################
@@ -78,7 +85,9 @@ module CliPrEasy
       # (that is, by Statement subclasses).
       #
       def started(who, *args)
-        raise "ProcessContext.started should be implemented by subclasses"
+        @children = nil
+        new_attrs = @backend.branch(@attributes, who, *args)
+        BackendProcessContext.new(@backend, who, new_attrs)
       end
       
       #
@@ -91,25 +100,8 @@ module CliPrEasy
       # (that is, by Statement subclasses).
       #
       def close
-        raise "ProcessContext.close should be implemented by subclasses"
-      end
-      
-      #
-      # Let the engine know that this pending activity is now considered ended. 
-      #
-      # The default implementation closes the current activity statement and returns new
-      # execution contexts fired by process execution semantics.
-      # Invoking this method only makes sense on context linked to an Activity statement.
-      # An error is raised by the default implementation if this pre-condition is not 
-      # respected.
-      #
-      # Unlike _started_ and _close_ this method is considered public and intended to be
-      # used to let the process restore its execution when an activity is considered ended
-      # in the environment
-      #
-      def activity_ended
-        raise "Statement is expected to be an Activity but was #{statement}" unless Activity===statement
-        statement.close(self)
+        @backend.close(@attributes)
+        parent
       end
       
       #
@@ -119,10 +111,15 @@ module CliPrEasy
       # to get real values in order to respect process execution semantics.
       #
       def evaluate(expression)
-        raise "ProcessContext.evaluate should be implemented by subclasses"
+        @backend.evaluate(expression)
       end
       
-    end # class ProcessContext
+      # Inspects this execution context
+      def inspect
+        "#{statement.inspect} #{@attributes.inspect}"
+      end
+      
+    end # class BackendProcessContext
     
   end # module Engine
 end # module CliPrEasy
