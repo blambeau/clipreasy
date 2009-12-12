@@ -36,7 +36,7 @@ module CliPrEasy
         # see clauses and start the good ones
         started = clauses.collect do |clause|
           clause_value = my_context.evaluate(clause.value)
-          value==clause_value ? clause.start(my_context) : nil
+          value===clause_value ? clause.start(my_context) : nil
         end.flatten.compact
         
         started.empty? ? parent.ended(self, my_context) : started

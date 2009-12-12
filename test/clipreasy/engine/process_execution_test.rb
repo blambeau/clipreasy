@@ -59,6 +59,19 @@ module CliPrEasy
           buffer
         end
         
+        def evaluate(expression)
+          case expression
+            when "true"
+              true
+            when "false"
+              false
+            when "too_much?"
+              false
+            else
+              raise "Unexpected expression #{expression}"
+          end
+        end
+        
       end
       
       def relative_file(path)
@@ -78,6 +91,23 @@ module CliPrEasy
           assert ctx.compact==ctx, "No nil inside context #{ctx.inspect}"
         end
         assert backend.all_closed?
+      end
+      
+      def test_with_backend
+        process = ProcessXMLDecoder.decode_file(relative_file('example_2.cpe'))
+        backend = Backend.new(process)
+        context = BackendProcessContext.new(backend, process, 
+          {:id => 0, :statement_token => 0, :status => :pending}
+        )
+        ctx = process.start(context)
+        assert Array===ctx
+        until ctx.empty?
+          ctx = ctx.collect{|c| c.activity_ended}.flatten
+          assert ctx.compact==ctx, "No nil inside context #{ctx.inspect}"
+        end
+        assert backend.all_closed?
+        
+        #puts backend.inspect
       end
       
     end # class ProcessExecutionTest
