@@ -1,8 +1,8 @@
 require 'clipreasy'
-require 'test/unit'
+require 'clipreasy/clipreasy_test'
 module CliPrEasy
   module Engine
-    class ProcessExecutionTest < Test::Unit::TestCase
+    class ProcessExecutionTest < CliPrEasy::CliPrEasyTest
       
       class Backend
         

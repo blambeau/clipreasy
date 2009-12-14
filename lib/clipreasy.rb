@@ -9,7 +9,7 @@ module CliPrEasy
   VERSION = "0.0.1".freeze
   
   # Returns the configuration
-  def config
+  def self.config
     raise IllegalStateError, "CliPrEasy has not been started (no configuration loaded)"\
       unless @config
     @config

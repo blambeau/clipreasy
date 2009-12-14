@@ -27,6 +27,7 @@ module CliPrEasy
     def stop
       raise IllegalStateError, "DAS has not been previously started" if @db.nil?
       @db.disconnect
+      @db = nil
     end
     
   end # class DAS

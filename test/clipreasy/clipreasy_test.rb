@@ -10,6 +10,7 @@ module CliPrEasy
     # Ensures that CliPrEasy is correctly loaded before running the test
     def setup
       CliPrEasy.start(@whoami_file)
+      raise "Running tests is not allowed in production mode" if CliPrEasy.config.should_be_safe?
     end
     
     # Ensures that CliPrEasy is correctly loaded before running the test

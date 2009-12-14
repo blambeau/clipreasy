@@ -1,8 +1,8 @@
 require 'clipreasy'
-require 'test/unit'
+require 'clipreasy/clipreasy_test'
 module CliPrEasy
   module Engine
-    class ProcessXMLDecoderTest < Test::Unit::TestCase
+    class ProcessXMLDecoderTest < CliPrEasy::CliPrEasyTest
       
       def relative_file(path)
         File.join(File.dirname(__FILE__), path)

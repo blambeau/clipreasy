@@ -35,11 +35,11 @@ module CliPrEasy
     def load
       # 1) Read whoami_file and affect whoami instance variable
       raise ConfigError, "Missing whoami file (#{whoami_file})" unless File.exists?(whoami_file)
-      self.whoami = File.read(whoami_file)
+      self.whoami = File.read(whoami_file).strip
       raise ConfigError, "Invalid whoami (#{self.whoami})" unless /^[a-z0-9_]+$/ =~ self.whoami
       
       # 2) Find associated configuration file
-      config_file = File.join(File.dirname(whoami_file), "#{self.whoami}.config")
+      config_file = File.expand_path(File.join(File.dirname(whoami_file), "#{self.whoami}.config"))
       raise ConfigError, "Missing config file (#{config_file})" unless File.exists?(config_file)
       
       # 3) Execute the configuration file
@@ -88,7 +88,7 @@ module CliPrEasy
     
     # Checks if access control should be enabled for safety reasons
     def should_be_safe?
-      not(self.production?)
+      self.production?
     end
     
   end # class Config
