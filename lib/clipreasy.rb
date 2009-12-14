@@ -16,8 +16,12 @@ module CliPrEasy
   # Starts the engine, loading the configuration from a whoami file.
   # If no whoami file is provided the default one is loaded from project's root.
   def self.start(whoami_file=nil)
-    whoami_file = File.join(File.dirname(__FILE__), '..', 'whoami')
+    whoami_file = File.join(File.dirname(__FILE__), '..', 'whoami') if whoami_file.nil?
     @config = CliPrEasy::Config.load(whoami_file)
+  end
+  
+  # Stops the application
+  def self.stop
   end
   
 end
