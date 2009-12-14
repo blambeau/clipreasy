@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'sequel'
 #
 # Main module of Clinical Process Made Easy
 #
@@ -18,13 +20,16 @@ module CliPrEasy
   def self.start(whoami_file=nil)
     whoami_file = File.join(File.dirname(__FILE__), '..', 'whoami') if whoami_file.nil?
     @config = CliPrEasy::Config.load(whoami_file)
+    CliPrEasy::DAS.instance.start(@config.database_info)
   end
   
   # Stops the application
   def self.stop
+    CliPrEasy::DAS.instance.stop
   end
   
 end
 require 'clipreasy/errors'
 require 'clipreasy/config'
+require 'clipreasy/state/das'
 require 'clipreasy/engine'
