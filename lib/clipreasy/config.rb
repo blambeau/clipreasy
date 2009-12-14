@@ -14,6 +14,9 @@ module CliPrEasy
     # Mode of the installation (:devel, :test, :production)
     attr_accessor :mode
     
+    # Connection information about the main database
+    attr_accessor :database_info
+    
     ###############################################################################################
     ### Creation and loading
     ###############################################################################################
@@ -54,6 +57,13 @@ module CliPrEasy
     def check_configuration
       raise ConfigError, "Missing execution mode (:devel, :test, :production)" unless self.mode
       raise ConfigError, "Bad execution mode (#{self.mode})" unless [:devel, :test, :production].include?(self.mode)
+      raise ConfigError, "Missing database information " unless self.database_info
+      raise ConfigError, "Bad database information (#{self.database_info.inspect})" unless Hash===self.database_info 
+      raise ConfigError, "Missing database adapter (#{self.database_info.inspect})" unless self.database_info[:adapter]
+      raise ConfigError, "Missing database name (#{self.database_info.inspect})" unless self.database_info[:database]
+      raise ConfigError, "Missing database host (#{self.database_info.inspect})" unless self.database_info[:host]
+      raise ConfigError, "Missing database user (#{self.database_info.inspect})" unless self.database_info[:user]
+      raise ConfigError, "Missing database password (#{self.database_info.inspect})" unless self.database_info[:password]
       self
     end
     

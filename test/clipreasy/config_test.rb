@@ -15,10 +15,13 @@ module CliPrEasy
       assert_equal :devel, config.mode
     end
     
-    def test_on_missing_mode
-      file = relative_file('config_files/missing_mode.whoami')
-      assert_raise ConfigError do
-        config = Config.load(file)
+    def test_on_invalid_files
+      files = ["missing_mode", "missing_db", "invalid_db"]
+      files.each do |f|
+        file = relative_file "config_files/#{f}.whoami"
+        assert_raise ConfigError do
+          config = Config.load(file)
+        end
       end
     end
     
