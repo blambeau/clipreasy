@@ -18,13 +18,9 @@ module CliPrEasy
     end # class Statement
     class Process < Statement
       
-      # Provides a tuple that matches the database structure
-      def to_process_tuple
-        {:code        => self.code,
-         :label       => self.label,
-         :version     => self.version,
-         :description => self.description,
-         :formaldef   => self.formaldef}
+      # Returns a process instance matched by code or id
+      def self.[](id)
+        load_from_database(id)
       end
       
       # Loads a process from a database
@@ -34,6 +30,15 @@ module CliPrEasy
         tuple = processes.filter(:code => id).order(:version.desc).first unless tuple
         return nil unless tuple
         CliPrEasy::Engine::ProcessXMLDecoder.decode(tuple[:formaldef])
+      end
+      
+      # Provides a tuple that matches the database structure
+      def to_process_tuple
+        {:code        => self.code,
+         :label       => self.label,
+         :version     => self.version,
+         :description => self.description,
+         :formaldef   => self.formaldef}
       end
       
       # Saves the process to the database

@@ -32,7 +32,7 @@ module CliPrEasy
           attributes[:status] == :pending
         end
         
-        def close(attributes)
+        def close(attributes, statement)
 #          puts "Closing #{attributes.inspect}"
           attributes[:status] = :ended          
         end

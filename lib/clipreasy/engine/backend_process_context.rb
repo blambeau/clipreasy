@@ -6,6 +6,48 @@ module CliPrEasy
     #
     class BackendProcessContext < ProcessContext
       
+      #
+      # Provides the Backend companion of BackendProcessContext
+      #
+      class Backend
+        
+        # Checks if some attributes can be interpreted as a pending statement
+        def pending?(attributes)
+          raise "Backend.pending? should be implemented by subclasses"
+        end
+        
+        # Checks if some attributes can be interpreted as an ended statement
+        def ended?(attributes)
+          raise "Backend.ended? should be implemented by subclasses"
+        end
+        
+        # Returns the parent attributes of some attributes.
+        def parent_of(attributes)
+          raise "Backend.parent_of should be implemented by subclasses"
+        end
+        
+        # Returns the children attributes of some attributes.
+        def children_of(attributes)
+          raise "Backend.children_of should be implemented by subclasses"
+        end
+        
+        # Branches some statement _who_ and returns new attributes for it
+        def branch(attributes, who, *args)
+          raise "Backend.branch should be implemented by subclasses"
+        end
+        
+        # Close some statement from attributes and associated statement
+        def close(attributes, statement)
+          raise "Backend.close should be implemented by subclasses"
+        end
+        
+        # Evaluates an expression
+        def evaluate(expression)
+          raise "Backend.evaluate should be implemented by subclasses"
+        end
+        
+      end # class Backend
+      
       # Creates a process context with a given backend, statement and attached attributes
       def initialize(backend, statement, attributes)
         raise ArgumentError if backend.nil? or statement.nil? or attributes.nil?
@@ -27,15 +69,15 @@ module CliPrEasy
       
       # Returns the parent execution context
       def parent
+        return nil if CliPrEasy::Engine::Process === @statement
         return @parent if @parent
-        parent_attrs = @backend.parent_of(@attributes)
-        if parent_attrs and @statement.parent
+        if (parent_attrs = @backend.parent_of(@attributes))
           @parent = BackendProcessContext.new(@backend, 
                                               @statement.parent, 
                                               parent_attrs)
         else
-          nil
-        end                                    
+          raise IllegalStateError, "Parent attributes expected for #{@attributes.inspect}"
+        end
       end
       
       # Returns children execution contexts, an empty array if no one
@@ -100,7 +142,7 @@ module CliPrEasy
       # (that is, by Statement subclasses).
       #
       def close
-        @backend.close(@attributes)
+        @backend.close(@attributes, @statement)
         parent
       end
       
