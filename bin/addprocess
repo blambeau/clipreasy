@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+#
+# This program is part of CliPrEasy, licenced under a GPL licence
+# Copyright (c) 2009 University of Louvain, Bernard Lambeau and Maxime Coevoet
+#
+# Reinstalls the database from scratch. This will raise an error is CliPrEasy is
+# in production mode
+#
+
+# Load clipreasy
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'clipreasy'
+
+# Quits with a friendly message
+def quit_with_message(msg)
+  puts msg
+  exit
+end
+
+# Validates arguments
+quit_with_message("Usage: addprocess FOLDER") unless ARGV.size == 1
+folder = ARGV[0]
+quit_with_message("Invalid process folder #{folder}")\
+  unless File.exists?(folder) and File.directory?(folder)
+process_file = File.join(folder, "#{File.basename(folder)}.cpe")
+quit_with_message("Invalid process folder #{folder}, missing #{folder}.cpe file")\
+  unless File.exists?(process_file)
+
+begin
+  # Start it
+  CliPrEasy.start
+  
+  # Load the process file now
+  process = CliPrEasy::Engine::ProcessXMLDecoder.decode_file(process_file)
+  process.save_to_database  
+  
+ensure
+  # Stop it now
+  CliPrEasy.stop
+end

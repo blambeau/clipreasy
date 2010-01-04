@@ -78,7 +78,7 @@ module CliPrEasy
         File.join(File.dirname(__FILE__), path)
       end
       
-      def test_with_backend
+      def test_with_backend_on_example1
         process = ProcessXMLDecoder.decode_file(relative_file('example_1.cpe'))
         backend = Backend.new(process)
         context = BackendProcessContext.new(backend, process, 
@@ -93,7 +93,7 @@ module CliPrEasy
         assert backend.all_closed?
       end
       
-      def test_with_backend
+      def test_with_backend_on_example2
         process = ProcessXMLDecoder.decode_file(relative_file('example_2.cpe'))
         backend = Backend.new(process)
         context = BackendProcessContext.new(backend, process, 

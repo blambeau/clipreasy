@@ -1,20 +1,20 @@
-<process id="work_and_cofee" label="Work &amp; Cofee" version="1.0.1">
+<process code="work_and_cofee" label="Work &amp; Cofee" version="1.0.1">
   <description>We work, drink cofee and so on.</description>
   <formaldef>
     <sequence>
-      <activity id="go_to_work_place"/>
+      <activity code="go_to_work_place"/>
       <parallel>
-        <activity id="work"/>
+        <activity code="work"/>
         <sequence>
-          <activity id="drink_coffee"/>
+          <activity code="drink_coffee"/>
           <decision condition="too_much?">
             <when value="true">
-              <activity id="empty_myself"/>
+              <activity code="empty_myself"/>
             </when>
           </decision>
         </sequence>
       </parallel>
-      <activity id="leave_work_place"/>
+      <activity code="leave_work_place"/>
     </sequence>
   </formaldef>
 </process>

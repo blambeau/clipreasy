@@ -20,6 +20,18 @@ module CliPrEasy
         dataset.each {|hash| Tuple.new(hash)}
       end
       
+      # Inserts some tuples inside the relation
+      def <<(tuples)
+        case tuples
+          when Hash
+            @dataset.insert(tuples)
+          when Array
+            tuples.each {|t| @dataset.insert(t)}
+          else
+            raise ArgumentError, "Invalid tuples #{tuples}"
+        end
+      end
+      
     end # class Relation
   end # module State
 end # module CliPrEasy

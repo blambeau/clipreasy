@@ -16,14 +16,17 @@ module CliPrEasy
       # Process human identifier
       attr_accessor :code
       
-      # Process human identifier
+      # Process label
       attr_accessor :label
       
-      # Process human identifier
+      # Process version
       attr_accessor :version
       
-      # Process human identifier
+      # Process description
       attr_accessor :description
+      
+      # Process formal definition
+      attr_accessor :formaldef
       
       # Main statement
       attr_reader :main
@@ -31,6 +34,7 @@ module CliPrEasy
       # Creates a workflow instance
       def initialize(main)
         @main = main
+        self.parent = self
         main.parent = self
       end
       

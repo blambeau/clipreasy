@@ -2,12 +2,12 @@
   <description>We work, drink cofee and so on.</description>
   <formaldef>
     <sequence>
-      <activity id="go_to_work_place"/>
+      <activity code="go_to_work_place"/>
       <parallel>
-        <activity id="work"/>
-        <activity id="drink_coffee"/>
+        <activity code="work"/>
+        <activity code="drink_coffee"/>
       </parallel>
-      <activity id="leave_work_place"/>
+      <activity code="leave_work_place"/>
     </sequence>
   </formaldef>
 </process>

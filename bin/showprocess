@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+#
+# This program is part of CliPrEasy, licenced under a GPL licence
+# Copyright (c) 2009 University of Louvain, Bernard Lambeau and Maxime Coevoet
+#
+# Reinstalls the database from scratch. This will raise an error is CliPrEasy is
+# in production mode
+#
+
+# Load clipreasy
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'clipreasy'
+
+# Quits with a friendly message
+def quit_with_message(msg)
+  puts msg
+  exit
+end
+
+# Validates arguments
+quit_with_message("Usage: showprocess CODE") unless ARGV.size == 1
+code = ARGV[0]
+
+begin
+  # Start it
+  CliPrEasy.start
+  
+  # Load the process file now
+  process = CliPrEasy::Engine::Process.load_from_database(code)
+  unless process
+    puts "No such process #{code}" 
+  else
+    puts process.formaldef
+  end
+  
+ensure
+  # Stop it now
+  CliPrEasy.stop
+end

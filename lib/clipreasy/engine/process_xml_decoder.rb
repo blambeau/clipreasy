@@ -7,7 +7,7 @@ module CliPrEasy
     #
     class ProcessXMLDecoder
       
-      # Try to affect attributes to a factored statement
+      # Try to affect attributes to a factored statement. Returns who.
       def self.set_xml_attributes(who, element)
         element.attributes.each do |name,value|
           accessor = "#{name}=".to_sym
@@ -17,6 +17,7 @@ module CliPrEasy
             puts "Warning: #{who.class} does not have accessor for #{name}"
           end
         end
+        who
       end
       
       # Decodes a given element
@@ -24,36 +25,34 @@ module CliPrEasy
         case element.name.to_sym
           when :process
             p = Process.new(decode_element(element.elements[2]))
-            p.description = element.elements[1].get_text
+            p.description = element.elements[1].get_text.to_s.strip
             set_xml_attributes(p, element)
-            p
           when :formaldef
             decode_element(element.elements[1])
           when :sequence
             statements = element.elements.collect{|e| decode_element(e)}
-            Sequence.new(statements)
+            set_xml_attributes(Sequence.new(statements), element)
           when :parallel
             statements = element.elements.collect{|e| decode_element(e)}
-            Parallel.new(statements)
+            set_xml_attributes(Parallel.new(statements), element)
           when :activity
-            id = element.attribute("id").to_s
-            Activity.new(id)
+            set_xml_attributes(Activity.new, element)
           when :decision
             condition = element.attribute("condition").to_s
             clauses = element.elements.collect{|e| decode_element(e)}
-            Decision.new(condition, clauses)
+            set_xml_attributes(Decision.new(condition, clauses), element)
           when :when
             value = element.attribute("value").to_s
             then_clause = decode_element(element.elements[1])
-            When.new(value, then_clause)
+            set_xml_attributes(When.new(value, then_clause), element)
           when :until
             condition = element.attribute("condition").to_s
             then_clause = decode_element(element.elements[1])
-            Until.new(condition, then_clause)
+            set_xml_attributes(Until.new(condition, then_clause), element)
           when :while
             condition = element.attribute("condition").to_s
             then_clause = decode_element(element.elements[1])
-            While.new(condition, then_clause)
+            set_xml_attributes(While.new(condition, then_clause), element)
           else
             raise "Unexpected element #{element.inspect}"
         end
@@ -67,6 +66,7 @@ module CliPrEasy
         process.depth_first_search do |statement|
           statement.statement_token = (token += 1)
         end
+        process.formaldef = xml.strip
         process
       end
       

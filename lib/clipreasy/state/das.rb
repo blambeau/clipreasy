@@ -23,6 +23,13 @@ module CliPrEasy
       raise ConfigError, "Something went wrong when trying to connect the database", ex
     end
     
+    # Stops the service
+    def stop
+      raise IllegalStateError, "DAS has not been previously started" if @db.nil?
+      @db.disconnect
+      @db = nil
+    end
+    
     # Installs the database schema
     def install_schema
       raise IllegalStateError, "DAS has not been previously started" if @db.nil?
@@ -30,11 +37,16 @@ module CliPrEasy
       @db << File.read(File.join(File.dirname(__FILE__), 'clipreasy_schema.pgsql'))
     end
     
-    # Stops the service
-    def stop
+    # Returns a Sequel dataset instance
+    def dataset(name)
       raise IllegalStateError, "DAS has not been previously started" if @db.nil?
-      @db.disconnect
-      @db = nil
+      @db[name]
+    end
+    
+    # Returns a relation with a given name
+    def relation(name)
+      raise IllegalStateError, "DAS has not been previously started" if @db.nil?
+      CliPrEasy::State::Relation.new(@db[name])
     end
     
   end # class DAS

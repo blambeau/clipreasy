@@ -19,22 +19,22 @@ module CliPrEasy
           go, par, leave = main.statements
         
             assert Activity===go
-            assert_equal "go_to_work_place", go.id
+            assert_equal "go_to_work_place", go.code
 
             assert Parallel===par
             assert_equal 2, par.size
             work, drink = par.statements
               
               assert Activity===work
-              assert_equal "work", work.id
+              assert_equal "work", work.code
 
               assert Activity===drink
-              assert_equal "drink_coffee", drink.id
+              assert_equal "drink_coffee", drink.code
 
             assert Activity===leave
-            assert_equal "leave_work_place", leave.id
+            assert_equal "leave_work_place", leave.code
             
-        assert_nil process.parent
+        assert_equal process, process.parent
         assert_equal process, process.process
 
         assert_equal process, main.parent
@@ -63,14 +63,14 @@ module CliPrEasy
         process = ProcessXMLDecoder.decode_file(relative_file('example_1.cpe'))
         activities = process.activities
         assert_equal 4, activities.size
-        assert_equal ["go_to_work_place", "work", "drink_coffee", "leave_work_place"], activities.collect{|act| act.id}
+        assert_equal ["go_to_work_place", "work", "drink_coffee", "leave_work_place"], activities.collect{|act| act.code}
         
         assert_equal 4, process.main.activities.size
-        assert_equal ["go_to_work_place", "work", "drink_coffee", "leave_work_place"], process.main.activities.collect{|act| act.id}
+        assert_equal ["go_to_work_place", "work", "drink_coffee", "leave_work_place"], process.main.activities.collect{|act| act.code}
         
         par = process.main[1]
         assert_equal 2, par.activities.size
-        assert_equal ["work", "drink_coffee"], par.activities.collect{|act| act.id}
+        assert_equal ["work", "drink_coffee"], par.activities.collect{|act| act.code}
       end
       
       def test_depth_first_search

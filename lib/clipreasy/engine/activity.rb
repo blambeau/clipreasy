@@ -9,11 +9,15 @@ module CliPrEasy
     #
     class Activity < Statement
 
-      # Creates an activity instance
-      def initialize(id)
-        @id = id
-      end
-      
+      # Activity code
+      attr_accessor :code
+
+      # Activity label
+      attr_accessor :label
+
+      # Activity color
+      attr_accessor :color
+
       # Recursively visits the process
       def depth_first_search
         yield self
