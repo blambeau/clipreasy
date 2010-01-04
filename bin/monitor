@@ -39,6 +39,7 @@ begin
           CliPrEasy::DAS.dataset(:process_executions).delete
         when /^ended\s+(\d+)$/
           CliPrEasy.activity_ended $1
+          show("pending_activities", CliPrEasy::DAS.dataset(:pending_activities))
       end
     rescue => ex
       puts "An error has occured #{ex.message}"

@@ -55,3 +55,21 @@ CREATE TABLE statement_executions (
   CONSTRAINT fk_statement_execution_ref_statement FOREIGN KEY (process, statement) REFERENCES statements (process, lid),
   CONSTRAINT fk_statement_execution_parent FOREIGN KEY (parent) REFERENCES statement_executions (id)
 );
+
+DROP VIEW IF EXISTS pending_activities;
+CREATE VIEW pending_activities AS 
+SELECT se.process as process, 
+       se.process_execution as process_execution,
+       se.statement as statement,
+       se.id as id,
+       se.started_at as started_at,
+       p.code     as process_code,
+       p.label    as process_label,
+       s.code     as statement_code,
+       s.label    as statement_label,
+       s.color    as statement_color
+  FROM statement_executions AS se 
+  INNER JOIN statements AS s ON se.process = s.process and se.statement = s.lid
+  INNER JOIN processes  AS p ON s.process = p.id
+  WHERE s.kind = 'CliPrEasy::Engine::Activity'
+    AND se.status = 'pending';
