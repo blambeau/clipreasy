@@ -10,7 +10,7 @@ module CliPrEasy
       # Unique token for this statement
       attr_accessor :statement_token
       
-      # Parent statement, or the process itself
+      # Identifier of this statement
       attr_reader :id
       
       # Parent statement, or the process itself

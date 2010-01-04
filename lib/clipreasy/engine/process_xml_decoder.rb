@@ -7,13 +7,28 @@ module CliPrEasy
     #
     class ProcessXMLDecoder
       
+      # Try to affect attributes to a factored statement
+      def self.set_xml_attributes(who, element)
+        element.attributes.each do |name,value|
+          accessor = "#{name}=".to_sym
+          if who.respond_to?(accessor)
+            who.send(accessor, value)
+          else
+            puts "Warning: #{who.class} does not have accessor for #{name}"
+          end
+        end
+      end
+      
       # Decodes a given element
       def self.decode_element(element)
         case element.name.to_sym
           when :process
-            id = element.attribute("id").to_s
-            main = decode_element(element.elements[1])
-            Process.new(id, main)
+            p = Process.new(decode_element(element.elements[2]))
+            p.description = element.elements[1].get_text
+            set_xml_attributes(p, element)
+            p
+          when :formaldef
+            decode_element(element.elements[1])
           when :sequence
             statements = element.elements.collect{|e| decode_element(e)}
             Sequence.new(statements)

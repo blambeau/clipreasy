@@ -32,4 +32,6 @@ end
 require 'clipreasy/errors'
 require 'clipreasy/config'
 require 'clipreasy/state/das'
+require 'clipreasy/state/tuple'
+require 'clipreasy/state/relation'
 require 'clipreasy/engine'

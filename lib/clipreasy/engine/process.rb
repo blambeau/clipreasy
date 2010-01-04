@@ -11,14 +11,26 @@ module CliPrEasy
       #############################################################################################
       
       # Process identifier
-      attr_reader :id
+      attr_accessor :id
+      
+      # Process human identifier
+      attr_accessor :code
+      
+      # Process human identifier
+      attr_accessor :label
+      
+      # Process human identifier
+      attr_accessor :version
+      
+      # Process human identifier
+      attr_accessor :description
       
       # Main statement
       attr_reader :main
       
       # Creates a workflow instance
-      def initialize(id, main)
-        @id, @main = id, main
+      def initialize(main)
+        @main = main
         main.parent = self
       end
       
@@ -46,7 +58,7 @@ module CliPrEasy
       
       # Inspects this process
       def inspect
-        "#{self.class}::#{id}"
+        "#{self.class}::#{code}"
       end      
       
       #############################################################################################

@@ -9,7 +9,7 @@ CREATE TABLE processes (
   sort_by         INTEGER NOT NULL DEFAULT 0,
   sleep           BOOLEAN NOT NULL DEFAULT false,
   CONSTRAINT pk_processes PRIMARY KEY (id),
-  CONSTRAINT ak_processes UNIQUE (code)
+  CONSTRAINT ak_processes UNIQUE (code, version)
 );
 
 DROP TABLE IF EXISTS statements CASCADE;

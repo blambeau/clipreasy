@@ -91,6 +91,12 @@ module CliPrEasy
       self.production?
     end
     
+    # Asserts that making some low level operation is safe. Raises a SafetyError
+    # otherwise
+    def assert_safe!(msg="")
+      raise CliPrEasy::SafetyError, msg, caller if should_be_safe?
+    end
+    
   end # class Config
   
 end # module CliPrEasy

@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+#
+# This program is part of CliPrEasy, licenced under a GPL licence
+# Copyright (c) 2009 University of Louvain, Bernard Lambeau and Maxime Coevoet
+#
+# Reinstalls the database from scratch. This will raise an error is CliPrEasy is
+# in production mode
+#
+
+# Load clipreasy
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'clipreasy'
+
+begin
+  # Start it
+  CliPrEasy.start
+  CliPrEasy::DAS.install_schema
+ensure
+  # Stop it now
+  CliPrEasy.stop
+end

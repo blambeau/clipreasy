@@ -11,7 +11,7 @@ module CliPrEasy
       def test_structure_on_example_1
         process = ProcessXMLDecoder.decode_file(relative_file('example_1.cpe'))
         assert Process===process
-        assert_equal "work_and_cofee", process.id
+        assert_equal "work_and_cofee", process.code
 
           main = process.main
           assert Sequence===main

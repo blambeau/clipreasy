@@ -1,10 +1,13 @@
-<process id="work_and_cofee">
-  <sequence>
-    <activity id="go_to_work_place"/>
-    <parallel>
-      <activity id="work"/>
-      <activity id="drink_coffee"/>
-    </parallel>
-    <activity id="leave_work_place"/>
-  </sequence>
+<process code="work_and_cofee" label="Work &amp; Cofee" version="1.0.0">
+  <description>We work, drink cofee and so on.</description>
+  <formaldef>
+    <sequence>
+      <activity id="go_to_work_place"/>
+      <parallel>
+        <activity id="work"/>
+        <activity id="drink_coffee"/>
+      </parallel>
+      <activity id="leave_work_place"/>
+    </sequence>
+  </formaldef>
 </process>
