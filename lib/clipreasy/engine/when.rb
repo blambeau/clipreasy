@@ -7,7 +7,7 @@ module CliPrEasy
     class When < Statement
       
       # Conditional value
-      attr_reader :value
+      attr_accessor :value
       
       # Then clause
       attr_reader :then_clause

@@ -7,7 +7,7 @@ module CliPrEasy
     class Until < Statement
       
       # Condition
-      attr_reader :condition
+      attr_accessor :condition
       
       # Then clause
       attr_reader :then_clause

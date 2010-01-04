@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+#
+# This program is part of CliPrEasy, licenced under a GPL licence
+# Copyright (c) 2009 University of Louvain, Bernard Lambeau and Maxime Coevoet
+#
+# Shows the definition of a given process
+#
+
+# Load clipreasy
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'clipreasy'
+
+# Shows some tuples
+def show(name, tuples)
+  puts "--- #{name} ---------------------------------------------------------"
+  tuples.each {|t| puts t.inspect}
+  puts
+end
+
+begin
+  # Start it
+  CliPrEasy.start
+  
+  ended = false
+  until ended
+    begin
+      case (command = STDIN.readline.strip)
+        when /^q(uit)?$/
+          ended = true
+        when /^s(how)?$/
+          show("processes", CliPrEasy::DAS.dataset(:processes).select(:id, :code, :label, :version))
+          show("statements", CliPrEasy::DAS.dataset(:statements).select(:process, :kind, :code, :label, :lid, :parent))
+          show("process_executions", CliPrEasy::DAS.dataset(:process_executions))
+          show("statement_executions", CliPrEasy::DAS.dataset(:statement_executions))
+        when /^start\s+(.*)$/
+          CliPrEasy.start_process $1
+        when /^empty$/
+          CliPrEasy::DAS.dataset(:statement_executions).delete
+          CliPrEasy::DAS.dataset(:process_executions).delete
+        when /^ended\s+(\d+)$/
+          CliPrEasy.activity_ended $1
+      end
+    rescue => ex
+      puts "An error has occured #{ex.message}"
+      puts ex.backtrace.join("\n")
+    end
+  end
+  
+ensure
+  # Stop it now
+  CliPrEasy.stop
+end

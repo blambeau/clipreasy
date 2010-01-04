@@ -28,10 +28,21 @@ module CliPrEasy
     CliPrEasy::DAS.stop
   end
   
+  # Starts a process execution
+  def self.start_process(id)
+    CliPrEasy::State::ProcessExecutionBackend.start_process(id)
+  end
+  
+  # Let the engine know that an activity has been ended
+  def self.activity_ended(id)
+    CliPrEasy::State::ProcessExecutionBackend.activity_ended(id)
+  end
+  
 end
 require 'clipreasy/errors'
 require 'clipreasy/config'
 require 'clipreasy/state/das'
+require 'clipreasy/state/transaction'
 require 'clipreasy/state/tuple'
 require 'clipreasy/state/relation'
 require 'clipreasy/engine'

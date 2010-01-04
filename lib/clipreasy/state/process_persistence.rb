@@ -29,7 +29,9 @@ module CliPrEasy
         tuple = processes.filter(:id => id).first if /^\d+$/ =~ id.to_s
         tuple = processes.filter(:code => id).order(:version.desc).first unless tuple
         return nil unless tuple
-        CliPrEasy::Engine::ProcessXMLDecoder.decode(tuple[:formaldef])
+        process = CliPrEasy::Engine::ProcessXMLDecoder.decode(tuple[:formaldef])
+        process.id = id
+        process
       end
       
       # Provides a tuple that matches the database structure
@@ -43,12 +45,12 @@ module CliPrEasy
       
       # Saves the process to the database
       def save_to_database
-        self.id = (CliPrEasy::DAS.relation(:processes) << self.to_process_tuple)
-        statements = []
-        depth_first_search do |statement|
-          statements << statement.to_statement_tuple
+        CliPrEasy::DAS.transaction do |t|
+          self.id = (t.processes.insert(self.to_process_tuple))
+          depth_first_search do |statement|
+            t.statements.insert(statement.to_statement_tuple)
+          end
         end
-        CliPrEasy::DAS.relation(:statements) << statements
       end
       
     end # class Process

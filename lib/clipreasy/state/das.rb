@@ -9,8 +9,8 @@ module CliPrEasy
     # Delegates class calls to the singleton, in order to hide the singleton
     # pattern
     class << self
-      def method_missing(name, *args)
-        self.instance.send(name, *args)
+      def method_missing(name, *args, &block)
+        self.instance.send(name, *args, &block)
       end
     end
     
@@ -35,6 +35,15 @@ module CliPrEasy
       raise IllegalStateError, "DAS has not been previously started" if @db.nil?
       CliPrEasy.config.assert_safe!("Installing database schema cannot be executed in safe mode")
       @db << File.read(File.join(File.dirname(__FILE__), 'clipreasy_schema.pgsql'))
+    end
+    
+    # Executes the given block in a transaction
+    def transaction
+      raise IllegalStateError, "DAS has not been previously started" if @db.nil?
+      raise IllegalStateError, "No block given when using DAS.transaction", caller unless block_given?
+      @db.transaction do |conn|
+        yield CliPrEasy::State::Transaction.new(@db, conn)
+      end
     end
     
     # Returns a Sequel dataset instance

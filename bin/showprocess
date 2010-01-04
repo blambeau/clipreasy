@@ -3,8 +3,7 @@
 # This program is part of CliPrEasy, licenced under a GPL licence
 # Copyright (c) 2009 University of Louvain, Bernard Lambeau and Maxime Coevoet
 #
-# Reinstalls the database from scratch. This will raise an error is CliPrEasy is
-# in production mode
+# Shows the definition of a given process
 #
 
 # Load clipreasy

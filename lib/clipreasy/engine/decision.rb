@@ -10,7 +10,7 @@ module CliPrEasy
     class Decision < Statement
       
       # Associated condition
-      attr_reader :condition
+      attr_accessor :condition
       
       # Decision clauses
       attr_reader :clauses

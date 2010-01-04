@@ -35,9 +35,9 @@ CREATE TABLE process_executions (
   status          TEXT NOT NULL DEFAULT 'pending',
   started_at      TIMESTAMP NOT NULL DEFAULT current_timestamp,
   ended_at        TIMESTAMP,
-  CONSTRAINT pk_process_executions PRIMARY KEY (process, id),
+  CONSTRAINT pk_process_executions PRIMARY KEY (id),
   CONSTRAINT fk_process_execution_ref_process FOREIGN KEY (process) REFERENCES processes (id),
-  CONSTRAINT ak_process_executions UNIQUE (id)
+  CONSTRAINT ak_process_executions UNIQUE (process, id)
 );
 
 DROP TABLE IF EXISTS statement_executions CASCADE;
@@ -46,13 +46,12 @@ CREATE TABLE statement_executions (
 	process_execution   BIGINT NOT NULL,
 	statement           BIGINT NOT NULL,
 	id                  BIGSERIAL NOT NULL,
-	parent              BIGINT NOT NULL,
+	parent              BIGINT,
   status              TEXT NOT NULL DEFAULT 'pending',
   started_at          TIMESTAMP NOT NULL DEFAULT current_timestamp,
   ended_at            TIMESTAMP,
-  CONSTRAINT pk_statement_executions PRIMARY KEY (process, process_execution, statement, id),
+  CONSTRAINT pk_statement_executions PRIMARY KEY (id),
   CONSTRAINT fk_statement_execution_ref_process_executions FOREIGN KEY (process, process_execution) REFERENCES process_executions (process, id),
   CONSTRAINT fk_statement_execution_ref_statement FOREIGN KEY (process, statement) REFERENCES statements (process, lid),
-  CONSTRAINT fk_statement_execution_parent FOREIGN KEY (process, process_execution, statement, parent) REFERENCES statement_executions (process, process_execution, statement, id),
-  CONSTRAINT ak_statement_executions UNIQUE (id)
+  CONSTRAINT fk_statement_execution_parent FOREIGN KEY (parent) REFERENCES statement_executions (id)
 );

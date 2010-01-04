@@ -24,12 +24,12 @@ module CliPrEasy
       
       # Starts a process execution and returns an execution context instance
       def start_process(process)
+        process = CliPrEasy::Engine::Process[process] unless CliPrEasy::Engine::Process===process
         procexec_id = @process_executions.insert(:process => process.id, :status => 'pending')
         statexec_id = @statement_executions.insert(
           :process            => process.id,
         	:process_execution  => procexec_id,
-        	:statement          => process.id,
-        	:parent             => procexec_id,
+        	:statement          => process.statement_token,
           :status             => 'pending')
         attributes = @statement_executions.filter(:id => statexec_id).first
         context = CliPrEasy::Engine::BackendProcessContext.new(self, process, attributes)
@@ -75,12 +75,14 @@ module CliPrEasy
       
       # Branches some statement _who_ and returns new attributes for it
       def branch(attributes, who, *args)
-        @statement_executions.insert(
-          :process            => who.process.id,
+        id = @statement_executions.insert(
+          :process            => attributes[:process],
         	:process_execution  => attributes[:process_execution],
         	:statement          => who.statement_token,
         	:parent             => attributes[:id],
           :status             => 'pending')
+        newones = @statement_executions.filter(:id => id).first
+        newones
       end
       
       # Close some statement from attributes
