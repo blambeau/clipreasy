@@ -38,13 +38,18 @@ module CliPrEasy
     CliPrEasy::State::ProcessExecutionBackend.activity_ended(id)
   end
   
+  # Installs the database schema on a given Sequel database
+  def self.install_db_schema(db)
+    db << File.read(File.join(File.dirname(__FILE__), 'model', 'clipreasy_schema.pgsql'))
+  end
+  
 end
 require 'clipreasy/errors'
 require 'clipreasy/config'
-require 'clipreasy/state/das'
-require 'clipreasy/state/transaction'
-require 'clipreasy/state/tuple'
-require 'clipreasy/state/relation'
+require 'clipreasy/model/das'
+require 'clipreasy/model/transaction'
+require 'clipreasy/model/tuple'
+require 'clipreasy/model/relation'
 require 'clipreasy/engine'
-require 'clipreasy/state/process_persistence'
-require 'clipreasy/state/process_execution_backend'
+require 'clipreasy/model/process_persistence'
+require 'clipreasy/model/process_execution_backend'
