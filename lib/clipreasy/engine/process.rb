@@ -28,6 +28,9 @@ module CliPrEasy
       # Process formal definition
       attr_accessor :formaldef
       
+      # Process folder
+      attr_accessor :folder
+      
       # Main statement
       attr_reader :main
       

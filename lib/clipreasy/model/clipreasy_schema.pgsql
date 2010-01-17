@@ -29,6 +29,7 @@ CREATE TABLE processes (
   version         TEXT NOT NULL,
   description     TEXT NOT NULL DEFAULT '',
   formaldef       TEXT NOT NULL,
+  folder          TEXT NOT NULL,
   sort_by         INTEGER NOT NULL DEFAULT 0,
   sleep           BOOLEAN NOT NULL DEFAULT false,
   business_id     INT8,

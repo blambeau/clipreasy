@@ -40,7 +40,8 @@ module CliPrEasy
          :label       => self.label,
          :version     => self.version,
          :description => self.description,
-         :formaldef   => self.formaldef}
+         :formaldef   => self.formaldef,
+         :folder      => (self.folder || '')}
       end
       
       # Saves the process to the database
