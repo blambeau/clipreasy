@@ -45,11 +45,18 @@ module CliPrEasy
       end
       
       # Saves the process to the database
-      def save_to_database
-        CliPrEasy::DAS.transaction do |t|
-          self.id = (t.processes.insert(self.to_process_tuple))
+      def save_to_database(db = nil)
+        if db
+          self.id = (db[:processes].insert(self.to_process_tuple))
           depth_first_search do |statement|
-            t.statements.insert(statement.to_statement_tuple)
+            db[:statements].insert(statement.to_statement_tuple)
+          end
+        else
+          CliPrEasy::DAS.transaction do |t|
+            self.id = (t.processes.insert(self.to_process_tuple))
+            depth_first_search do |statement|
+              t.statements.insert(statement.to_statement_tuple)
+            end
           end
         end
       end

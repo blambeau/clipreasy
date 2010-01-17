@@ -29,13 +29,13 @@ module CliPrEasy
   end
   
   # Starts a process execution
-  def self.start_process(id)
-    CliPrEasy::State::ProcessExecutionBackend.start_process(id)
+  def self.start_process(id, &block)
+    CliPrEasy::State::ProcessExecutionBackend.start_process(id, &block)
   end
   
   # Let the engine know that an activity has been ended
-  def self.activity_ended(id)
-    CliPrEasy::State::ProcessExecutionBackend.activity_ended(id)
+  def self.activity_ended(id, &block)
+    CliPrEasy::State::ProcessExecutionBackend.activity_ended(id, &block)
   end
   
   # Installs the database schema on a given Sequel database

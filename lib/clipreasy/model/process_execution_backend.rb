@@ -23,7 +23,7 @@ module CliPrEasy
       end
       
       # Starts a process execution and returns an execution context instance
-      def start_process(process)
+      def start_process(process, &block)
         process = CliPrEasy::Engine::Process[process] unless CliPrEasy::Engine::Process===process
         procexec_id = @process_executions.insert(:process => process.id, :status => 'pending')
         statexec_id = @statement_executions.insert(
@@ -33,7 +33,9 @@ module CliPrEasy
           :status             => 'pending')
         attributes = @statement_executions.filter(:id => statexec_id).first
         context = CliPrEasy::Engine::BackendProcessContext.new(self, process, attributes)
-        process.start(context)
+        result = process.start(context)
+        block.call(result) if block
+        result
       end
       
       # Restores an execution context from an identifier
@@ -49,8 +51,10 @@ module CliPrEasy
       
       # Retores an execution context and continue execution by firing
       # an activity ended message.
-      def activity_ended(id)
-        restore(id).activity_ended
+      def activity_ended(id, &block)
+        result = restore(id).activity_ended
+        block.call(result) if block
+        result
       end
       
       # Checks if some attributes can be interpreted as a pending statement

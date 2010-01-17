@@ -36,6 +36,8 @@ CREATE TABLE processes (
   CONSTRAINT pk_processes PRIMARY KEY (id),
   CONSTRAINT ak_processes UNIQUE (code, version)
 );
+DROP VIEW IF EXISTS active_processes_combo;
+DROP VIEW IF EXISTS processes_combo;
 CREATE VIEW processes_combo AS (
 	SELECT id as value,
 	       label,
@@ -65,6 +67,7 @@ CREATE TABLE statements (
   CONSTRAINT fk_statement_ref_process FOREIGN KEY (process) REFERENCES processes (id),
   CONSTRAINT fk_statement_ref_parent_statement FOREIGN KEY (process, parent) REFERENCES statements (process, lid)
 );
+DROP VIEW IF EXISTS activities;
 CREATE VIEW activities AS (
 	SELECT * FROM statements 
 	 WHERE kind = 'CliPrEasy::Engine::Activity'

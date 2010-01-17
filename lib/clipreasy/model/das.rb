@@ -14,11 +14,13 @@ module CliPrEasy
       end
     end
     
-    # Starts the service using a database configuration
-    def start(config)
+    # Starts the service using a database configuration. An optional database
+    # instance may be given. In this case it will be used in place of a fresh
+    # new one.
+    def start(config, db = nil)
       raise IllegalStateError, "DAS has already been started" unless @db.nil?
       @config = config
-      @db = Sequel.connect(config)
+      @db = (db || Sequel.connect(config))
     rescue PGError => ex
       raise ConfigError, "Something went wrong when trying to connect the database", ex
     end
