@@ -106,6 +106,7 @@ CREATE TABLE statement_executions (
   ended_at            TIMESTAMP,
   ended_by            INT8,
   business_id         INT8,
+  bulkdata            TEXT,
   CONSTRAINT pk_statement_executions PRIMARY KEY (id),
   CONSTRAINT fk_statement_execution_ref_process_executions FOREIGN KEY (process, process_execution) REFERENCES process_executions (process, id),
   CONSTRAINT fk_statement_execution_ref_statement FOREIGN KEY (process, statement) REFERENCES statements (process, lid),

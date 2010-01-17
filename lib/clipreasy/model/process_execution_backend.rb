@@ -11,8 +11,8 @@ module CliPrEasy
       # Delegates class calls to the singleton, in order to hide the singleton
       # pattern
       class << self
-        def method_missing(name, *args)
-          self.instance.send(name, *args)
+        def method_missing(name, *args, &block)
+          self.instance.send(name, *args, &block)
         end
       end
     
