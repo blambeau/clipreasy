@@ -23,14 +23,17 @@ module CliPrEasy
       end
       
       # Starts a process execution and returns an execution context instance
-      def start_process(process, &block)
+      def start_process(process, opts = {}, &block)
         process = CliPrEasy::Engine::Process[process] unless CliPrEasy::Engine::Process===process
-        procexec_id = @process_executions.insert(:process => process.id, :status => 'pending')
-        statexec_id = @statement_executions.insert(
+        tuple = {:process => process.id, :status => 'pending'}.merge(opts)
+        procexec_id = @process_executions.insert(tuple)
+        tuple = {
           :process            => process.id,
         	:process_execution  => procexec_id,
         	:statement          => process.statement_token,
-          :status             => 'pending')
+          :status             => 'pending'
+        }.merge(opts)
+        statexec_id = @statement_executions.insert(tuple)
         attributes = @statement_executions.filter(:id => statexec_id).first
         context = CliPrEasy::Engine::BackendProcessContext.new(self, process, attributes)
         result = process.start(context)

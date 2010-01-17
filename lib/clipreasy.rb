@@ -29,8 +29,8 @@ module CliPrEasy
   end
   
   # Starts a process execution
-  def self.start_process(id, &block)
-    CliPrEasy::State::ProcessExecutionBackend.start_process(id, &block)
+  def self.start_process(id, opts = {}, &block)
+    CliPrEasy::State::ProcessExecutionBackend.start_process(id, opts, &block)
   end
   
   # Let the engine know that an activity has been ended

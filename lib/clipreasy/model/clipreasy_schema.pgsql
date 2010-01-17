@@ -80,12 +80,16 @@ CREATE TABLE process_executions (
   id              BIGSERIAL NOT NULL,
   status          TEXT NOT NULL DEFAULT 'pending',
   started_at      TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  started_by      INT8,
   deadline        TIMESTAMP,
   ended_at        TIMESTAMP,
+  ended_by        INT8,
   business_id     INT8,
   CONSTRAINT pk_process_executions PRIMARY KEY (id),
   CONSTRAINT fk_process_execution_ref_process FOREIGN KEY (process) REFERENCES processes (id),
-  CONSTRAINT ak_process_executions UNIQUE (process, id)
+  CONSTRAINT ak_process_executions UNIQUE (process, id),
+  CONSTRAINT fk_process_execution_starteb_by FOREIGN KEY (started_by) REFERENCES actors (id),
+  CONSTRAINT fk_process_execution_ended_by FOREIGN KEY (ended_by) REFERENCES actors (id)
 );
 
 DROP TABLE IF EXISTS statement_executions CASCADE;
@@ -97,13 +101,17 @@ CREATE TABLE statement_executions (
 	parent              BIGINT,
   status              TEXT NOT NULL DEFAULT 'pending',
   started_at          TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  started_by          INT8,
   deadline            TIMESTAMP,
   ended_at            TIMESTAMP,
+  ended_by            INT8,
   business_id         INT8,
   CONSTRAINT pk_statement_executions PRIMARY KEY (id),
   CONSTRAINT fk_statement_execution_ref_process_executions FOREIGN KEY (process, process_execution) REFERENCES process_executions (process, id),
   CONSTRAINT fk_statement_execution_ref_statement FOREIGN KEY (process, statement) REFERENCES statements (process, lid),
-  CONSTRAINT fk_statement_execution_parent FOREIGN KEY (parent) REFERENCES statement_executions (id)
+  CONSTRAINT fk_statement_execution_parent FOREIGN KEY (parent) REFERENCES statement_executions (id),
+  CONSTRAINT fk_statement_execution_starteb_by FOREIGN KEY (started_by) REFERENCES actors (id),
+  CONSTRAINT fk_statement_execution_ended_by FOREIGN KEY (ended_by) REFERENCES actors (id)
 );
 
 DROP VIEW IF EXISTS pending_activities;
