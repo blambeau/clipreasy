@@ -1,3 +1,26 @@
+DROP TABLE IF EXISTS roles CASCADE;
+CREATE TABLE roles (
+	code        TEXT NOT NULL,
+	label       TEXT NOT NULL,
+	description TEXT NOT NULL DEFAULT '',
+	CONSTRAINT pk_roles PRIMARY KEY (code)
+);
+
+DROP TABLE IF EXISTS actors CASCADE;
+CREATE TABLE actors (
+  id         SERIAL NOT NULL,
+  login      TEXT NOT NULL,
+  password   TEXT NOT NULL,
+  first_name TEXT NOT NULL,
+  last_name  TEXT NOT NULL,
+  initials   TEXT NOT NULL,
+  role       TEXT NOT NULL,
+  sleep      BOOLEAN NOT NULL DEFAULT false,
+  CONSTRAINT pk_actors PRIMARY KEY (id),
+  CONSTRAINT ak_actors_login UNIQUE (login),
+  CONSTRAINT fk_actor_has_a_role FOREIGN KEY (role) REFERENCES roles(code)
+);
+
 DROP TABLE IF EXISTS processes CASCADE;
 CREATE TABLE processes (
   id 	            SERIAL NOT NULL,

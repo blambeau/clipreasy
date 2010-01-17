@@ -40,7 +40,7 @@ module CliPrEasy
   
   # Installs the database schema on a given Sequel database
   def self.install_db_schema(db)
-    db << File.read(File.join(File.dirname(__FILE__), 'model', 'clipreasy_schema.pgsql'))
+    db << File.read(File.join(File.dirname(__FILE__), 'clipreasy', 'model', 'clipreasy_schema.pgsql'))
   end
   
 end
