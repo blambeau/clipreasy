@@ -15,3 +15,25 @@ Rake::TestTask.new do |test|
   test.test_files = ['test/unit/test_all.rb']
   test.verbose    =  true
 end
+
+gemspec = Gem::Specification.new do |s|
+  s.name = 'clipreasy'
+  s.version = version
+  s.summary = "CliPrEasy - Clinical Processes Made Easy"
+  s.description = %{A workflow engine for clinical processes}
+  s.files = Dir['lib/**/*'] + Dir['test/**/*'] + Dir['bin/*']
+  s.require_path = 'lib'
+  s.has_rdoc = true
+  s.extra_rdoc_files = ["README.rdoc", "LICENCE.rdoc"]
+  s.rdoc_options << '--title' << 'CliPrEasy - Clinical Processes Made Easy' <<
+                    '--main' << 'README.rdoc' <<
+                    '--line-numbers'  
+  s.bindir = "bin"
+  s.executables = []
+  s.author = "Bernard Lambeau"
+  s.email = "blambeau@gmail.com"
+  s.homepage = "http://github.com/blambeau/clipreasy"
+end
+Rake::GemPackageTask.new(gemspec) do |pkg|
+	pkg.need_tar = true
+end
