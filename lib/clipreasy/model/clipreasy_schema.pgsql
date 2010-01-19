@@ -5,6 +5,13 @@ CREATE TABLE roles (
 	description TEXT NOT NULL DEFAULT '',
 	CONSTRAINT pk_roles PRIMARY KEY (code)
 );
+DROP VIEW IF EXISTS roles_combo;
+CREATE VIEW roles_combo AS (
+	SELECT code as value,
+	       label,
+	       description
+    FROM roles
+);
 
 DROP TABLE IF EXISTS actors CASCADE;
 CREATE TABLE actors (
@@ -19,6 +26,14 @@ CREATE TABLE actors (
   CONSTRAINT pk_actors PRIMARY KEY (id),
   CONSTRAINT ak_actors_login UNIQUE (login),
   CONSTRAINT fk_actor_has_a_role FOREIGN KEY (role) REFERENCES roles(code)
+);
+DROP VIEW IF EXISTS actors_combo;
+CREATE VIEW actors_combo AS (
+	SELECT id as value,
+	       first_name || ' ' || last_name as label,
+	       role
+    FROM actors
+   ORDER BY label
 );
 
 DROP TABLE IF EXISTS processes CASCADE;
@@ -85,6 +100,7 @@ CREATE TABLE process_executions (
   ended_at        TIMESTAMP,
   ended_by        INT8,
   business_id     INT8,
+  bulkdata        TEXT,
   CONSTRAINT pk_process_executions PRIMARY KEY (id),
   CONSTRAINT fk_process_execution_ref_process FOREIGN KEY (process) REFERENCES processes (id),
   CONSTRAINT ak_process_executions UNIQUE (process, id),
@@ -115,18 +131,22 @@ CREATE TABLE statement_executions (
   CONSTRAINT fk_statement_execution_ended_by FOREIGN KEY (ended_by) REFERENCES actors (id)
 );
 
-DROP VIEW IF EXISTS pending_activities;
-CREATE VIEW pending_activities AS 
+DROP VIEW IF EXISTS activities_history;
+CREATE VIEW activities_history AS 
 SELECT se.process as process, 
        se.process_execution as process_execution,
        se.statement as statement,
        se.id as id,
+       se.status as se_status,
        se.started_at as se_started_at,
        se.deadline  as se_deadline,
        se.business_id as se_business,
+       se.bulkdata as se_bulkdata,
+       pe.status as pe_status,
        pe.started_at  as pe_started_at,
        pe.deadline  as pe_deadline,
        pe.business_id as pe_business,
+       pe.bulkdata as pe_bulkdata,
        p.code     as p_code,
        p.label    as p_label,
        p.business_id as p_business,
@@ -138,5 +158,16 @@ SELECT se.process as process,
   INNER JOIN process_executions as pe ON se.process_execution=pe.id
   INNER JOIN statements AS s ON se.process = s.process and se.statement = s.lid
   INNER JOIN processes  AS p ON s.process = p.id
-  WHERE s.kind = 'CliPrEasy::Engine::Activity'
-    AND se.status = 'pending';
+  WHERE s.kind = 'CliPrEasy::Engine::Activity';
+
+DROP VIEW IF EXISTS ended_activities;
+CREATE VIEW ended_activities AS 
+SELECT * 
+  FROM activities_history
+ WHERE se_status = 'ended';
+
+DROP VIEW IF EXISTS pending_activities;
+CREATE VIEW pending_activities AS 
+SELECT * 
+  FROM activities_history
+ WHERE se_status = 'pending';
