@@ -22,6 +22,9 @@ module CliPrEasy
       # Process version
       attr_accessor :version
       
+      # Process status
+      attr_accessor :status
+      
       # Process description
       attr_accessor :description
       

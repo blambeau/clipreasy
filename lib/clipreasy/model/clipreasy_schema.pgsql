@@ -26,6 +26,7 @@ CREATE TABLE actors (
   CONSTRAINT pk_actors PRIMARY KEY (id),
   CONSTRAINT ak_actors_login UNIQUE (login),
   CONSTRAINT fk_actor_has_a_role FOREIGN KEY (role) REFERENCES roles(code)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 DROP VIEW IF EXISTS actors_combo;
 CREATE VIEW actors_combo AS (
@@ -46,7 +47,7 @@ CREATE TABLE processes (
   formaldef       TEXT NOT NULL,
   folder          TEXT NOT NULL,
   sort_by         INTEGER NOT NULL DEFAULT 0,
-  sleep           BOOLEAN NOT NULL DEFAULT false,
+  status          TEXT NOT NULL DEFAULT 'creation',
   business_id     INT8,
   CONSTRAINT pk_processes PRIMARY KEY (id),
   CONSTRAINT ak_processes UNIQUE (code, version)
@@ -54,16 +55,24 @@ CREATE TABLE processes (
 DROP VIEW IF EXISTS active_processes_combo;
 DROP VIEW IF EXISTS processes_combo;
 CREATE VIEW processes_combo AS (
-	SELECT id as value,
-	       label,
-         sleep
+	SELECT id as value, *
     FROM processes
    ORDER BY sort_by
 );
-CREATE VIEW active_processes_combo AS (
-	SELECT value, label
+CREATE VIEW creation_processes_combo AS (
+	SELECT *
 	  FROM processes_combo
-	 WHERE sleep=false
+	 WHERE status='creation'
+);
+CREATE VIEW test_processes_combo AS (
+	SELECT *
+	  FROM processes_combo
+	 WHERE status='test'
+);
+CREATE VIEW production_processes_combo AS (
+	SELECT *
+	  FROM processes_combo
+	 WHERE status='production'
 );
 
 DROP TABLE IF EXISTS statements CASCADE;
@@ -79,8 +88,10 @@ CREATE TABLE statements (
   sort_by         INTEGER NOT NULL DEFAULT 0,
   business_id     INT8,
   CONSTRAINT pk_statements PRIMARY KEY (process, lid),
-  CONSTRAINT fk_statement_ref_process FOREIGN KEY (process) REFERENCES processes (id),
+  CONSTRAINT fk_statement_ref_process FOREIGN KEY (process) REFERENCES processes (id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_statement_ref_parent_statement FOREIGN KEY (process, parent) REFERENCES statements (process, lid)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 DROP VIEW IF EXISTS activities;
 CREATE VIEW activities AS (
@@ -102,10 +113,13 @@ CREATE TABLE process_executions (
   business_id     INT8,
   bulkdata        TEXT,
   CONSTRAINT pk_process_executions PRIMARY KEY (id),
-  CONSTRAINT fk_process_execution_ref_process FOREIGN KEY (process) REFERENCES processes (id),
   CONSTRAINT ak_process_executions UNIQUE (process, id),
-  CONSTRAINT fk_process_execution_starteb_by FOREIGN KEY (started_by) REFERENCES actors (id),
+  CONSTRAINT fk_process_execution_ref_process FOREIGN KEY (process) REFERENCES processes (id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_process_execution_starteb_by FOREIGN KEY (started_by) REFERENCES actors (id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_process_execution_ended_by FOREIGN KEY (ended_by) REFERENCES actors (id)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS statement_executions CASCADE;
@@ -124,11 +138,16 @@ CREATE TABLE statement_executions (
   business_id         INT8,
   bulkdata            TEXT,
   CONSTRAINT pk_statement_executions PRIMARY KEY (id),
-  CONSTRAINT fk_statement_execution_ref_process_executions FOREIGN KEY (process, process_execution) REFERENCES process_executions (process, id),
-  CONSTRAINT fk_statement_execution_ref_statement FOREIGN KEY (process, statement) REFERENCES statements (process, lid),
-  CONSTRAINT fk_statement_execution_parent FOREIGN KEY (parent) REFERENCES statement_executions (id),
-  CONSTRAINT fk_statement_execution_starteb_by FOREIGN KEY (started_by) REFERENCES actors (id),
+  CONSTRAINT fk_statement_execution_ref_process_executions FOREIGN KEY (process, process_execution) REFERENCES process_executions (process, id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_statement_execution_ref_statement FOREIGN KEY (process, statement) REFERENCES statements (process, lid)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_statement_execution_parent FOREIGN KEY (parent) REFERENCES statement_executions (id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_statement_execution_starteb_by FOREIGN KEY (started_by) REFERENCES actors (id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_statement_execution_ended_by FOREIGN KEY (ended_by) REFERENCES actors (id)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 DROP VIEW IF EXISTS activities_history;

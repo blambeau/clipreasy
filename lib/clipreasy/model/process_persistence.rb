@@ -41,6 +41,7 @@ module CliPrEasy
          :version     => self.version,
          :description => self.description,
          :formaldef   => self.formaldef,
+         :status      => self.status,
          :folder      => (self.folder || '')}
       end
       
