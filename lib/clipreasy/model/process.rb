@@ -43,18 +43,6 @@ module CliPrEasy
         "#{self.class}::#{code}"
       end      
       
-      # See Statement.start
-      def start(context)
-        main.start(context)
-      end
-      
-      # See Statement.ended
-      def ended(child, child_context)
-        my_context = child_context.close
-        my_context.close
-        []
-      end
-      
     end # class Process
 
   end # module Model

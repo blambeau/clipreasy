@@ -27,17 +27,6 @@ module CliPrEasy
         then_clause.depth_first_search(&block)
       end
       
-      # See Statement.start
-      def start(context)
-        my_context = context.started(self)
-        then_clause.start(my_context)
-      end
-            
-      # See Statement.ended
-      def ended(child, child_context)
-        parent.ended(self, child_context.close)
-      end
-      
     end # class When
 
   end # module Model
