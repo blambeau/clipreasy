@@ -1,7 +1,7 @@
 module CliPrEasy
   module Fixtures
     
-    # Reurns the fixtures folder
+    # Returns the fixtures folder
     def fixtures_folder
       File.expand_path(File.join(File.dirname(__FILE__), 'fixtures'))
     end
@@ -23,6 +23,14 @@ module CliPrEasy
       files = process_files.collect{|f| File.expand_path(f)}
       files.each{|f| yield f} if block_given?
       files
+    end
+    
+    # Returns the work_and_cofee process decoded through the XML
+    # persistence decoder.
+    def work_and_coffee_process
+      require 'clipreasy/persistence/xml/process_xml_decoder'
+      file = process_file("work_and_coffee.cpe")
+      ::CliPrEasy::Persistence::XML::ProcessXMLDecoder.decode_file(file)
     end
     
   end # module Fixtures
