@@ -16,7 +16,13 @@ describe ::CliPrEasy::Model::Process do
     act.business_id.should == "drink"
   end
   
-  it "should respect the tree hiearchy" do
+  it "should respect the tree hiearchy about main process" do
+    all_processes.each{|p|
+      p.all?{|s| s.process == p}.should be_true
+    }
+  end
+  
+  it "should respect the tree hiearchy about parents" do
     process = work_and_coffee_process
     process.parent.should be_nil
     process.main.parent.should == process
