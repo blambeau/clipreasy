@@ -16,13 +16,11 @@ module CliPrEasy
       # Associates _value_ to _key_ in user-data. Overrides previous value if 
       # present.
       def []=(key,value)
-        oldvalue = @data[key]
         @data[key] = value
       end
   
       # Removes a mark
       def remove_mark(key)
-        oldvalue = @data[key]
         @data.delete(key)
       end
 
