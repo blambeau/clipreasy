@@ -14,7 +14,7 @@ module CliPrEasy
       def initialize(main)
         raise ArgumentError, "Missing main statement in Process" unless Statement===main
         @main = main
-        self.parent = self
+        self.parent = nil
         main.parent = self
         each_with_index{|s, i| s.identifier = i}
       end

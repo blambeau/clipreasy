@@ -1,22 +1,22 @@
 <process business_id="work_and_coffee" label="Work and Coffee Fixture Process" version="0.0.1" status="test">
   <description>Working, drinking, ... until the end of the day</description>
   <formaldef>
-    <sequence>
-      <activity business_id="0" label="Say hello" color="yellow"/>
-      <until decision="tired?">
-        <parallel>
-          <activity business_id="1.1" label="Work" color="red"/>
-          <sequence>
-            <activity business_id="1.2" label="Drink coffee" color="cyan"/>
-            <decision condition="too_much_coffee?">
-              <when value="true">
-                <activity business_id="1.3" label="Go somewhere..." color="cyan"/>
+    <sequence business_id="main_seq">
+      <activity business_id="say_hello" label="Say hello" color="yellow"/>
+      <until business_id="until_tired" decision="tired?">
+        <parallel business_id="until_tired_par">
+          <activity business_id="work" label="Work" color="red"/>
+          <sequence business_id="drink_seq">
+            <activity business_id="drink" label="Drink coffee" color="cyan"/>
+            <decision business_id="too_much_coffee" condition="too_much_coffee?">
+              <when value="true" business_id="too_much_coffee_true">
+                <activity business_id="go_somewhere" label="Go somewhere..." color="cyan"/>
               </when>
             </decision>
           </sequence>
         </parallel>
       </until>
-      <activity business_id="2" label="Say goodbye" color="green"/>
+      <activity business_id="say_goodbye" label="Say goodbye" color="green"/>
     </sequence>
   </formaldef>
 </process>
