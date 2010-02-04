@@ -1,0 +1,25 @@
+<process code="work_and_coffee" label="Work and Coffee Fixture Process" version="0.0.1" status="test">
+  <description>Working, drinking, ... until the end of the day</description>
+  <formaldef>
+    <sequence>
+      <activity business_id="0" label="Say hello" color="yellow"/>
+      <until decision="tired?">
+        <parallel>
+          <activity business_id="1.1" label="Work" color="red"/>
+          <sequence>
+            <activity business_id="1.2" label="Drink coffee" color="cyan"/>
+            <decision condition="too_much_coffee?">
+              <when value="true">
+                <activity business_id="1.3" label="Go somewhere..." color="cyan"/>
+              </when>
+            </decision>
+          </sequence>
+        </parallel>
+      </until>
+      <times value="how_many_done">
+          <activity business_id="2" label="Sign report" color="cyan"/>
+      </time>
+      <activity business_id="3" label="Say goodbye" color="green"/>
+    </sequence>
+  </formaldef>
+</process>
