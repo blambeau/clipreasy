@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Model
+  module Enactment
     
     #
     # Activity inside a process.
@@ -7,7 +7,7 @@ module CliPrEasy
     # An Activity is the lower level in statement abstractions. It provides
     # a basic unit of work, typically made by only one actor. 
     #
-    class Activity < Statement
+    module Activity
 
       # See Statement.start. Returns a singleton array with the result of this 
       # activity being started on the context instance.
@@ -27,6 +27,6 @@ module CliPrEasy
         parent.ended(self, context)
       end
       
-    end # class Activity
-  end # module Model
+    end # module Activity
+  end # module Enactment
 end # module CliPrEasy

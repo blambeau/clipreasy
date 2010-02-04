@@ -1,10 +1,10 @@
 module CliPrEasy
-  module Model
+  module Enactment
 
     #
     # While clause used inside process definition.
     #
-    class While < Statement
+    module While
       
       # See Statement.start
       def start(context)
@@ -24,7 +24,7 @@ module CliPrEasy
         end
       end
       
-    end # class While
+    end # module While
 
-  end # module Model
+  end # module Enactment
 end # module CliPrEasy

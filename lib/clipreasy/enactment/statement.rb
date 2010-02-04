@@ -1,19 +1,14 @@
 module CliPrEasy
-  module Model
+  module Enactment
 
     #
-    # Abstract statement inside a process. Statement is the parent class of all
-    # process abstractions (activity, sequence, parallel, ...). It proposes unique
-    # identifiers for those abstractions, markable design pattern and basic "query" 
-    # utilities.
+    # This module defines the common enactment API for all Statement classes.
     #
-    # Children have to implement the following methods:
-    #
-    # * depth_first_search, a depth first search visit of the process tree.
+    # Children have to implement the following two methods:
     # * start, the algorithm to make the statement living inside a process execution.
     # * stop, the algorithm to make the statement ended inside a process execution.
     #
-    class Statement
+    module Statement
       
       #
       # Starts the statement inside an execution context. Returns terminal execution contexts
@@ -36,5 +31,5 @@ module CliPrEasy
           
     end # class Statement
 
-  end # module Model
+  end # module Enactment
 end # module CliPrEasy

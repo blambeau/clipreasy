@@ -1,10 +1,10 @@
 module CliPrEasy
-  module Model
+  module Enactment
 
     #
     # Parallel statement inside a process definition.
     #
-    class Parallel < Statement
+    module Parallel
       
       # See Statement.start
       def start(context)
@@ -18,7 +18,7 @@ module CliPrEasy
         my_context.all_children_ended? ? parent.ended(self, my_context) : []
       end
           
-    end # class Parallel
+    end # module Parallel
     
-  end # module Model
+  end # module Enactment
 end # module CliPrEasy

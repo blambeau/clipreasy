@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Model
+  module Enactment
 
     #
     # Decision inside a process.
@@ -7,7 +7,7 @@ module CliPrEasy
     # A decision has a given abstraction condition and outgoing when clauses
     # (see When).
     #
-    class Decision < Statement
+    module Decision
       
       # See Statement.start
       def start(context)
@@ -29,7 +29,7 @@ module CliPrEasy
         parent.ended(self, child_context.close)
       end
       
-    end # class Decision
+    end # module Decision
 
-  end # module Model
+  end # module Enactment
 end # module CliPrEasy

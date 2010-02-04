@@ -1,10 +1,10 @@
 module CliPrEasy
-  module Model
+  module Enactment
     
     # 
     # Main level of statement hierarchy in process definitions, the Process itself.
     #
-    class Process < Statement
+    module Process
       
       # See Statement.start
       def start(context)
@@ -18,7 +18,7 @@ module CliPrEasy
         []
       end
       
-    end # class Process
+    end # module Process
 
-  end # module Model
+  end # module Enactment
 end # module CliPrEasy

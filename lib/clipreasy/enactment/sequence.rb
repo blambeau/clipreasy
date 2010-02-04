@@ -1,10 +1,10 @@
 module CliPrEasy
-  module Model
+  module Enactment
 
     #
     # Sequence inside a process definition.
     #
-    class Sequence < Statement
+    module Sequence
       
       # See Statement.start
       def start(context)
@@ -22,7 +22,7 @@ module CliPrEasy
         end
       end
           
-    end # class Sequence
+    end # module Sequence
     
-  end # module Model
+  end # module Enactment
 end # module CliPrEasy

@@ -1,10 +1,10 @@
 module CliPrEasy
-  module Model
+  module Enactment
 
     #
     # When clauses used in decisions.
     #
-    class When < Statement
+    module When
       
       # See Statement.start
       def start(context)
@@ -17,7 +17,7 @@ module CliPrEasy
         parent.ended(self, child_context.close)
       end
       
-    end # class When
+    end # module When
 
-  end # module Model
+  end # module Enactment
 end # module CliPrEasy

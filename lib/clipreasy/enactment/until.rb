@@ -1,10 +1,10 @@
 module CliPrEasy
-  module Model
+  module Enactment
 
     #
     # Until clauses inside a process definition.
     #
-    class Until < Statement
+    module Until
       
       # See Statement.start
       def start(context)
@@ -23,7 +23,7 @@ module CliPrEasy
         end
       end
       
-    end # class Until
+    end # module Until
 
-  end # module Model
+  end # module Enactment
 end # module CliPrEasy
