@@ -14,3 +14,4 @@ end
 require 'clipreasy/errors'
 require 'clipreasy/model'
 require 'clipreasy/enactment'
+require 'clipreasy/persistence'

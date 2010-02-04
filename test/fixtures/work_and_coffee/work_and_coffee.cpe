@@ -1,4 +1,4 @@
-<process code="work_and_coffee" label="Work and Coffee Fixture Process" version="0.0.1" status="test">
+<process business_id="work_and_coffee" label="Work and Coffee Fixture Process" version="0.0.1" status="test">
   <description>Working, drinking, ... until the end of the day</description>
   <formaldef>
     <sequence>
@@ -16,10 +16,7 @@
           </sequence>
         </parallel>
       </until>
-      <times value="how_many_done">
-          <activity business_id="2" label="Sign report" color="cyan"/>
-      </time>
-      <activity business_id="3" label="Say goodbye" color="green"/>
+      <activity business_id="2" label="Say goodbye" color="green"/>
     </sequence>
   </formaldef>
 </process>

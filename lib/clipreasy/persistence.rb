@@ -1,0 +1,1 @@
+require 'clipreasy/persistence/xml'
