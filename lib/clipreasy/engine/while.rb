@@ -2,7 +2,7 @@ module CliPrEasy
   module Engine
 
     #
-    # While clause used inside process definitions
+    # While clause used inside process definition.
     #
     class While < Statement
       
@@ -14,24 +14,28 @@ module CliPrEasy
       
       # Creates an until clause instance
       def initialize(condition, then_clause)
+        raise ArgumentError, "Missing condition in While" unless condition
+        raise ArgumentError, "Missing then_clause in While" unless Statement===then_clause
         @condition, @then_clause = condition, then_clause
         then_clause.parent = self
       end
       
-      # Recursively visits the workflow
-      def depth_first_search(&block)
-        yield self
-        then_clause.depth_first_search(&block)
+      # See Statement.depth_first_search
+      def depth_first_search(memo = nil, &block)
+        raise ArgumentError, "Missing block in depth_first_search" unless block
+        yield(memo,self)
+        then_clause.depth_first_search(memo, &block)
+        memo
       end
       
-      # Starts the while statement
+      # See Statement.start
       def start(context)
         my_context = context.started(self)
         value = my_context.evaluate(condition)
         then_clause.start(my_context) if value
       end
             
-      # Fired by children when they are ended
+      # See Statement.ended
       def ended(child, child_context)
         my_context = child_context.close
         value = my_context.evaluate(condition)

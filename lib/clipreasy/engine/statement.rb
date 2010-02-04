@@ -2,49 +2,61 @@ module CliPrEasy
   module Engine
 
     #
-    # Abstract statement inside a process
+    # Abstract statement inside a process. Statement is the parent class of all
+    # process abstractions (activity, sequence, parallel, ...). It proposes unique
+    # identifiers for those abstractions, markable design pattern and basic "query" 
+    # utilities.
+    #
+    # Children have to implement the following methods:
+    #
+    # * depth_first_search, a depth first search visit of the process tree.
+    # * start, the algorithm to make the statement living inside a process execution.
+    # * stop, the algorithm to make the statement ended inside a process execution.
     #
     class Statement
       include Markable
       
-      # Unique token for this statement
-      attr_accessor :statement_token
+      # Unique identifier of this statement. This identifier is always the position
+      # of the statement in a depth_first_search visit (the process itself being 
+      # identified by 0)
+      attr_accessor :identifier
       
-      # Identifier of this statement
-      attr_reader :id
+      # Optional unique identifier that can be attached by business users. Uniqueness
+      # of the identifier is not guaranteed by this class.
+      attr_accessor :business_id
       
       # Parent statement, or the process itself
       attr_accessor :parent
       
-      #
-      # Returns the main process, top level of the hierarchy.
-      #
+      # Returns the main process, top level of the hierarchy. This method MUST be
+      # overriden by the Process itself.
       def process
+        raise ::CliPrEasy::IllegalStateError, "Bad Statement subclass #{self.class}, missing parent" unless parent
         @process ||= parent.process
       end
       
       #
-      # Finds all activities being descendants of this statement.
+      # Makes a depth first search of the process tree. This method yields the block 
+      # with each statement in turn (second block argument, see below), following a 
+      # depth first search algorithm (actually: self -> dfs(children)).
       #
-      # This method relies on depth_first_search that must be implemented by
-      # subclasses
+      # This method allows to pass a _memo_ object, which is always passed as first
+      # argument to the block (the statement being the second one). The memo object
+      # is returned at the end of the dfs.
       #
-      def activities
-        result = []
-        depth_first_search do |elm|
-          result << elm if Activity===elm
-        end
-        result
-      end
-
-      #      
-      # Finds an descendant activity by its id. Returns nil if no such
-      # activity can be found.
+      # This method MUST be implemented by subclasses.
       #
-      def activity(id)
-        activities.select{|a| a.id==code}.first
+      def depth_first_search(memo = nil)
+        raise ::NotImplementedError, "Bad Statement subclass #{self.class}: depth_first_search MUST be "\
+                                     "implemented by subclasses."
       end
       
+      # Finds all activities being descendants of this statement. Returns an array 
+      # with those activities, in the order followed by depth_first_search.
+      def activities
+        depth_first_search([]) {|memo,elm| memo << elm if Activity===elm}
+      end
+
       #
       # Starts the statement inside an execution context. Returns terminal execution contexts
       # that have been started due to this start.
@@ -53,7 +65,7 @@ module CliPrEasy
       # by default.
       #
       def start(context)
-        raise "start MUST by implemented by Engine::Statement subclasses (#{self.class} was missing)"
+        raise ::NotImplementedError, "Bad Statement subclass #{self.class}: start MUST by implemented."
       end
       
       #
@@ -61,7 +73,7 @@ module CliPrEasy
       # that have been started due to this end.
       #
       def ended(child, child_context)
-        raise "ended MUST by implemented by Engine::Statement subclasses (#{self.class} was missing)"
+        raise ::NotImplementedError, "Bad Statement subclass #{self.class}: ended MUST by implemented."
       end
           
       # 
@@ -69,9 +81,10 @@ module CliPrEasy
       #  
       def inspect
         self.class.name =~ /::([a-zA-Z0-9]+)$/
-        @id ? "#{$1}:#{id}" : "#{$1}"
+        business_id ? "#{$1}:#{business_id}" : "#{$1}:#{identifier}"
       end      
       
+      protected :parent=, :identifier=
     end # class Statement
 
   end # module Engine

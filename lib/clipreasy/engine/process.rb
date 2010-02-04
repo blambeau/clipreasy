@@ -2,43 +2,16 @@ module CliPrEasy
   module Engine
     
     # 
-    # Main level of statement hierarchy in process definitions, the Proces itself.
+    # Main level of statement hierarchy in process definitions, the Process itself.
     #
     class Process < Statement
-      
-      #############################################################################################
-      ### Instance variables
-      #############################################################################################
-      
-      # Process identifier
-      attr_accessor :id
-      
-      # Process human identifier
-      attr_accessor :code
-      
-      # Process label
-      attr_accessor :label
-      
-      # Process version
-      attr_accessor :version
-      
-      # Process status
-      attr_accessor :status
-      
-      # Process description
-      attr_accessor :description
-      
-      # Process formal definition
-      attr_accessor :formaldef
-      
-      # Process folder
-      attr_accessor :folder
       
       # Main statement
       attr_reader :main
       
       # Creates a workflow instance
       def initialize(main)
+        raise ArgumentError, "Missing main statement in Process" unless Statement===main
         @main = main
         self.parent = self
         main.parent = self
@@ -50,20 +23,17 @@ module CliPrEasy
       end
       
       # Returns a statement by its token
-      def statement(token)
-        unless @statements
-          @statements = {}
-          depth_first_search do |s|
-            @statements[s.statement_token] = s
-          end
-        end
+      def statement(identifier)
+        @statements = depth_first_search({}){|memo,s| memo[s.idenfifier] = s} unless @statements
         @statements[token]
       end
       
-      # Recursively visits the process
-      def depth_first_search(&block)
-        yield self
-        main.depth_first_search(&block)
+      # See Statement.depth_first_search
+      def depth_first_search(memo = nil, &block)
+        raise ArgumentError, "Missing block in depth_first_search" unless block
+        yield(memo,self)
+        main.depth_first_search(memo, &block)
+        memo
       end
       
       # Inspects this process
@@ -71,16 +41,12 @@ module CliPrEasy
         "#{self.class}::#{code}"
       end      
       
-      #############################################################################################
-      ### Process execution
-      #############################################################################################
-      
-      # Starts the process with a given context
+      # See Statement.start
       def start(context)
         main.start(context)
       end
       
-      # Fired by children when they are ended
+      # See Statement.ended
       def ended(child, child_context)
         my_context = child_context.close
         my_context.close

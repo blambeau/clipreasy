@@ -9,33 +9,29 @@ module CliPrEasy
     #
     class Activity < Statement
 
-      # Activity code
-      attr_accessor :code
-
-      # Activity label
-      attr_accessor :label
-
-      # Activity color
-      attr_accessor :color
-
-      # Recursively visits the process
-      def depth_first_search
-        yield self
+      # See Statement.depth_first_search
+      def depth_first_search(memo = nil, &block)
+        raise ArgumentError, "Missing block in depth_first_search" unless block
+        yield(memo, self)
+        memo
       end
       
-      # Starts the activity
+      # See Statement.start. Returns a singleton array with the result of this 
+      # activity being started on the context instance.
       def start(context)
         [context.started(self)]
       end
       
-      # Closes this activity
-      def close(context)
-        parent.ended(self, context)
+      # See Statement.ended. This method raises an IllegalStateError as activities
+      # have no child.
+      def ended(child, child_context)
+        raise ::CliPrEasy::IllegalStateError, "Activity.ended should never be called."
       end
       
-      # Fired by children when they are ended
-      def ended(child, child_context)
-        raise "Method ended should never been called on Activity"
+      # Closes this activity. This callback method exists on activities only and fires 
+      # an ended message to their parent.
+      def close(context)
+        parent.ended(self, context)
       end
       
     end # class Activity

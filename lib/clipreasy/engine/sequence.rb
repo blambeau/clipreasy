@@ -2,16 +2,16 @@ module CliPrEasy
   module Engine
 
     #
-    # Sequence inside a process definition
+    # Sequence inside a process definition.
     #
     class Sequence < Statement
-      include Enumerable
       
       # Statements in the sequence
       attr_reader :statements
       
       # Creates a sequence element
       def initialize(statements)
+        raise ArgumentError, "Missing statements in Sequence" unless Array===statements
         @statements = statements
         statements.each {|c| c.parent = self}
       end
@@ -21,31 +21,21 @@ module CliPrEasy
         statements.size
       end
       
-      # Yields the block with each element of the sequence
-      def each 
-        statements.each{|s| yield s}
+      # See Statement.depth_first_search
+      def depth_first_search(memo = nil, &block)
+        raise ArgumentError, "Missing block in depth_first_search" unless block
+        yield(memo,self)
+        statements.each{|c| c.depth_first_search(memo,&block)}
+        memo
       end
       
-      # Returns the index-th statement in the sequence
-      def [](index)
-        statements[index]
-      end
-      
-      # Recursively visits the process
-      def depth_first_search(&block)
-        yield self
-        statements.each{|c| c.depth_first_search(&block)}
-      end
-      
-      # Starts the sequence
+      # See Statement.start
       def start(context)
         my_context = context.started(self)
         statements.first.start(my_context)
       end
       
-      #
-      # Fired by children when they are ended
-      #
+      # See Statement.ended
       def ended(child, child_context)
         my_context = child_context.close
         if child==statements.last
