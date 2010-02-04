@@ -37,26 +37,16 @@ module CliPrEasy
       
       #
       # Makes a depth first search of the process tree. This method yields the block 
-      # with each statement in turn (second block argument, see below), following a 
+      # with each statement in turn (first and only block argument), following a 
       # depth first search algorithm (actually: self -> dfs(children)).
-      #
-      # This method allows to pass a _memo_ object, which is always passed as first
-      # argument to the block (the statement being the second one). The memo object
-      # is returned at the end of the dfs.
       #
       # This method MUST be implemented by subclasses.
       #
-      def depth_first_search(memo = nil)
+      def depth_first_search(&block)
         raise ::NotImplementedError, "Bad Statement subclass #{self.class}: depth_first_search MUST be "\
                                      "implemented by subclasses."
       end
       
-      # Finds all activities being descendants of this statement. Returns an array 
-      # with those activities, in the order followed by depth_first_search.
-      def activities
-        depth_first_search([]) {|memo,elm| memo << elm if Activity===elm}
-      end
-
       #
       # Starts the statement inside an execution context. Returns terminal execution contexts
       # that have been started due to this start.

@@ -10,10 +10,9 @@ module CliPrEasy
     class Activity < Statement
 
       # See Statement.depth_first_search
-      def depth_first_search(memo = nil, &block)
+      def depth_first_search(&block)
         raise ArgumentError, "Missing block in depth_first_search" unless block
-        yield(memo, self)
-        memo
+        yield(self)
       end
       
       # See Statement.start. Returns a singleton array with the result of this 

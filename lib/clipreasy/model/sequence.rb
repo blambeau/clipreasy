@@ -22,11 +22,10 @@ module CliPrEasy
       end
       
       # See Statement.depth_first_search
-      def depth_first_search(memo = nil, &block)
+      def depth_first_search(&block)
         raise ArgumentError, "Missing block in depth_first_search" unless block
-        yield(memo,self)
-        statements.each{|c| c.depth_first_search(memo,&block)}
-        memo
+        yield(self)
+        statements.each{|c| c.depth_first_search(&block)}
       end
       
       # See Statement.start

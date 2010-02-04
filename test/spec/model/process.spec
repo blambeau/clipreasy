@@ -3,8 +3,11 @@ describe ::CliPrEasy::Model::Process do
   include ::CliPrEasy::Fixtures
   
   it "should support a depth first visit through a standard each iterator" do
-    #process = work_and_coffee_process
-    #process.each{|s| Statement.should === s}
+    all_processes.each{|s| ::CliPrEasy::Model::Statement.should === s}
   end
   
+  it "should identify all statements in same order as the depth first search" do
+    all_processes.each{|p| p.each_with_index{|s, i| s.identifier.should === i}}
+  end
+
 end

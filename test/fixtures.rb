@@ -21,16 +21,28 @@ module CliPrEasy
     # it with each file in turn
     def all_process_files
       files = process_files.collect{|f| File.expand_path(f)}
-      files.each{|f| yield f} if block_given?
+      files.each{|f| yield(f)} if block_given?
       files
+    end
+    
+    # Decodes a process file encoded in the process format and returns it
+    def xml_process_decode(file)
+      require 'clipreasy/persistence/xml/process_xml_decoder'
+      ::CliPrEasy::Persistence::XML::ProcessXMLDecoder.decode_file(file)
+    end
+    
+    # Returns an array with all processes in the fixtures subfolder. If a 
+    # block is given, yields it with each process instance.
+    def all_processes
+      processes = process_files.collect{|f| xml_process_decode(f)}
+      processes.each{|p| yield(p)} if block_given?
+      processes
     end
     
     # Returns the work_and_cofee process decoded through the XML
     # persistence decoder.
     def work_and_coffee_process
-      require 'clipreasy/persistence/xml/process_xml_decoder'
-      file = process_file("work_and_coffee.cpe")
-      ::CliPrEasy::Persistence::XML::ProcessXMLDecoder.decode_file(file)
+      xml_process_decode(process_file("work_and_coffee.cpe"))
     end
     
   end # module Fixtures

@@ -5,6 +5,7 @@ module CliPrEasy
     # Main level of statement hierarchy in process definitions, the Process itself.
     #
     class Process < Statement
+      include Enumerable
       
       # Main statement
       attr_reader :main
@@ -15,7 +16,7 @@ module CliPrEasy
         @main = main
         self.parent = self
         main.parent = self
-        depth_first_search([]){|memo, s| memo << s}.each_with_index {|s,i| s.identifier = i}
+        each_with_index{|s, i| s.identifier = i}
       end
       
       # Returns the main process, being self
@@ -25,17 +26,17 @@ module CliPrEasy
       
       # Returns a statement by its token
       def statement(identifier)
-        @statements = depth_first_search({}){|memo,s| memo[s.idenfifier] = s} unless @statements
-        @statements[token]
+        @statements = inject({}){|memo,s| memo[s.idenfifier] = s; memo} unless @statements
+        @statements[identifier]
       end
       
       # See Statement.depth_first_search
-      def depth_first_search(memo = nil, &block)
+      def depth_first_search(&block)
         raise ArgumentError, "Missing block in depth_first_search" unless block
-        yield(memo,self)
-        main.depth_first_search(memo, &block)
-        memo
+        yield(self)
+        main.depth_first_search(&block)
       end
+      alias :each :depth_first_search
       
       # Inspects this process
       def inspect
