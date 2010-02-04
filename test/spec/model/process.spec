@@ -37,7 +37,25 @@ describe ::CliPrEasy::Model::Process do
       'too_much_coffee' => ['too_much_coffee_true'],
       'too_much_coffee_true' => ['go_somewhere']
     }
-    
+  end
+
+  it "should support a way to get a statement by its identifier" do
+    process = work_and_coffee_process
+    process.statement_by_identifier(0).should == process
+    process.statement_by_identifier(1).should == process.main
+  end
+  
+  it "should support a way to get a statement by its business id" do
+    process = work_and_coffee_process
+    process.statement_by_business_id('work_and_coffee').should == process
+    process.statement_by_business_id('drink').should == process.find{|s| s.business_id=='drink'}
+  end
+  
+  it "should support a way to get a mapping between business_ids and statements" do
+    process = work_and_coffee_process
+    expected = {}
+    process.each {|s| expected[s.business_id] = s}
+    process.map_by_business_id.should == expected
   end
 
 end

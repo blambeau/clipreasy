@@ -24,10 +24,27 @@ module CliPrEasy
         self
       end
       
-      # Returns a statement by its token
-      def statement(identifier)
-        @statements = inject({}){|memo,s| memo[s.idenfifier] = s; memo} unless @statements
-        @statements[identifier]
+      # Returns a Hash mapping business ids to statements
+      def map_by_identifier
+        @statement_by_id = inject({}){|memo,s| memo[s.identifier] = s; memo} unless @statement_by_id
+        @statement_by_id
+      end
+      
+      # Returns a statement by its identifier
+      def statement_by_identifier(identifier)
+        map_by_identifier[identifier]
+      end
+      
+      # Returns a Hash mapping business ids to statements
+      def map_by_business_id
+        @statement_by_business_id = inject({}){|memo,s| memo[s.business_id] = s if s.business_id; memo}\
+           unless @statement_by_business_id
+        @statement_by_business_id
+      end
+      
+      # Returns a statement by its business_id
+      def statement_by_business_id(business_id)
+        map_by_business_id[business_id]
       end
       
       # See Statement.depth_first_search
@@ -40,7 +57,7 @@ module CliPrEasy
       
       # Inspects this process
       def inspect
-        "#{self.class}::#{code}"
+        "#{self.class}::#{business_id}"
       end      
       
     end # class Process
