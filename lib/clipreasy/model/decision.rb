@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
 
     #
     # Decision inside a process.
@@ -53,5 +53,5 @@ module CliPrEasy
       
     end # class Decision
 
-  end # module Engine
+  end # module Model
 end # module CliPrEasy

@@ -1,11 +1,11 @@
 require 'clipreasy'
-describe ::CliPrEasy::Engine::Markable do
+describe ::CliPrEasy::Model::Markable do
   
   # Factors a markable object. If a block is given, yields it with the 
   # markable object as first argument. Always returns the markable object.
   def markable
     o = Object.new
-    o.extend(::CliPrEasy::Engine::Markable)
+    o.extend(::CliPrEasy::Model::Markable)
     yield o if block_given?
     o
   end

@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
     
     #
     # Activity inside a process.
@@ -35,5 +35,5 @@ module CliPrEasy
       end
       
     end # class Activity
-  end # module Engine
+  end # module Model
 end # module CliPrEasy

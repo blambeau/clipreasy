@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
     
     # 
     # Main level of statement hierarchy in process definitions, the Process itself.
@@ -15,6 +15,7 @@ module CliPrEasy
         @main = main
         self.parent = self
         main.parent = self
+        depth_first_search([]){|memo, s| memo << s}.each_with_index {|s,i| s.identifier = i}
       end
       
       # Returns the main process, being self
@@ -55,5 +56,5 @@ module CliPrEasy
       
     end # class Process
 
-  end # module Engine
+  end # module Model
 end # module CliPrEasy

@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
 
     #
     # Sequence inside a process definition.
@@ -47,5 +47,5 @@ module CliPrEasy
           
     end # class Sequence
     
-  end # module Engine
+  end # module Model
 end # module CliPrEasy

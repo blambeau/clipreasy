@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
 
     #
     # Abstract statement inside a process. Statement is the parent class of all
@@ -87,5 +87,5 @@ module CliPrEasy
       protected :parent=, :identifier=
     end # class Statement
 
-  end # module Engine
+  end # module Model
 end # module CliPrEasy

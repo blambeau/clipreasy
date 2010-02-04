@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
 
     #
     # When clauses used in decisions.
@@ -41,5 +41,5 @@ module CliPrEasy
       
     end # class When
 
-  end # module Engine
+  end # module Model
 end # module CliPrEasy

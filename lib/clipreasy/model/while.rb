@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
 
     #
     # While clause used inside process definition.
@@ -48,5 +48,5 @@ module CliPrEasy
       
     end # class While
 
-  end # module Engine
+  end # module Model
 end # module CliPrEasy

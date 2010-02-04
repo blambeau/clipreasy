@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
 
     #
     # Until clauses inside a process definition.
@@ -47,5 +47,5 @@ module CliPrEasy
       
     end # class Until
 
-  end # module Engine
+  end # module Model
 end # module CliPrEasy

@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
 
     #
     # Parallel statement inside a process definition.
@@ -43,5 +43,5 @@ module CliPrEasy
           
     end # class Parallel
     
-  end # module Engine
+  end # module Model
 end # module CliPrEasy

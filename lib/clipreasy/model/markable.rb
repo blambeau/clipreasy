@@ -1,5 +1,5 @@
 module CliPrEasy
-  module Engine
+  module Model
     
     #
     # Allows any object to be markable with user-data.
@@ -42,5 +42,5 @@ module CliPrEasy
 
     end # module Markable
     
-  end # module Engine
+  end # module Model
 end # module CliPrEasy
