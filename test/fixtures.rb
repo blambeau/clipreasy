@@ -56,5 +56,15 @@ module CliPrEasy
       enacter = ::CliPrEasy::Enactment::Enacter.new(factory, &block)
     end
     
+    # Checks if some executions are pending (and not ended)
+    def pending?(*execs)
+      execs.flatten.all?{|e| e.pending? and not(e.ended?)}
+    end
+    
+    # Checks if some executions are ended (and not pending)
+    def ended?(*execs)
+      execs.flatten.all?{|e| e.ended? and not(e.pending?)}
+    end
+    
   end # module Fixtures
 end # module CliPrEasy

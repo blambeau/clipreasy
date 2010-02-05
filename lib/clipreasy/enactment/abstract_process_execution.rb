@@ -8,6 +8,14 @@ module CliPrEasy
     #
     class AbstractProcessExecution
       
+      ###################################################################################
+      ### About execution hierarchy
+      ###################################################################################
+      
+      # Returns the execution of the main statement
+      def main_execution
+        raise "AbstractProcessExecution.main_execution should be implemented by subclasses"
+      end
       
       ###################################################################################
       ### About execution state
