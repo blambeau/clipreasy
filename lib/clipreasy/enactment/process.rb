@@ -22,6 +22,7 @@ module CliPrEasy
       #
       def ended(child, child_execution)
         my_exec = child_execution.close
+        #puts "Ending process with #{child_execution} led to #{my_exec.inspect}"
         my_exec.close
         []
       end

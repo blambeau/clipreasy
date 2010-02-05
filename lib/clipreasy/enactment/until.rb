@@ -7,9 +7,15 @@ module CliPrEasy
     module Until
       
       # See Statement.start
-      def start(context)
-        my_context = context.started(self)
-        then_clause.start(my_context)
+      def start(parent_exec)
+        my_exec = parent_exec.started(self)
+        #puts "Starting until #{condition.inspect}"
+        value = my_exec.evaluate(condition)
+        if value
+          parent.ended(self, my_exec)
+        else
+          then_clause.start(my_exec)
+        end
       end
             
       # See Statement.ended

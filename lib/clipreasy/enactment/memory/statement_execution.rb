@@ -6,6 +6,10 @@ module CliPrEasy
         
         # Creates a process execution instance
         def initialize(factory, enacter, process_execution, parent, statement)
+          raise ArgumentError, "Missing factory" unless factory
+          raise ArgumentError, "Missing enacter" unless enacter
+          raise ArgumentError, "Missing process_execution" unless process_execution
+          raise ArgumentError, "Missing statement" unless statement
           @factory, @enacter, @process_execution = factory, enacter, process_execution
           @parent, @statement = parent, statement
           @children = []
@@ -68,7 +72,9 @@ module CliPrEasy
         # (that is, by Statement subclasses).
         #
         def started(who, *args)
-          @factory.factor_statement_execution(@enacter, @process_execution, self, who)
+          child_exec = @factory.factor_statement_execution(@enacter, @process_execution, self, who)
+          @children << child_exec
+          child_exec
         end
       
         #
@@ -83,7 +89,7 @@ module CliPrEasy
         def close
           raise ::CliPrEasy::IllegalStateError, "Closing #{self} which is not pending" unless pending?
           @status = :ended
-          @parent
+          parent
         end
       
         #

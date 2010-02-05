@@ -3,7 +3,7 @@
   <formaldef>
     <sequence business_id="main_seq">
       <activity business_id="say_hello" label="Say hello" color="yellow"/>
-      <until business_id="until_tired" decision="tired?">
+      <until business_id="until_tired" condition="tired?">
         <parallel business_id="until_tired_par">
           <activity business_id="work" label="Work" color="red"/>
           <sequence business_id="drink_seq">

@@ -7,15 +7,22 @@ module CliPrEasy
     module Parallel
       
       # See Statement.start
-      def start(context)
-        my_context = context.started(self)
-        statements.collect {|s| s.start(my_context)}.flatten
+      def start(parent_exec)
+        #puts "Starting parallel #{self.business_id}"
+        my_exec = parent_exec.started(self)
+        started = statements.collect {|s| s.start(my_exec)}.flatten
+        if started.empty?
+          parent.ended(self, my_exec)
+        else
+          started
+        end
       end
       
       # See Statement.ended
-      def ended(child, child_context)
-        my_context = child_context.close
-        my_context.all_children_ended? ? parent.ended(self, my_context) : []
+      def ended(child, child_exec)
+        my_exec = child_exec.close
+        #puts "Parallel.ended(#{my_exec.all_children_ended?})"
+        my_exec.all_children_ended? ? parent.ended(self, my_exec) : []
       end
           
     end # module Parallel

@@ -48,10 +48,12 @@ module CliPrEasy
               set_xml_attributes(Model::When.new(value, then_clause), element)
             when :until
               condition = element.attribute("condition").to_s
+              raise "Missing condition in Until" if condition.nil? or condition.strip.empty?
               then_clause = decode_element(element.elements[1])
               set_xml_attributes(Model::Until.new(condition, then_clause), element)
             when :while
               condition = element.attribute("condition").to_s
+              raise "Missing condition in While" if condition.nil? or condition.strip.empty?
               then_clause = decode_element(element.elements[1])
               set_xml_attributes(Model::While.new(condition, then_clause), element)
             else

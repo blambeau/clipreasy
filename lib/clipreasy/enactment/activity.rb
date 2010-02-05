@@ -11,8 +11,9 @@ module CliPrEasy
 
       # See Statement.start. Returns a singleton array with the result of this 
       # activity being started on the context instance.
-      def start(context)
-        [context.started(self)]
+      def start(parent_execution)
+        #puts "Starting activity #{self.business_id}"
+        [parent_execution.started(self)]
       end
       
       # See Statement.ended. This method raises an IllegalStateError as activities
