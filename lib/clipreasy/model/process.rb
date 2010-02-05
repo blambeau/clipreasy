@@ -47,6 +47,13 @@ module CliPrEasy
         map_by_business_id[business_id]
       end
       
+      # Finds and returns an activity by business_id. Returns nil if not found
+      # (also if the statement is found, but is not an Activity)
+      def activity(business_id)
+        s = statement_by_business_id(business_id)
+        ::CliPrEasy::Model::Activity===s ? s : nil
+      end
+      
       # See Statement.depth_first_search
       def depth_first_search(&block)
         raise ArgumentError, "Missing block in depth_first_search" unless block

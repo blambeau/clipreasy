@@ -1,0 +1,6 @@
+<process business_id="activity" label="Activity Brick Fixture Process" version="0.0.1" status="test">
+  <description>A single activity name 'activity'</description>
+  <formaldef>
+    <activity business_id="activity" label="Activity"/>
+  </formaldef>
+</process>

@@ -11,6 +11,24 @@ module CliPrEasy
           @status = :pending
         end
         
+        ###################################################################################
+        ### About execution state
+        ###################################################################################
+      
+        # Returns true if this execution is currently pending, false otherwise
+        def pending?
+          @status == :pending
+        end
+      
+        # Returns true if this execution is ended, false otherwise
+        def ended?
+          @status == :ended
+        end
+      
+        ###################################################################################
+        ### About execution itself
+        ###################################################################################
+      
         # Creates a StatementExecution instance for who
         def started(who, *args)
           @children << @factory.factor_statement_execution(@enacter, self, nil, who)

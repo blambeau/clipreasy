@@ -39,10 +39,21 @@ module CliPrEasy
       processes
     end
     
+    # Finds a process by name (.cpe extension should not be passed)
+    def process(name)
+      xml_process_decode(process_file("#{name}.cpe"))
+    end
+    
     # Returns the work_and_cofee process decoded through the XML
     # persistence decoder.
     def work_and_coffee_process
-      xml_process_decode(process_file("work_and_coffee.cpe"))
+      process('work_and_coffee')
+    end
+    
+    # Factors an in-memory enacter with defaut parameters
+    def memory_enacter(&block)
+      factory = ::CliPrEasy::Enactment::Memory::ExecutionFactory.new
+      enacter = ::CliPrEasy::Enactment::Enacter.new(factory, &block)
     end
     
   end # module Fixtures
