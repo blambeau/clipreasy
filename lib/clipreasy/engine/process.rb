@@ -44,6 +44,15 @@ module CliPrEasy
         main.parent = self
       end
       
+      # Returns an evaluator for a given execution
+      def evaluator(process_execution)
+        db = ::CliPrEasy::DAS.instance.database
+        evaluator = ::CliPrEasy::Engine::Predicates.new(db, process_execution)
+        predicates = File.join(folder, "#{code}.predicates")
+        evaluator.instance_eval File.read(predicates) if File.exists?(predicates)
+        evaluator
+      end
+      
       # Returns the main process, being self
       def process
         self

@@ -72,7 +72,9 @@ module CliPrEasy
       
       # Decodes a process whose XML definition is inside a file
       def self.decode_file(path)
-        decode File.read(path)
+        process = decode(File.read(path))
+        process.folder = File.expand_path(File.dirname(path))
+        process
       end
       
     end # class ProcessXMLDecoder

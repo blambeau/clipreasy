@@ -14,6 +14,11 @@ module CliPrEasy
       end
     end
     
+    # Returns the database instance
+    def database
+      @db
+    end
+    
     # Starts the service using a database configuration. An optional database
     # instance may be given. In this case it will be used in place of a fresh
     # new one.

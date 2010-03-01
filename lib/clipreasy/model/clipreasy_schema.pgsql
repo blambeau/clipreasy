@@ -185,6 +185,18 @@ SELECT *
   FROM activities_history
  WHERE se_status = 'ended';
 
+DROP VIEW IF EXISTS last_activities;
+CREATE VIEW last_activities AS 
+SELECT *
+  FROM ended_activities as E1
+ WHERE NOT EXISTS (
+	SELECT * 
+	  FROM ended_activities as E2
+	 WHERE E2.process_execution = E1.process_execution
+	   AND E2.statement = E1.statement
+	   AND E2.se_started_at > E1.se_started_at
+ );
+
 DROP VIEW IF EXISTS pending_activities;
 CREATE VIEW pending_activities AS 
 SELECT * 

@@ -8,6 +8,7 @@ require 'clipreasy/engine/sequence'
 require 'clipreasy/engine/until'
 require 'clipreasy/engine/while'
 require 'clipreasy/engine/process'
+require 'clipreasy/engine/predicates'
 
 require 'clipreasy/engine/process_xml_decoder'
 

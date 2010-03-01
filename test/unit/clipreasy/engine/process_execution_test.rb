@@ -59,7 +59,7 @@ module CliPrEasy
           buffer
         end
         
-        def evaluate(expression)
+        def evaluate(attributes, expression)
           case expression
             when "true"
               true

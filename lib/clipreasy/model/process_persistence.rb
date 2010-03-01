@@ -30,6 +30,7 @@ module CliPrEasy
         tuple = processes.filter(:code => id).order(:version.desc).first unless tuple
         return nil unless tuple
         process = CliPrEasy::Engine::ProcessXMLDecoder.decode(tuple[:formaldef])
+        process.folder = tuple[:folder]
         process.id = id
         process
       end

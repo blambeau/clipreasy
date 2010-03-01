@@ -42,7 +42,7 @@ module CliPrEasy
         end
         
         # Evaluates an expression
-        def evaluate(expression)
+        def evaluate(attributes, expression)
           raise "Backend.evaluate should be implemented by subclasses"
         end
         
@@ -153,7 +153,7 @@ module CliPrEasy
       # to get real values in order to respect process execution semantics.
       #
       def evaluate(expression)
-        @backend.evaluate(expression)
+        @backend.evaluate(@attributes, expression)
       end
       
       # Inspects this execution context
