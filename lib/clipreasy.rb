@@ -21,7 +21,7 @@ module CliPrEasy
   # Installs the default plugins on a process instance
   def install_default_plugins
     DEFAULT_PLUGINS.each do |plugin|
-      [:Statement, :Activity, :Decision, :Parallel, :Sequence, :Until, 
+      [:Statement, :Activity, :If, :Decision, :Parallel, :Sequence, :Until, 
        :When, :While, :Process].each do |modname|
          target = ::CliPrEasy::Model.const_get(modname)
          source = plugin.const_get(modname)

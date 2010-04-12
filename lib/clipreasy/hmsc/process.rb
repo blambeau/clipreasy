@@ -34,7 +34,10 @@ module CliPrEasy
       
       # Returns a dot variant of the hmsc graph
       def to_dot
-        to_hmsc(:simplified => true, :dot_attributes => true).to_dot
+        graph = to_hmsc(:simplified => true, :dot_attributes => true)
+        graph.add_marks(::CliPrEasy::HMSC::GRAPH_DOT_ATTRIBUTES)
+        graph.each_vertex{|v| v.add_marks(::CliPrEasy::HMSC::GRAPH_NODE_DOT_ATTRIBUTES)}
+        graph.to_dot
       end
       
     end # class Process

@@ -38,6 +38,21 @@ module CliPrEasy
               set_xml_attributes(Model::Parallel.new(statements), element)
             when :activity
               set_xml_attributes(Model::Activity.new, element)
+            when :if
+              condition = element.attribute("condition").to_s
+              then_clause, else_clause = nil, nil
+              element.each_element do |elm|
+                case elm.name
+                  when 'then'
+                    then_clause = decode_element(elm.elements[1])
+                  when 'else'
+                    else_clause = decode_element(elm.elements[1])
+                  else
+                    raise "Unexpected if child #{elm.inspect}"
+                end
+              end 
+              raise "Missing then clause in if" unless then_clause
+              set_xml_attributes(Model::If.new(condition, then_clause, else_clause), element)
             when :decision
               condition = element.attribute("condition").to_s
               clauses = element.elements.collect{|e| decode_element(e)}

@@ -1,5 +1,7 @@
 module CliPrEasy
   module HMSC
+    GRAPH_DOT_ATTRIBUTES = {:rankdir => 'TB', :ranksep => '0.3'}
+    GRAPH_NODE_DOT_ATTRIBUTES = {:fontname => 'Arial', :fontsize => '12'}
     module StartNode  
       def default_dot_attributes
         {:shape => 'point', :style => 'filled', :label => ''}
