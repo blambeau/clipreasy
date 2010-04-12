@@ -31,6 +31,13 @@ module CliPrEasy
          :label => semantics.business_id}
       end
     end
+    module IfNode
+      def default_dot_attributes
+        {:shape => 'diamond', :style => nil,
+         :fixedsize => true, :width => 0.7, :height => 0.7,
+         :label => semantics.condition}
+      end
+    end
     module DecisionNode
       def default_dot_attributes
         {:shape => 'diamond', :style => nil,
@@ -71,6 +78,7 @@ end # module CliPrEasy
 require "clipreasy/hmsc/statement"
 require "clipreasy/hmsc/activity"
 require "clipreasy/hmsc/decision"
+require "clipreasy/hmsc/if"
 require "clipreasy/hmsc/parallel"
 require "clipreasy/hmsc/sequence"
 require "clipreasy/hmsc/until"

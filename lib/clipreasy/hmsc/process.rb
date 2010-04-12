@@ -40,6 +40,18 @@ module CliPrEasy
         graph.to_dot
       end
       
+      # Generates a .gif file for the process, using dot.
+      def to_dot_gif(path)
+        require 'tempfile'
+        tmp = Tempfile.new("clipreasy_#{Time.now.to_i}.dot")
+        tmp << to_dot
+        tmp.close
+        `dot -Tgif -o #{path} #{tmp.path}`
+        tmp.unlink
+        nil
+      end
+        
+      
     end # class Process
   end # module Model
 end # module CliPrEasy
