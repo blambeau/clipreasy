@@ -1,0 +1,34 @@
+namespace(:enactment)
+
+# Process executions
+relvar(:process_executions) {
+  attribute :identifier, Integer, :default => autonumber
+  attribute :process,    String
+  attribute :status,     String,  :default => :started
+  attribute :started_at, Time,    :default => now
+  attribute :started_by, Integer
+  attribute :ended_at,   Time
+  attribute :ended_by,   Integer
+  primary_key :identifier
+  foreign_key :process    => model.processes
+  foreign_key :started_by => people.actors
+  foreign_key :ended_by   => people.actors
+}
+
+# Statement executions
+relvar(:statement_executions) {
+  attribute :identifier,          Integer, :default => autonumber
+  attribute :process_execution,   Integer
+  attribute :process,             String
+  attribute :statement,           Integer
+  attribute :status,              String,  :default => :started
+  attribute :started_at,          Time,    :default => now
+  attribute :started_by,          Integer
+  attribute :ended_at,            Time
+  attribute :ended_by,            Integer
+  primary_key :identifier
+  foreign_key :process_execution => enactment.process_executions
+  foreign_key [:process, :statement] => model.statements
+  foreign_key :started_by => people.actors
+  foreign_key :ended_by   => people.actors
+}

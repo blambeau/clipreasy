@@ -1,0 +1,23 @@
+namespace(:people)
+
+# Roles played by actors
+relvar(:roles) {
+  attribute :code,        String
+  attribute :label,       String
+  primary_key(:code)
+}
+
+# Actors themselve
+relvar(:actors) {
+  attribute :identifier, Integer, :default => autonumber
+  attribute :login,      String
+  attribute :password,   String
+  attribute :first_name, String
+  attribute :last_name,  String
+  attribute :initials,   String
+  attribute :role,       String
+  attribute :status,     String,  :default => :active
+  primary_key(:identifier)
+  candidate_key(:login)
+  foreign_key :role => people.roles
+}

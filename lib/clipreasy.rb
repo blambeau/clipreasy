@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sequel'
+require 'yargi'
 
 require 'clipreasy/errors'
 require 'clipreasy/model'
