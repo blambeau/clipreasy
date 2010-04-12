@@ -5,7 +5,7 @@ module CliPrEasy
       # Creates a node instance
       def to_hmsc(graph)
         ps = graph.add_vertex(::CliPrEasy::HMSC::PseudoStartNode, :pseudo_for => self)
-        v = graph.add_vertex(::CliPrEasy::HMSC::ActivityNode, :semantic => self)
+        v = graph.add_vertex(::CliPrEasy::HMSC::ActivityNode, :semantics => self)
         pe = graph.add_vertex(::CliPrEasy::HMSC::PseudoEndNode, :pseudo_for => self)
         graph.connect(ps, v)
         graph.connect(v, pe)
