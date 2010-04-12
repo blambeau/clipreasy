@@ -28,7 +28,7 @@ module CliPrEasy
       def default_dot_attributes
         {:shape => 'box', :style => nil,
          :fixedsize => true, :width => 1.5, :height => 0.4,
-         :label => semantics.business_id}
+         :label => semantics.label || semantics.business_id}
       end
     end
     module IfNode

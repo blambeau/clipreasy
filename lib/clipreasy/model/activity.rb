@@ -8,6 +8,9 @@ module CliPrEasy
     # a basic unit of work, typically made by only one actor. 
     #
     class Activity < Statement
+      
+      # Activity's label 
+      attr_accessor :label
 
       # See Statement.depth_first_search
       def depth_first_search(&block)
