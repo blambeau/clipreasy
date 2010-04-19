@@ -1,8 +1,10 @@
 require 'rubygems'
 require 'sequel'
 require 'yargi'
+require 'rubyrel'
 
 require 'clipreasy/errors'
+require 'clipreasy/lang'
 require 'clipreasy/model'
 require 'clipreasy/enactment'
 require 'clipreasy/persistence'

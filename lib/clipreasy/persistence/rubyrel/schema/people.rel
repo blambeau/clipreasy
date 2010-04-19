@@ -4,6 +4,7 @@ namespace(:people)
 relvar(:roles) {
   attribute :code,        String
   attribute :label,       String
+  attribute :color,       String
   primary_key(:code)
 }
 

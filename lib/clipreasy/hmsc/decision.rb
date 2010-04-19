@@ -16,7 +16,7 @@ module CliPrEasy
           raise "Unexpected clause #{clause}" unless When===when_clause
           tcps, tcpe = when_clause.then_clause.to_hmsc(graph)
           # decision diamond to then_clause's pseudo-start
-          graph.connect(v, tcps, :semantics => when_clause)
+          graph.connect(v, tcps, :semantics => when_clause.value)
           # then_clause's pseudo end to decision's pseudo_end
           graph.connect(tcpe, pe)
         end

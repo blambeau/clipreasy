@@ -1,0 +1,95 @@
+namespace(:model)
+
+# Installed processes
+relvar(:processes) {
+  attribute :identifier,  String
+  attribute :label,       String
+  attribute :version,     String
+  attribute :status,      String
+  attribute :folder,      String
+  attribute :order,       Integer, :default => autonumber
+  attribute :main_id,     Integer
+  primary_key(:identifier)
+  candidate_key(:label, :version)
+  #foreign_key [:identifier, :main] => model.statements
+}
+
+# Process statements
+relvar(:statements) {
+  attribute :process_id,    String
+  attribute :identifier,    Integer
+  attribute :business_id,   String
+  attribute :parent_id,     Integer
+  attribute :kind,          Module
+  primary_key(:process_id, :identifier)
+  foreign_key :process_id => model.processes
+  foreign_key [:process_id, :parent_id] => model.statements
+}
+
+# Activities
+relvar(:activities) {
+  attribute :process_id,    String
+  attribute :identifier,    Integer
+  attribute :label,         String
+  attribute :color,         String, :default => 'white'
+  attribute :responsible,   String
+  primary_key(:process_id, :identifier)
+  foreign_key [:process_id, :identifier] => model.statements
+  foreign_key :responsible => people.roles
+}
+
+# Decisions and when clauses
+relvar(:decisions) {
+  attribute :process_id,    String
+  attribute :identifier,    Integer
+  attribute :condition,     String
+  primary_key(:process_id, :identifier)
+  foreign_key [:process_id, :identifier] => model.statements
+}
+relvar(:decision_when_clauses) {
+  attribute :process_id,    String
+  attribute :identifier,    Integer
+  attribute :value,         String
+  attribute :then_id,       Integer
+  primary_key(:process_id, :identifier, :value)
+  foreign_key [:process_id, :identifier] => model.statements
+#  foreign_key [:process_id, :then_id] => model.statements
+}
+
+# Parallel statements
+relvar(:parallels) {
+  attribute :process_id,    String
+  attribute :identifier,    Integer
+  primary_key(:process_id, :identifier)
+  foreign_key [:process_id, :identifier] => model.statements
+}
+
+# Sequence statements
+relvar(:sequences) {
+  attribute :process_id,    String
+  attribute :identifier,    Integer
+  primary_key(:process_id, :identifier)
+  foreign_key [:process_id, :identifier] => model.statements
+}
+
+# Until statements
+relvar(:untils) {
+  attribute :process_id,    String
+  attribute :identifier,    Integer
+  attribute :condition,     String
+  attribute :then_id,       Integer
+  primary_key(:process_id, :identifier)
+  foreign_key [:process_id, :identifier] => model.statements
+#  foreign_key [:process_id, :then_id] => model.statements
+}
+
+# While statements
+relvar(:whiles) {
+  attribute :process_id,    String
+  attribute :identifier,    Integer
+  attribute :condition,     String
+  attribute :then_id,       Integer
+  primary_key(:process_id, :identifier)
+  foreign_key [:process_id, :identifier] => model.statements
+#  foreign_key [:process_id, :then_id] => model.statements
+}

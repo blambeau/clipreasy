@@ -23,6 +23,7 @@ module CliPrEasy
       
         # Decodes a given element
         def self.decode_element(element)
+          raise ArgumentError, "element may not be nil" if element.nil?
           case element.name.to_sym
             when :process
               p = Model::Process.new(decode_element(element.elements[2]))
@@ -59,6 +60,8 @@ module CliPrEasy
               set_xml_attributes(Model::Decision.new(condition, clauses), element)
             when :when
               value = element.attribute("value").to_s
+              raise "when clause is missing its value attribute" if value.nil?
+              raise "when clause is missing its then clause" unless element.elements[1]
               then_clause = decode_element(element.elements[1])
               set_xml_attributes(Model::When.new(value, then_clause), element)
             when :until

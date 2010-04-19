@@ -37,6 +37,7 @@ module CliPrEasy
         graph = to_hmsc(:simplified => true, :dot_attributes => true)
         graph.add_marks(::CliPrEasy::HMSC::GRAPH_DOT_ATTRIBUTES)
         graph.each_vertex{|v| v.add_marks(::CliPrEasy::HMSC::GRAPH_NODE_DOT_ATTRIBUTES)}
+        graph.each_edge{|e| e.add_marks(:label => e.semantics.to_s) if e.respond_to?(:semantics)}
         graph.to_dot
       end
       

@@ -1,0 +1,120 @@
+<process business_id="rxth_v2" label="Workflow RXTH v2" version="1.0.0" status="production">
+  <description>Processus Radiothérapie - Intranet version 2</description>
+  <formaldef>
+		<!-- Sequence Starts -->    
+		<sequence>
+      <activity business_id="0" label="Demande de mise en traitement" color="white"/>
+      <activity business_id="0.1" label="Administratif" color="#00cc33"/>
+      <activity business_id="0.2" label="Coordonnées médicales" color="#00cc33"/>
+			<!-- Parallel accueil patient 0.3 -->
+			<parallel>
+				<activity business_id="0.3" label="Accueil du patient" color="white"/>
+				<!-- Sequence // 0.3 -->
+				<sequence>      	
+					<activity business_id="0.4" label="Cloture Administratif" color="#00cc33"/>
+					<activity business_id="1.0" label="Simulation 1" color="#3399ff"/>
+
+					<!-- Décision si plombs manuel -->					
+					<if condition="dessin_pb?">
+						<then>
+							<activity business_id="1.1" label="Simulation 1 bis" color="#00cc33"/>
+						</then>
+					</if>
+					<!-- fin pbs manuel -->					
+
+					<!-- Sequence suivant Pbs -->
+					<sequence>
+					<!-- Décision si scan -->
+					<if condition="scan?">
+						<then>
+							<sequence>
+							<activity business_id="2" label="Scanner" color="#ffffcc"/>
+							<activity business_id="3" label="Dose Plan Basis" color="#ffff33"/>
+							</sequence>
+						</then>
+					</if>
+					<!-- fin décision si scan -->
+
+					<!-- Décision si Tomo ou Linac -->
+					<if condition="tomo?">
+						<then>
+						<!-- Sequence Tomo -->
+						<sequence>
+							<activity business_id="4.1" label="TomoStruct" color="#33ff66"/>
+							<activity business_id="4.1" label="TomoStruct" color="#33ff66"/>
+						</sequence>
+						<!-- Fin séquence Tomo -->
+						</then>
+
+						<else>
+						<!-- Sequence Linac -->
+						<sequence>
+					  	<activity business_id="4.0" label="Contourage des volumes" color="#66ff66"/>
+							<!-- Boucle approb TP Linac -->
+							<until condition="traitement_approuve?">
+							  <sequence>
+							    <activity business_id="5.0" label="TP" color="#ff6600"/>
+							    <activity business_id="5.1" label="Approbation du TP" color="#66cc33"/>
+							  </sequence>
+							</until>
+							<!-- Fin boucle approb TP Linac -->
+					    <activity business_id="5.2" label="Doc dosimétriste" color="#66cc33"/>						
+							<activity business_id="5.2.1" label="Doc Physique" color="#ffcc33"/>
+							<!-- Pbs et autres en // -->
+							<parallel>
+								<!-- Partie Pbs -->
+							  <if condition="plomb necessaire?">
+								<then>
+									<sequence>
+								    <activity business_id="6.0" label="Confection" color="#ffff99"/>
+								    <activity business_id="6.1" label="Controle des Pbs" color="#ffff99"/>										
+								    <activity business_id="6.2" label="Validation des Pbs" color="#ffff99"/>
+									</sequence>
+								</then>
+							  </if>
+								<!-- Fin partie Pbs -->
+							  <sequence>
+							    <activity business_id="7" label="Contre signature TP" color="#00ff66"/>
+							    <if condition="2d? or changement_iso?">
+									<then>	
+							      <activity business_id="8" label="Simulation 2" color="#0099ff"/>
+									</then>									
+						    </if>
+						    <if condition="faisceaux_necessaires?">
+								<then value="true">						      
+									<activity business_id="9" label="Faisceaux de repérage" color="#ff9933"/>
+								</then>
+						    </if>
+						  </sequence>
+
+						</parallel>
+						<!-- Fin Pbs et autres en // -->
+
+
+		    		</sequence>
+						<!-- Fin sequence linac -->
+
+
+						</else>
+						</if>
+						<!-- Fin decision si Tomo ou Linac -->
+
+
+
+
+
+
+						<activity business_id="10" label="Réalisation de la carte" color="#99ccff"/>
+
+
+						</sequence>
+						<!-- Fin sequence suivant Pbs -->
+					</sequence>
+					<!-- Fin sequence // 0.3 -->
+				</parallel>
+				<!-- Fin // 0.3 -->
+      <activity business_id="11" label="En traitement" color="#ffffff"/>
+    </sequence>
+		<!-- Fin sequence globale -->
+  </formaldef>
+</process>
