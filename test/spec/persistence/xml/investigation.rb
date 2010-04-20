@@ -6,6 +6,7 @@ file = process_file("rxth_v2.cpe")
 puts file
 p = ::CliPrEasy::Persistence::XML::Decoder.new.decode_file(file)
 
+p.merge(:identifier => 'rxth_v2')
 puts p.inspect
 
 db = ::Rubyrel::connect("postgres://clipreasy@localhost/clipreasytest")
@@ -18,7 +19,11 @@ db.model.decision_when_clauses.empty!
 db.model.decisions.empty!
 db.model.statements.empty!
 db.model.processes.empty!
-p.save_on_rubyrel_db(db)
+
+db.transaction do |t|
+  p.save_on_relational_model(db.model)
+end
+
 puts db.model.statements.inspect
 puts db.model.decisions.inspect
 puts db.model.activities.inspect

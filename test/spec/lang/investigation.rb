@@ -33,20 +33,21 @@ p = CliPrEasy::Lang::Decoder.new.instance_eval do
   }
 end
 
-puts p.inspect
-puts p.to_relational.inspect
+db = ::Rubyrel::connect("postgres://clipreasy@localhost/clipreasytest")
+db.model.sequences.empty!
+db.model.parallels.empty!
+db.model.untils.empty!
+db.model.whiles.empty!
+db.model.activities.empty!
+db.model.decision_when_clauses.empty!
+db.model.decisions.empty!
+db.model.statements.empty!
+db.model.processes.empty!
 
-# db = ::Rubyrel::connect("postgres://clipreasy@localhost/clipreasytest")
-# db.model.sequences.empty!
-# db.model.parallels.empty!
-# db.model.untils.empty!
-# db.model.whiles.empty!
-# db.model.activities.empty!
-# db.model.decision_when_clauses.empty!
-# db.model.decisions.empty!
-# db.model.statements.empty!
-# db.model.processes.empty!
-# p.save_on_rubyrel_db(db)
-# puts db.model.statements.inspect
-# puts db.model.decisions.inspect
-# puts db.model.activities.inspect
+db.transaction do |t|
+  p.save_on_relational_model(db.model)
+end
+
+puts db.model.statements.inspect
+puts db.model.decisions.inspect
+puts db.model.activities.inspect

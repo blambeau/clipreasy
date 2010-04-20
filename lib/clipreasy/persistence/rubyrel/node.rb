@@ -26,13 +26,6 @@ module CliPrEasy
         model[relvar_name] << to_relvar_tuple(namespace.relvar(relvar_name))
       end
       
-      # Saves the schema on a rubyrel database
-      def save_on_rubyrel_db(db)
-        db.model.statements << to_relvar_tuple(db.model.statements.relvar_def)
-        relvar = db.model.send(MAP_TO_RELVARS[kind])
-        relvar << to_relvar_tuple(relvar.relvar_def)
-      end
-      
     end # class Node
   end # module Lang
 end # module CliPrEasy
