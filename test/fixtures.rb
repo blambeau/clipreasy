@@ -1,6 +1,16 @@
 module CliPrEasy
   module Fixtures
     
+    # Returns handler for a sequel database
+    def sqlite_test_database_handler
+      "sqlite://#{File.join(File.expand_path(File.dirname(__FILE__)), 'fixtures', 'clipreasy.db')}"
+    end
+    
+    # Returns handler for a sequel database
+    def pgsql_test_database_handler
+      "postgres://clipreasy@localhost/clipreasytest"
+    end
+    
     # Returns the fixtures folder
     def fixtures_folder
       File.expand_path(File.join(File.dirname(__FILE__), 'fixtures'))
@@ -48,6 +58,12 @@ module CliPrEasy
     # persistence decoder.
     def work_and_coffee_process
       process('work_and_coffee')
+    end
+    
+    # Returns the rxth_v2 process decoded through the XML
+    # persistence decoder.
+    def rxth_v2_process
+      process('rxth_v2')
     end
     
     # Factors an in-memory enacter with defaut parameters

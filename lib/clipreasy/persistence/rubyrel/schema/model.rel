@@ -49,7 +49,7 @@ relvar(:decisions) {
 relvar(:decision_when_clauses) {
   attribute :process_id,    String
   attribute :identifier,    Integer
-  attribute :value,         String
+  attribute :value,         Object
   primary_key(:process_id, :identifier, :value)
   foreign_key [:process_id, :identifier] => model.statements
 }
