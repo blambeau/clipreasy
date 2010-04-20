@@ -4,7 +4,7 @@ module CliPrEasy
       
       # Inspects the node
       def inspect
-        "activity(#{public_args_encoding}); "; 
+        "activity(#{public_args_encoding})" << (children.empty? ? ";" : " { #{children_inspect} };")
       end
       
     end # module Activity

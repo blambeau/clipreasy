@@ -1,15 +1,20 @@
 module CliPrEasy
   module Lang
+    #
+    # A Node in the process tree.
+    #
     class Node
       
-      # Creates a node instance
+      # Creates a node instance. Arguments are automatically
+      # merged inside the node.
       def initialize(args = {})
         self.extend(args[:kind]) if Module === args[:kind]
         @__args = {}
         merge(args)
       end
       
-      # Merge some attributes
+      # Merge some attributes into the node. Helper methods
+      # are automatically created on the node.
       def merge(args)
         @__args.merge!(args)
         args.keys.each do |k|
@@ -20,10 +25,11 @@ module CliPrEasy
         self
       end
       
-      # Makes a depth first search inside the tree
+      # Makes a depth first search inside the tree, yielding
+      # block on this instance and recursing on children.
       def depth_first_search(&block)
         yield(self)
-        children.each{|c| c.depth_first_search(&block)}
+        children && children.each{|c| c.depth_first_search(&block)}
       end
       alias :dfs :depth_first_search
       

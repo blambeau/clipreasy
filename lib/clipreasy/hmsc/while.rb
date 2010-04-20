@@ -1,6 +1,6 @@
 module CliPrEasy
-  module Model
-    class While < Statement
+  module Lang
+    module While
       
       # Creates a node instance
       def to_hmsc(graph)
@@ -12,7 +12,7 @@ module CliPrEasy
         graph.connect(ps, v)
         
         # Recurse on then_clause make connections
-        tcps, tcpe = then_clause.to_hmsc(graph)
+        tcps, tcpe = self.then.to_hmsc(graph)
         # decision diamond to then_clause's pseudo-start for true
         graph.connect(v, tcps, :semantics => true)
         # then_clause's pseudo end to decision's pseudo_start
@@ -25,5 +25,5 @@ module CliPrEasy
       end
       
     end # class Activity
-  end # module Model
+  end # module Lang
 end # module CliPrEasy

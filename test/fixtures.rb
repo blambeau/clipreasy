@@ -27,8 +27,8 @@ module CliPrEasy
     
     # Decodes a process file encoded in the process format and returns it
     def xml_process_decode(file)
-      require 'clipreasy/persistence/xml/process_xml_decoder'
-      ::CliPrEasy::Persistence::XML::ProcessXMLDecoder.decode_file(file)
+      require 'clipreasy/persistence/xml'
+      ::CliPrEasy::Persistence::XML::decode_process_file(file)
     end
     
     # Returns an array with all processes in the fixtures subfolder. If a 

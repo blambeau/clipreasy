@@ -2,11 +2,6 @@ module CliPrEasy
   module Lang
     module Process
       
-      # Returns the process itself
-      def process
-        self
-      end
-      
       # Returns the process encoded as a set of relations
       def to_relational
         relvar_names = CliPrEasy::Persistence::Rubyrel::MODEL_LANG_TO_RELVARS.values

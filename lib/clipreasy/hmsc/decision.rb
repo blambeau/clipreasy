@@ -1,6 +1,6 @@
 module CliPrEasy
-  module Model
-    class Decision < Statement
+  module Lang
+    module Decision 
       
       # Creates a node instance
       def to_hmsc(graph)
@@ -12,9 +12,9 @@ module CliPrEasy
         graph.connect(ps, v)
         
         # Recurse on when_clause's then_clauses and make connections
-        clauses.each do |when_clause|
+        children.each do |when_clause|
           raise "Unexpected clause #{clause}" unless When===when_clause
-          tcps, tcpe = when_clause.then_clause.to_hmsc(graph)
+          tcps, tcpe = when_clause.then.to_hmsc(graph)
           # decision diamond to then_clause's pseudo-start
           graph.connect(v, tcps, :semantics => when_clause.value)
           # then_clause's pseudo end to decision's pseudo_end
@@ -26,5 +26,5 @@ module CliPrEasy
       end
       
     end # class Activity
-  end # module Model
+  end # module Lang
 end # module CliPrEasy

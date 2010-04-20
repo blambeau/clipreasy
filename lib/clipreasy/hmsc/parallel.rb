@@ -1,6 +1,6 @@
 module CliPrEasy
-  module Model
-    class Parallel < Statement
+  module Lang
+    module Parallel
       
       # Creates a node instance
       def to_hmsc(graph)
@@ -14,7 +14,7 @@ module CliPrEasy
         graph.connect(join, pe)
         
         # Recurse on statements
-        statements.each do |s|
+        children.each do |s|
           sps, spe = s.to_hmsc(graph)
           graph.connect(fork, sps)
           graph.connect(spe, join)
@@ -25,5 +25,5 @@ module CliPrEasy
       end
       
     end # class Activity
-  end # module Model
+  end # module Lang
 end # module CliPrEasy

@@ -33,6 +33,8 @@ p = CliPrEasy::Lang::Decoder.new.instance_eval do
   }
 end
 
+puts p.inspect
+
 db = ::Rubyrel::connect("postgres://clipreasy@localhost/clipreasytest")
 db.model.sequences.empty!
 db.model.parallels.empty!

@@ -1,6 +1,6 @@
 module CliPrEasy
-  module Model
-    class Sequence < Statement
+  module Lang
+    module Sequence
       
       # Creates a node instance
       def to_hmsc(graph)
@@ -9,7 +9,7 @@ module CliPrEasy
         
         current = ps
         # Recurse on statements
-        statements.each do |s|
+        children.each do |s|
           sps, spe = s.to_hmsc(graph)
           graph.connect(current, sps)
           current = spe
@@ -21,5 +21,5 @@ module CliPrEasy
       end
       
     end # class Activity
-  end # module Model
+  end # module Lang
 end # module CliPrEasy

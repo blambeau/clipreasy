@@ -1,6 +1,6 @@
 module CliPrEasy
-  module Model
-    class Process < Statement
+  module Lang
+    module Process
       
       # Converts a Process instance to a hMSC graph. Returns a Yargi::Digraph
       # instance.
@@ -54,5 +54,5 @@ module CliPrEasy
         
       
     end # class Process
-  end # module Model
+  end # module Lang
 end # module CliPrEasy

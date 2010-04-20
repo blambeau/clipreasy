@@ -1,6 +1,6 @@
 module CliPrEasy
-  module Model
-    class Activity < Statement
+  module Lang
+    module Activity
       
       # Creates a node instance
       def to_hmsc(graph)
@@ -13,5 +13,5 @@ module CliPrEasy
       end
       
     end # class Activity
-  end # module Model
+  end # module Lang
 end # module CliPrEasy
