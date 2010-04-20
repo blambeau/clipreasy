@@ -2,16 +2,6 @@ module CliPrEasy
   module Lang
     class Node
       
-      MAP_TO_RELVARS = {
-        Activity => :activities,
-        Decision => :decisions,
-        When     => :decision_when_clauses,
-        Parallel => :parallels,
-        Sequence => :sequences,
-        Until    => :untils,
-        While    => :whiles
-      }
-      
       # Generates a tuple for a given relation variable
       def to_relvar_tuple(relvar_def)
         h = {}
@@ -22,14 +12,18 @@ module CliPrEasy
             if self.respond_to?($1.to_sym)
               value = self.send($1.to_sym)
               value.nil? ? nil : value.identifier
-            else
-              nil
             end
-          else 
-            nil
           end
         end
         h
+      end
+      
+      # Saves this node into a relational model
+      def save_on_relational_model(model, namespace)
+        relvar_name = ::CliPrEasy::Persistence::Rubyrel::relvar_name_for(::CliPrEasy::Lang::Node)
+        model[relvar_name] << to_relvar_tuple(namespace.relvar(relvar_name))
+        relvar_name = ::CliPrEasy::Persistence::Rubyrel::relvar_name_for(kind)
+        model[relvar_name] << to_relvar_tuple(namespace.relvar(relvar_name))
       end
       
       # Saves the schema on a rubyrel database

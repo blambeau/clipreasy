@@ -50,10 +50,8 @@ relvar(:decision_when_clauses) {
   attribute :process_id,    String
   attribute :identifier,    Integer
   attribute :value,         String
-  attribute :then_id,       Integer
   primary_key(:process_id, :identifier, :value)
   foreign_key [:process_id, :identifier] => model.statements
-#  foreign_key [:process_id, :then_id] => model.statements
 }
 
 # Parallel statements
@@ -77,10 +75,8 @@ relvar(:untils) {
   attribute :process_id,    String
   attribute :identifier,    Integer
   attribute :condition,     String
-  attribute :then_id,       Integer
   primary_key(:process_id, :identifier)
   foreign_key [:process_id, :identifier] => model.statements
-#  foreign_key [:process_id, :then_id] => model.statements
 }
 
 # While statements
@@ -88,8 +84,6 @@ relvar(:whiles) {
   attribute :process_id,    String
   attribute :identifier,    Integer
   attribute :condition,     String
-  attribute :then_id,       Integer
   primary_key(:process_id, :identifier)
   foreign_key [:process_id, :identifier] => model.statements
-#  foreign_key [:process_id, :then_id] => model.statements
 }
