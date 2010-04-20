@@ -23,6 +23,12 @@ module CliPrEasy
         [:main, :kind].include?(key)
       end
       
+      # Looks for a statement having value installed under key
+      # in attributes
+      def statement_by(key, value)
+        find{|s| s.respond_to?(key) and s.send(key) == value}
+      end
+      
     end # module Process
   end # module Lang
 end # module CliPrEasy

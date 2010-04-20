@@ -1,0 +1,8 @@
+<process business_id="until" identifier="until" label="Until Brick Fixture Process" version="0.0.1" status="test">
+  <description>A single until on a boolean value</description>
+  <formaldef>
+    <until business_id="ended" condition="ended?">
+      <activity business_id="dot_it_activity" label="Dot it Activity"/>
+    </until>
+  </formaldef>
+</process>

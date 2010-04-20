@@ -111,7 +111,7 @@ module CliPrEasy
       # in the environment.
       #
       def activity_ended
-        raise "Statement is expected to be an Activity but was #{statement}" unless ::CliPrEasy::Model::Activity===statement
+        raise "Statement is expected to be an Activity but was #{statement}" unless ::CliPrEasy::Lang::Activity===statement
         statement.close(self)
       end
       

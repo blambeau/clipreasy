@@ -25,7 +25,7 @@ module CliPrEasy
       # Closes this activity. This callback method exists on activities only and fires 
       # an ended message to their parent.
       def close(context)
-        parent.ended(self, context)
+        parent_in_execution.ended(self, context)
       end
       
     end # module Activity

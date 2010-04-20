@@ -1,0 +1,10 @@
+<process business_id="sequence" identifier="sequence" label="Sequence Brick Fixture Process" version="0.0.1" status="test">
+  <description>A single sequence process with 3 activities</description>
+  <formaldef>
+    <sequence business_id="seq">
+      <activity business_id="activity1" label="Activity 1"/>
+      <activity business_id="activity2" label="Activity 2"/>
+      <activity business_id="activity3" label="Activity 3"/>
+    </sequence>
+  </formaldef>
+</process>

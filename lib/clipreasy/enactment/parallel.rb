@@ -10,9 +10,9 @@ module CliPrEasy
       def start(parent_exec)
         #puts "Starting parallel #{self.business_id}"
         my_exec = parent_exec.started(self)
-        started = statements.collect {|s| s.start(my_exec)}.flatten
+        started = children.collect {|s| s.start(my_exec)}.flatten
         if started.empty?
-          parent.ended(self, my_exec)
+          parent_in_execution.ended(self, my_exec)
         else
           started
         end
@@ -22,7 +22,7 @@ module CliPrEasy
       def ended(child, child_exec)
         my_exec = child_exec.close
         #puts "Parallel.ended(#{my_exec.all_children_ended?})"
-        my_exec.all_children_ended? ? parent.ended(self, my_exec) : []
+        my_exec.all_children_ended? ? parent_in_execution.ended(self, my_exec) : []
       end
           
     end # module Parallel

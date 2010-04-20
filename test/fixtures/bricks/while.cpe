@@ -1,0 +1,8 @@
+<process business_id="while" identifier="while" label="While Brick Fixture Process" version="0.0.1" status="test">
+  <description>A single while on a boolean value</description>
+  <formaldef>
+    <while business_id="do_it?" condition="do_it?">
+      <activity business_id="dot_it_activity" label="Dot it Activity"/>
+    </while>
+  </formaldef>
+</process>

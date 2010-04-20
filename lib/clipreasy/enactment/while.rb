@@ -10,7 +10,7 @@ module CliPrEasy
       def start(context)
         my_context = context.started(self)
         value = my_context.evaluate(condition)
-        then_clause.start(my_context) if value
+        self.then.start(my_context) if value
       end
             
       # See Statement.ended
@@ -18,9 +18,9 @@ module CliPrEasy
         my_context = child_context.close
         value = my_context.evaluate(condition)
         if value
-          then_clause.start(my_context)
+          self.then.start(my_context)
         else
-          parent.ended(self, my_context)
+          parent_in_execution.ended(self, my_context)
         end
       end
       

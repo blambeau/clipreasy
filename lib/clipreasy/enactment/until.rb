@@ -12,9 +12,9 @@ module CliPrEasy
         #puts "Starting until #{condition.inspect}"
         value = my_exec.evaluate(condition)
         if value
-          parent.ended(self, my_exec)
+          parent_in_execution.ended(self, my_exec)
         else
-          then_clause.start(my_exec)
+          self.then.start(my_exec)
         end
       end
             
@@ -23,9 +23,9 @@ module CliPrEasy
         my_context = child_context.close
         value = my_context.evaluate(condition)
         if value
-          parent.ended(self, my_context)
+          parent_in_execution.ended(self, my_context)
         else
-          then_clause.start(my_context)
+          self.then.start(my_context)
         end
       end
       

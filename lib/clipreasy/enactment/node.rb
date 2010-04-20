@@ -8,7 +8,12 @@ module CliPrEasy
     # * start, the algorithm to make the statement living inside a process execution.
     # * stop, the algorithm to make the statement ended inside a process execution.
     #
-    module Statement
+    module Node
+      
+      # Returns the parent statement or the process itself
+      def parent_in_execution
+        parent || process
+      end
       
       #
       # Starts the statement inside an execution context. Returns terminal execution contexts
@@ -29,7 +34,7 @@ module CliPrEasy
         raise ::NotImplementedError, "Bad Statement subclass #{self.class}: ended MUST by implemented."
       end
           
-    end # class Statement
+    end # module Node
 
   end # module Enactment
 end # module CliPrEasy

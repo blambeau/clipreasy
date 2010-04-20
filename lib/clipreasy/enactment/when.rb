@@ -9,7 +9,7 @@ module CliPrEasy
       # See Statement.start
       def start(context)
         my_context = context.started(self)
-        then_clause.start(my_context)
+        self.then.start(my_context)
       end
             
       # See Statement.ended

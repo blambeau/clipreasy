@@ -16,17 +16,17 @@ module CliPrEasy
         value = my_context.evaluate(condition)
         
         # see clauses and start the good ones
-        started = clauses.collect do |clause|
+        started = children.collect do |clause|
           clause_value = my_context.evaluate(clause.value)
           value===clause_value ? clause.start(my_context) : nil
         end.flatten.compact
         
-        started.empty? ? parent.ended(self, my_context) : started
+        started.empty? ? parent_in_execution.ended(self, my_context) : started
       end
             
       # See Statement.ended
       def ended(child, child_context)
-        parent.ended(self, child_context.close)
+        parent_in_execution.ended(self, child_context.close)
       end
       
     end # module Decision
