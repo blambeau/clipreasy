@@ -7,13 +7,14 @@ module CliPrEasy
         self
       end
       
+      # Returns process children
+      def children
+        [main]
+      end
+      
       # Returns keys condidered private
       def private_arg_key?(key)
         [:main, :kind].include?(key)
-      end
-      
-      def inspect  
-        "process(#{public_args_encoding}) { #{ main.inspect } }; "
       end
       
     end # module Process

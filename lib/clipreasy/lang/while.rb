@@ -7,10 +7,6 @@ module CliPrEasy
         children[0]
       end
       
-      def inspect
-        "while_do('#{public_args_encoding}') { #{children_inspect} }; "
-      end
-      
     end # module While
   end # module Lang
 end # module CliPrEasy
