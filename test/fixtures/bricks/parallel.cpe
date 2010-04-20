@@ -1,4 +1,4 @@
-<process business_id="parallel" label="Parallel Brick Fixture Process" version="0.0.1" status="test">
+<process business_id="parallel" identifier="parallel" label="Parallel Brick Fixture Process" version="0.0.1" status="test">
   <description>A single parallel process with 3 activities</description>
   <formaldef>
     <parallel business_id="par">

@@ -32,7 +32,6 @@ module CliPrEasy
         children && children.each{|c| c.depth_first_search(&block)}
       end
       alias :dfs :depth_first_search
-      alias :each :depth_first_search
       
       # Returns keys condidered private
       def private_arg_key?(key)
@@ -62,7 +61,8 @@ module CliPrEasy
       
       # Inspects the node
       def to_s
-        "#{kind.name.to_s.downcase}(#{public_args_encoding})" << (children.empty? ? "; " : " { ... }; ")
+        short_kind = $1 if /::([A-Z0-9a-z]+)$/ =~ kind.to_s
+        "#{short_kind.downcase}(#{public_args_encoding})" << (children.empty? ? "; " : " { ... }; ")
       end
       
     end # module Node

@@ -1,6 +1,7 @@
 module CliPrEasy
   module Lang
     module Process
+      include Enumerable
 
       # Returns the process itself
       def process
@@ -10,6 +11,11 @@ module CliPrEasy
       # Returns process children
       def children
         [main]
+      end
+      
+      # Lauches a dfs on the main statement
+      def each(&block)
+        main.dfs(&block)
       end
       
       # Returns keys condidered private

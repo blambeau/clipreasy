@@ -1,4 +1,4 @@
-<process business_id="if_1" label="If Brick Fixture Process (1)" version="0.0.1" status="test">
+<process identifier="if_1" business_id="if_1" label="If Brick Fixture Process (1)" version="0.0.1" status="test">
   <description>A single if node on a boolean value</description>
   <formaldef>
     <if business_id="do_it" condition="do_it?">

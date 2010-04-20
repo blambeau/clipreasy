@@ -1,4 +1,4 @@
-<process business_id="work_and_coffee" label="Work and Coffee Fixture Process" version="0.0.1" status="test">
+<process business_id="work_and_coffee" identifier="work_and_coffee" label="Work and Coffee Fixture Process" version="0.0.1" status="test">
   <description>Working, drinking, ... until the end of the day</description>
   <formaldef>
     <sequence business_id="main_seq">

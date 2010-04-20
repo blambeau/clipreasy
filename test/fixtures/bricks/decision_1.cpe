@@ -1,4 +1,4 @@
-<process business_id="decision_1" label="Decision Brick Fixture Process (1)" version="0.0.1" status="test">
+<process business_id="decision_1" identifier="decision_1" label="Decision Brick Fixture Process (1)" version="0.0.1" status="test">
   <description>A single decision node on a boolean value</description>
   <formaldef>
     <decision business_id="do_it" condition="do_it?">

@@ -1,4 +1,4 @@
-<process business_id="rxth_v2" label="Workflow RXTH v2" version="1.0.0" status="production">
+<process business_id="rxth_v2" identifier="rxth_v2" label="Workflow RXTH v2" version="1.0.0" status="production">
   <description>Processus Radiothérapie - Intranet version 2</description>
   <formaldef>
 		<!-- Sequence Starts -->    
