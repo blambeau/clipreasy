@@ -3,7 +3,9 @@
   <formaldef>
 		<!-- Sequence Starts -->    
 		<sequence>
-      <activity business_id="0" label="Demande de mise en traitement" color="white"/>
+      <activity business_id="0" label="Demande de mise en traitement" color="white">
+  		  <description>Coucou les jeunes</description>
+  		</activity>
       <activity business_id="0.1" label="Administratif" color="#00cc33"/>
       <activity business_id="0.2" label="Coordonnées médicales" color="#00cc33"/>
 			<!-- Parallel accueil patient 0.3 -->

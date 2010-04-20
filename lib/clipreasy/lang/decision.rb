@@ -3,7 +3,7 @@ module CliPrEasy
     module Decision
 
       def inspect
-        "decision('#{condition}') { #{children_inspect} }; "
+        "decision(#{public_args_encoding}) { #{children_inspect} }; "
       end
 
     end # module Decision

@@ -8,7 +8,7 @@ module CliPrEasy
       end
       
       def inspect
-        "upon('#{value}') { #{children_inspect} }; "
+        "upon(#{public_args_encoding}) { #{children_inspect} }; "
       end
       
     end # module When

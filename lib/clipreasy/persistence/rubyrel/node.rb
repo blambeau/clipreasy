@@ -11,7 +11,7 @@ module CliPrEasy
         Until    => :untils,
         While    => :whiles
       }
-    
+      
       # Generates a tuple for a given relation variable
       def to_relvar_tuple(relvar_def)
         h = {}

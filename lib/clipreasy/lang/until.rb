@@ -8,7 +8,7 @@ module CliPrEasy
       end
       
       def inspect
-        "until_do('#{condition}') { #{children_inspect} }; "
+        "until_do(#{public_args_encoding}) { #{children_inspect} }; "
       end
       
     end # module Until

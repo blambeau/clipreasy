@@ -4,7 +4,7 @@ module CliPrEasy
       
       # Inspects the node
       def inspect
-        "activity(:label => '#{label}'); "; 
+        "activity(#{public_args_encoding}); "; 
       end
       
     end # module Activity

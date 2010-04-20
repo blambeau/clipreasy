@@ -27,6 +27,21 @@ module CliPrEasy
       end
       alias :dfs :depth_first_search
       
+      # Returns keys condidered private
+      def private_arg_key?(key)
+        [:process, :parent, :children, :identifier, :kind].include?(key)
+      end
+      
+      # Encodes public arguments
+      def public_args_encoding
+        buffer = ""
+        @__args.each_pair do |k, v|
+          next if private_arg_key?(k)
+          buffer << (buffer.empty? ? "" : ", ") << ":#{k} => #{v.inspect}"
+        end
+        buffer
+      end
+      
       # Inspects the children
       def children_inspect      
         children.collect{|c| c.inspect}.join()

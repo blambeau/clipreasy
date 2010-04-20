@@ -8,7 +8,7 @@ module CliPrEasy
       end
       
       def inspect
-        "while_do('#{condition}') { #{children_inspect} }; "
+        "while_do('#{public_args_encoding}') { #{children_inspect} }; "
       end
       
     end # module While

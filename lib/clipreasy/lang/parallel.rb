@@ -3,7 +3,7 @@ module CliPrEasy
     module Parallel
       
       def inspect
-        "parallel { #{children_inspect} }; "
+        "parallel(#{public_args_encoding}) { #{children_inspect} }; "
       end
       
     end # module Parallel

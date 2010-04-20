@@ -3,7 +3,7 @@ module CliPrEasy
     module Sequence 
       
       def inspect
-        "sequence { #{children_inspect} }; "
+        "sequence(#{public_args_encoding}) { #{children_inspect} }; "
       end
       
     end # module Sequence
