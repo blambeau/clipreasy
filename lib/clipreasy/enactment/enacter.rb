@@ -5,6 +5,12 @@ module CliPrEasy
     #
     class Enacter
       
+      # Factory for process and statement executions
+      attr_reader :factory
+      
+      # Evaluator for expressions
+      attr_reader :evaluator
+      
       # Creates an enacter instance, with a process execution factory.
       def initialize(factory, &evaluator)
         @factory = factory

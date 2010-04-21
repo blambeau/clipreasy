@@ -5,8 +5,8 @@ module CliPrEasy
       class ProcessExecution < ::CliPrEasy::Enactment::AbstractProcessExecution
         
         # Creates a process execution instance
-        def initialize(factory, enacter, process)
-          @factory, @enacter, @process = factory, enacter, process
+        def initialize(enacter, process)
+          @enacter, @process = enacter, process
           @children = []
           @status = :pending
         end
@@ -31,7 +31,7 @@ module CliPrEasy
       
         # Creates a StatementExecution instance for who
         def started(who, *args)
-          @children << @factory.factor_statement_execution(@enacter, self, nil, who)
+          @children << @enacter.factory.factor_statement_execution(@enacter, self, nil, who)
           @children[0]
         end
         

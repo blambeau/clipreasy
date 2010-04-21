@@ -6,7 +6,7 @@ module CliPrEasy
         
         # Creates a ::CliPrEasy::Enactment::Memory::ProcessExecution instance
         def factor_process_execution(enacter, process, &block)
-          exec = ::CliPrEasy::Enactment::Memory::ProcessExecution.new(self, enacter, process)
+          exec = ::CliPrEasy::Enactment::Memory::ProcessExecution.new(enacter, process)
           block.call(exec) if block
           exec
         end
