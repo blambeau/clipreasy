@@ -3,10 +3,12 @@ require 'sequel'
 require 'yargi'
 require 'rubyrel'
 
+require 'clipreasy/ext'
 require 'clipreasy/errors'
 require 'clipreasy/lang'
 require 'clipreasy/hmsc'
 require 'clipreasy/enactment'
+require 'clipreasy/enacter'
 require 'clipreasy/persistence'
 
 #
