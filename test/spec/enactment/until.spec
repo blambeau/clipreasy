@@ -9,10 +9,9 @@ describe ::CliPrEasy::Enactment::Until do
       e == 'ended?' ? i == 1 : Kernel.eval(e)
     }
     process_exec, terminals = enacter.start_execution(process)
-    main_exec = process_exec.main_execution
 
     # process and activity execution are pending now
-    pending?(process_exec, main_exec, terminals).should be_true
+    pending?(process_exec, terminals).should be_true
     
     # check result
     terminals.size.should == 1
@@ -27,7 +26,7 @@ describe ::CliPrEasy::Enactment::Until do
     # close it now
     i = 1
     terminals[0].activity_ended.should be_empty
-    ended?(process_exec, main_exec, terminals).should be_true
+    ended?(process_exec, terminals).should be_true
   end
   
 end
