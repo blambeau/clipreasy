@@ -35,7 +35,12 @@ module CliPrEasy
       # Starts the decision node
       def start(context)
         my_context = context.started(self)
-        statements.collect {|s| s.start(my_context)}.flatten
+        started = statements.collect {|s| s.start(my_context)}.flatten
+        if started.empty?
+          parent.ended(self, my_exec)
+        else
+          started
+        end
       end
       
       # Fired by children when they are ended

@@ -3,6 +3,7 @@ CREATE TABLE roles (
 	code        TEXT NOT NULL,
 	label       TEXT NOT NULL,
 	description TEXT NOT NULL DEFAULT '',
+	color       TEXT NOT NULL,
 	CONSTRAINT pk_roles PRIMARY KEY (code)
 );
 DROP VIEW IF EXISTS roles_combo;
