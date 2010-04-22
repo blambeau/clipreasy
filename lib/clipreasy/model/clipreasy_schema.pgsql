@@ -78,20 +78,23 @@ CREATE VIEW production_processes_combo AS (
 
 DROP TABLE IF EXISTS statements CASCADE;
 CREATE TABLE statements (
-	process         BIGINT NOT NULL,
-	lid             BIGINT NOT NULL,
-	parent          BIGINT NOT NULL,
-	kind            TEXT NOT NULL,
-	code            TEXT NOT NULL DEFAULT '',
-	label           TEXT NOT NULL DEFAULT '',
-	color           TEXT NOT NULL DEFAULT '',
-  description     TEXT NOT NULL DEFAULT '',
-  sort_by         INTEGER NOT NULL DEFAULT 0,
-  business_id     INT8,
+	process          BIGINT NOT NULL,
+	lid              BIGINT NOT NULL,
+	parent           BIGINT NOT NULL,
+	kind             TEXT NOT NULL,
+	code             TEXT NOT NULL DEFAULT '',
+	label            TEXT NOT NULL DEFAULT '',
+	color            TEXT NOT NULL DEFAULT '',
+  description      TEXT NOT NULL DEFAULT '',
+  sort_by          INTEGER NOT NULL DEFAULT 0,
+  business_id      INT8,
+  responsible_role TEXT,
   CONSTRAINT pk_statements PRIMARY KEY (process, lid),
   CONSTRAINT fk_statement_ref_process FOREIGN KEY (process) REFERENCES processes (id)
     ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_statement_ref_parent_statement FOREIGN KEY (process, parent) REFERENCES statements (process, lid)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_statement_ref_role FOREIGN KEY (responsible_role) REFERENCES roles (code)
     ON UPDATE CASCADE ON DELETE CASCADE
 );
 DROP VIEW IF EXISTS activities;
@@ -117,7 +120,7 @@ CREATE TABLE process_executions (
   CONSTRAINT ak_process_executions UNIQUE (process, id),
   CONSTRAINT fk_process_execution_ref_process FOREIGN KEY (process) REFERENCES processes (id)
     ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT fk_process_execution_starteb_by FOREIGN KEY (started_by) REFERENCES actors (id)
+  CONSTRAINT fk_process_execution_started_by FOREIGN KEY (started_by) REFERENCES actors (id)
     ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_process_execution_ended_by FOREIGN KEY (ended_by) REFERENCES actors (id)
     ON UPDATE CASCADE ON DELETE CASCADE
@@ -134,6 +137,8 @@ CREATE TABLE statement_executions (
   started_at          TIMESTAMP NOT NULL DEFAULT current_timestamp,
   started_by          INT8,
   deadline            TIMESTAMP,
+  last_update_at      TIMESTAMP,
+  last_update_by      INT8,
   ended_at            TIMESTAMP,
   ended_by            INT8,
   business_id         INT8,
@@ -145,7 +150,9 @@ CREATE TABLE statement_executions (
     ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_statement_execution_parent FOREIGN KEY (parent) REFERENCES statement_executions (id)
     ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT fk_statement_execution_starteb_by FOREIGN KEY (started_by) REFERENCES actors (id)
+  CONSTRAINT fk_statement_execution_started_by FOREIGN KEY (started_by) REFERENCES actors (id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_statement_execution_last_update_by FOREIGN KEY (last_update_by) REFERENCES actors (id)
     ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_statement_execution_ended_by FOREIGN KEY (ended_by) REFERENCES actors (id)
     ON UPDATE CASCADE ON DELETE CASCADE
@@ -159,6 +166,11 @@ SELECT se.process as process,
        se.id as id,
        se.status as se_status,
        se.started_at as se_started_at,
+       se.started_by as se_started_by,
+       se.last_update_at as se_last_update_at,
+       se.last_update_by as se_last_update_by,
+       se.ended_at as se_ended_at,
+       se.ended_by as se_ended_by,
        se.deadline  as se_deadline,
        se.business_id as se_business,
        se.bulkdata as se_bulkdata,
@@ -173,6 +185,7 @@ SELECT se.process as process,
        s.code     as s_code,
        s.label    as s_label,
        s.color    as s_color,
+       s.responsible_role as s_responsible_role,
        s.business_id as s_business
   FROM statement_executions AS se 
   INNER JOIN process_executions as pe ON se.process_execution=pe.id

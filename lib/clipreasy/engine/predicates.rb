@@ -17,7 +17,6 @@ module CliPrEasy
         bulkdata = ::JSON.parse(tuple[:se_bulkdata])
         raise "Unexpected bulkdata #{bulkdata}" unless Hash===bulkdata
         bulkdata ? bulkdata.methodize : nil
-        
       end
   
     end # class Predicates

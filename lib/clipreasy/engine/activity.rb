@@ -18,6 +18,9 @@ module CliPrEasy
       # Activity color
       attr_accessor :color
 
+      # Activity color
+      attr_accessor :responsible_role
+
       # Recursively visits the process
       def depth_first_search
         yield self

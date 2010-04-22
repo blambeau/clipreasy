@@ -12,6 +12,7 @@ module CliPrEasy
          :label       => (self.respond_to?(:label) ? self.label : ''),
          :color       => (self.respond_to?(:color) ? self.color : ''),
          :description => (self.respond_to?(:description) ? self.description : ''),
+         :responsible_role => (self.respond_to?(:responsible_role) ? self.responsible_role : nil),
          :sort_by     => statement_token}
       end
       

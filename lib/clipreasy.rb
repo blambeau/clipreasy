@@ -38,6 +38,11 @@ module CliPrEasy
     CliPrEasy::State::ProcessExecutionBackend.activity_ended(id, &block)
   end
   
+  # Let the engine know that an activity has been ended
+  def self.evaluator(statement_execution_tuple)
+    CliPrEasy::State::ProcessExecutionBackend.evaluator(statement_execution_tuple)
+  end
+  
   # Installs the database schema on a given Sequel database
   def self.install_db_schema(db)
     db << File.read(File.join(File.dirname(__FILE__), 'clipreasy', 'model', 'clipreasy_schema.pgsql'))

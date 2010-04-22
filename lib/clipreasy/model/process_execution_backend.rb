@@ -106,12 +106,16 @@ module CliPrEasy
         end
       end
       
+      # Finds the evaluator for a given statement execution
+      def evaluator(statement_execution)
+        process = CliPrEasy::Engine::Process[statement_execution[:process]]
+        process_execution = statement_execution[:process_execution]
+        process.evaluator(process_execution)
+      end
+      
       # Evaluates an expression
       def evaluate(attributes, expression)
-        process = CliPrEasy::Engine::Process[attributes[:process]]
-        process_execution = attributes[:process_execution]
-        evaluator = process.evaluator(process_execution)
-        evaluator.instance_eval(expression)
+        evaluator(attributes).instance_eval(expression)
       end
       
     end # class ProcessStateBackend
