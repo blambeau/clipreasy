@@ -35,6 +35,30 @@ module CliPrEasy
         ::Rubyrel::create_db(schema_file, handler, {:verbose => false})
       end
       
+      # Loads a process instance
+      def load_process(db, process_id)
+        tuple = db.model.processes.restrict(:identifier => process_id).tuple_extract
+        ::CliPrEasy::Lang::Decoder.new(false).process(tuple.to_h) {|parent|
+          load_process_statement(db, parent, tuple.identifier, tuple.main_id)
+        }
+      end
+      
+      # Loads a process statement
+      def load_process_statement(db, parent, process_id, identifier) 
+        tuple = db.model.statements.restrict(:process_id => process_id, 
+                                             :identifier => identifier).tuple_extract
+        kind = tuple.kind
+        call = kind.short_name.to_s.downcase.to_sym
+        subtuple = db.model[MODEL_LANG_TO_RELVARS[kind]].restrict(:process_id => process_id, 
+                                                                  :identifier => identifier).tuple_extract
+        args = tuple.to_h.merge(subtuple.to_h)
+        parent.send(call, args) {|new_parent|
+          db.model.statements.restrict(:process_id => process_id, :parent_id => identifier).each {|t|
+            load_process_statement(db, new_parent, process_id, t.identifier)
+          }
+        }
+      end
+      
       extend ::CliPrEasy::Persistence::Rubyrel
     end # module Rubyrel
   end # module Persistence

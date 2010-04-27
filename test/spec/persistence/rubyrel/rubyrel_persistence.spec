@@ -34,4 +34,10 @@ describe ::CliPrEasy::Persistence::Rubyrel do
     p.save_on_relational_model(db.model, db.schema.namespace(:model))
   end
   
+  it 'should provide facade helper to reload processes' do 
+    db = ::CliPrEasy::Persistence::Rubyrel::install_schema!(pgsql_test_database_handler)
+    work_and_coffee_process.save_on_relational_model(db.model, db.schema.namespace(:model))
+    copy = ::CliPrEasy::Persistence::Rubyrel::load_process(db, "work_and_coffee")
+  end
+  
 end

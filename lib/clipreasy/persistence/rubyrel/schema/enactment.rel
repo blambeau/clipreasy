@@ -17,18 +17,18 @@ relvar(:process_executions) {
 
 # Statement executions
 relvar(:statement_executions) {
-  attribute :identifier,          Integer, :default => autonumber
-  attribute :process_execution,   Integer
-  attribute :process,             String
-  attribute :statement,           Integer
-  attribute :status,              String,  :default => :started
-  attribute :started_at,          Time,    :default => now
-  attribute :started_by,          Integer
-  attribute :ended_at,            Time
-  attribute :ended_by,            Integer
+  attribute :identifier,           Integer, :default => autonumber
+  attribute :process_execution_id, Integer
+  attribute :process_id,           String
+  attribute :statement_id,         Integer
+  attribute :status,               String,  :default => :started
+  attribute :started_at,           Time,    :default => now
+  attribute :started_by,           Integer
+  attribute :ended_at,             Time
+  attribute :ended_by,             Integer
   primary_key :identifier
-  foreign_key :process_execution => enactment.process_executions
-  foreign_key [:process, :statement] => model.statements
+  foreign_key :process_execution_id => enactment.process_executions
+  foreign_key [:process_id, :statement_id] => model.statements
   foreign_key :started_by => people.actors
   foreign_key :ended_by   => people.actors
 }
