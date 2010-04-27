@@ -1,34 +1,17 @@
 namespace(:enactment)
 
 # Process executions
-relvar(:process_executions) {
-  attribute :identifier, Integer, :default => autonumber
-  attribute :process_id, String
-  attribute :status,     Symbol,  :default => :started
-  attribute :started_at, Time,    :default => now
-  attribute :started_by, Integer
-  attribute :ended_at,   Time
-  attribute :ended_by,   Integer
+relvar(:process_execution_state) {
+  attribute :identifier,   Integer, :default => autonumber
+  attribute :process_id,   String
+  attribute :statement_id, Integer
+  attribute :parent_id,    Integer
+  attribute :status,       Symbol
+  attribute :started_at,   Time
+  attribute :ended_at,     Time
+  attribute :state,        Object
   primary_key :identifier
-  foreign_key :process_id => model.processes
-  foreign_key :started_by => people.actors
-  foreign_key :ended_by   => people.actors
-}
-
-# Statement executions
-relvar(:statement_executions) {
-  attribute :identifier,           Integer, :default => autonumber
-  attribute :process_execution_id, Integer
-  attribute :process_id,           String
-  attribute :statement_id,         Integer
-  attribute :status,               String,  :default => :started
-  attribute :started_at,           Time,    :default => now
-  attribute :started_by,           Integer
-  attribute :ended_at,             Time
-  attribute :ended_by,             Integer
-  primary_key :identifier
-  foreign_key :process_execution_id => enactment.process_executions
+  foreign_key :parent_id    => enactment.process_execution_state
+  foreign_key :process_id   => model.processes
   foreign_key [:process_id, :statement_id] => model.statements
-  foreign_key :started_by => people.actors
-  foreign_key :ended_by   => people.actors
 }
