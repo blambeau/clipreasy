@@ -55,14 +55,12 @@ module CliPrEasy
       
       # Inspects the node
       def inspect
-        short_kind = $1 if /::([A-Z0-9a-z]+)$/ =~ kind.to_s
-        "#{short_kind.downcase}(#{public_args_encoding})" << (children.empty? ? "; " : " { #{children_inspect} }; ")
+        "#{kind.short_name.to_s.downcase}(#{public_args_encoding})" << (children.empty? ? "; " : " { #{children_inspect} }; ")
       end
       
       # Inspects the node
       def to_s
-        short_kind = $1 if /::([A-Z0-9a-z]+)$/ =~ kind.to_s
-        "#{short_kind.downcase}(#{public_args_encoding})" << (children.empty? ? "; " : " { ... }; ")
+        "#{kind.short_name.to_s.downcase}(#{public_args_encoding})" << (children.empty? ? "; " : " { ... }; ")
       end
       
     end # module Node
