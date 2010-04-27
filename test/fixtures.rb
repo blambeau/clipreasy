@@ -66,20 +66,14 @@ module CliPrEasy
       process('rxth_v2')
     end
     
-    # Factors an in-memory enacter with defaut parameters
-    def memory_enacter(&block)
-      factory = ::CliPrEasy::Enactment::Memory::ExecutionFactory.new
-      enacter = ::CliPrEasy::Enactment::Enacter.new(factory, &block)
-    end
-    
     # Checks if some executions are pending (and not ended)
     def pending?(*execs)
-      execs.flatten.all?{|e| e.pending? and not(e.ended?)}
+      execs.flatten.all?{|e| e.pending?}
     end
     
     # Checks if some executions are ended (and not pending)
     def ended?(*execs)
-      execs.flatten.all?{|e| e.ended? and not(e.pending?)}
+      execs.flatten.all?{|e| not(e.pending?)}
     end
     
   end # module Fixtures

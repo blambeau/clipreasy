@@ -7,22 +7,26 @@ module CliPrEasy
     module Parallel
       
       # See Statement.start
-      def start(parent_exec)
-        #puts "Starting parallel #{self.business_id}"
-        my_exec = parent_exec.started(self)
-        started = children.collect {|s| s.start(my_exec)}.flatten
+      def start(scope)
+        my_scope = scope.branch(self)
+        started = children.collect {|s| s.start(my_scope)}.flatten
         if started.empty?
-          parent_in_execution.ended(self, my_exec)
+          parent_in_execution.ended(self, my_scope.close)
         else
+          my_scope.set(:started, started.size)
+          my_scope.set(:ended, 0)
           started
         end
       end
       
       # See Statement.ended
-      def ended(child, child_exec)
-        my_exec = child_exec.close
-        #puts "Parallel.ended(#{my_exec.all_children_ended?})"
-        my_exec.all_children_ended? ? parent_in_execution.ended(self, my_exec) : []
+      def ended(child, my_scope)
+        my_scope.set(:ended, my_scope.get(:ended)+1)
+        if (my_scope.get(:ended) == my_scope.get(:started))
+          parent_in_execution.ended(self, my_scope.close)
+        else
+          []
+        end
       end
           
     end # module Parallel

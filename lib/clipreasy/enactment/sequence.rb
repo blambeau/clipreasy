@@ -7,20 +7,17 @@ module CliPrEasy
     module Sequence
       
       # See Statement.start
-      def start(parent_execution)
-        my_exec = parent_execution.started(self)
-        #puts "Starting sequence #{self.business_id} leads to #{statements.first.business_id}"
-        children.first.start(my_exec)
+      def start(scope)
+        my_scope = scope.branch(self)
+        children.first.start(my_scope)
       end
       
       # See Statement.ended
-      def ended(child, child_context)
-        my_context = child_context.close
+      def ended(child, my_scope)
         if child == children.last
-          #puts "Closing sequence #{self.business_id} with #{parent}"
-          parent_in_execution.ended(self, my_context)
+          parent_in_execution.ended(self, my_scope.close)
         else
-          children[children.index(child)+1].start(my_context)
+          children[children.index(child)+1].start(my_scope)
         end
       end
           

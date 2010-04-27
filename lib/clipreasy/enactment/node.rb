@@ -22,7 +22,7 @@ module CliPrEasy
       # This method MUST be implemented bu sublasses and raises an exception 
       # by default.
       #
-      def start(context)
+      def start(scope)
         raise ::NotImplementedError, "Bad Statement subclass #{self.class}: start MUST by implemented."
       end
       
@@ -30,7 +30,7 @@ module CliPrEasy
       # Fired by children when they are ended. Returns terminal execution contexts
       # that have been started due to this end.
       #
-      def ended(child, child_context)
+      def ended(child, child_scope)
         raise ::NotImplementedError, "Bad Statement subclass #{self.class}: ended MUST by implemented."
       end
           

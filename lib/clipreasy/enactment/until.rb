@@ -7,25 +7,21 @@ module CliPrEasy
     module Until
       
       # See Statement.start
-      def start(parent_exec)
-        my_exec = parent_exec.started(self)
-        #puts "Starting until #{condition.inspect}"
-        value = my_exec.evaluate(condition)
-        if value
-          parent_in_execution.ended(self, my_exec)
+      def start(scope)
+        my_scope = scope.branch(self)
+        if my_scope.evaluate(condition)
+          parent_in_execution.ended(self, my_scope.close)
         else
-          self.then.start(my_exec)
+          self.then.start(my_scope)
         end
       end
             
       # See Statement.ended
-      def ended(child, child_context)
-        my_context = child_context.close
-        value = my_context.evaluate(condition)
-        if value
-          parent_in_execution.ended(self, my_context)
+      def ended(child, my_scope)
+        if my_scope.evaluate(condition)
+          parent_in_execution.ended(self, my_scope.close)
         else
-          self.then.start(my_context)
+          self.then.start(my_scope)
         end
       end
       

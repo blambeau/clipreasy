@@ -10,23 +10,34 @@ module CliPrEasy
     module Decision
       
       # See Statement.start
-      def start(context)
-        # evaluate condition value and fire
-        my_context = context.started(self)
-        value = my_context.evaluate(condition)
+      def start(scope)
+        # evaluate condition value
+        my_scope = scope.branch(self)
+        value = my_scope.evaluate(condition)
         
         # see clauses and start the good ones
         started = children.collect do |clause|
-          clause_value = my_context.evaluate(clause.value)
-          value===clause_value ? clause.start(my_context) : nil
+          clause_value = my_scope.evaluate(clause.value)
+          value===clause_value ? clause.start(my_scope) : nil
         end.flatten.compact
         
-        started.empty? ? parent_in_execution.ended(self, my_context) : started
+        if started.empty?
+          parent_in_execution.ended(self, my_scope.close)
+        else
+          my_scope.set(:started, started.size)
+          my_scope.set(:ended, 0)
+          started
+        end
       end
             
       # See Statement.ended
-      def ended(child, child_context)
-        parent_in_execution.ended(self, child_context.close)
+      def ended(child, my_scope)
+        my_scope.set(:ended, my_scope.get(:ended)+1)
+        if (my_scope.get(:ended) == my_scope.get(:started))
+          parent_in_execution.ended(self, my_scope.close)
+        else
+          []
+        end
       end
       
     end # module Decision

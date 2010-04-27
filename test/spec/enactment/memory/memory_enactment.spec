@@ -2,11 +2,14 @@ require 'clipreasy'
 describe "In-Memory enactment" do
   include CliPrEasy::Fixtures
   
+  def evaluator(&block)
+    Kernel.lambda(&block)
+  end
+  
   it "should provide a simple support for starting process executions" do
     process = work_and_coffee_process
-    factory = ::CliPrEasy::Enactment::Memory::ExecutionFactory.new
     tired, too_much = nil, true
-    enacter = ::CliPrEasy::Enactment::Enacter.new(factory) do |expression|
+    evaluator = evaluator do |expression, state|
       case expression.strip
         when "tired?"
           old, tired = tired, true
@@ -20,12 +23,11 @@ describe "In-Memory enactment" do
           raise "Unexpected expression #{expression}"
       end
     end
-    
-    # start the process
-    process_exec, terminal_execs = enacter.start_execution(process)
+    process_exec = ::CliPrEasy::Enactment::State.new(process, nil, evaluator) 
+    terminal_execs = process.start(process_exec)
     
     # check result
-    (::CliPrEasy::Enactment::AbstractProcessExecution === process_exec).should be_true
+    (::CliPrEasy::Enactment::State === process_exec).should be_true
     Array.should === terminal_execs
     
     # First level led to 'say_hello'
@@ -33,7 +35,7 @@ describe "In-Memory enactment" do
     terminal_execs[0].statement.should == process.statement_by(:business_id, 'say_hello')
     
     # lauch next level
-    terminal_execs = terminal_execs[0].activity_ended
+    terminal_execs = terminal_execs[0].resume
     
     # Second level led to ['work', 'drink']
     terminal_execs.size.should == 2
@@ -41,21 +43,21 @@ describe "In-Memory enactment" do
     terminal_execs[1].statement.should == process.statement_by(:business_id, 'drink')
     
     # Close the drink one now => ['go_somewhere']
-    next_execs = terminal_execs[1].activity_ended
+    next_execs = terminal_execs[1].resume
     next_execs.size.should == 1
     next_execs[0].statement.should == process.statement_by(:business_id, 'go_somewhere')
     
     # Close the 'go_somewhere' task now
-    next_execs = next_execs[0].activity_ended
+    next_execs = next_execs[0].resume
     next_execs.should be_empty
     
     # Close the 'work' task
-    terminal_execs = terminal_execs[0].activity_ended
+    terminal_execs = terminal_execs[0].resume
     terminal_execs.size.should == 1
     terminal_execs[0].statement.should == process.statement_by(:business_id, 'say_goodbye')
     
     # Close the 'say_goodbye' task
-    terminal_execs[0].activity_ended.should be_empty
+    terminal_execs[0].resume.should be_empty
   end
   
 end

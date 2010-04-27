@@ -7,20 +7,21 @@ module CliPrEasy
     module While
       
       # See Statement.start
-      def start(context)
-        my_context = context.started(self)
-        value = my_context.evaluate(condition)
-        self.then.start(my_context) if value
+      def start(scope)
+        my_scope = scope.branch(self)
+        if my_scope.evaluate(condition)
+          self.then.start(my_scope)
+        else 
+          parent_in_execution.ended(self, my_scope.close)
+        end
       end
             
       # See Statement.ended
-      def ended(child, child_context)
-        my_context = child_context.close
-        value = my_context.evaluate(condition)
-        if value
-          self.then.start(my_context)
-        else
-          parent_in_execution.ended(self, my_context)
+      def ended(child, my_scope)
+        if my_scope.evaluate(condition)
+          self.then.start(my_scope)
+        else 
+          parent_in_execution.ended(self, my_scope.close)
         end
       end
       

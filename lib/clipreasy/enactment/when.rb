@@ -7,14 +7,14 @@ module CliPrEasy
     module When
       
       # See Statement.start
-      def start(context)
-        my_context = context.started(self)
-        self.then.start(my_context)
+      def start(scope)
+        my_scope = scope.branch(self)
+        self.then.start(my_scope)
       end
             
       # See Statement.ended
-      def ended(child, child_context)
-        parent.ended(self, child_context.close)
+      def ended(child, my_scope)
+        parent_in_execution.ended(self, my_scope.close)
       end
       
     end # module When

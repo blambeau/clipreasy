@@ -11,8 +11,8 @@ module CliPrEasy
       #
       # This method basically starts the execution of the main process statement.
       #
-      def start(process_execution)
-        main.start(process_execution)
+      def start(scope)
+        main.start(scope)
       end
       
       #
@@ -20,10 +20,8 @@ module CliPrEasy
       #
       # This methods ends the process execution itself.
       #
-      def ended(child, child_execution)
-        my_exec = child_execution.close
-        #puts "Ending process with #{child_execution} led to #{my_exec.inspect}"
-        my_exec.close
+      def ended(child, my_scope)
+        my_scope.close
         []
       end
       
