@@ -9,6 +9,7 @@ require 'clipreasy/lang'
 require 'clipreasy/hmsc'
 require 'clipreasy/enactment'
 require 'clipreasy/persistence'
+require 'clipreasy/commands'
 
 #
 # Main module of Clinical Process Made Easy
