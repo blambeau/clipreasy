@@ -1,3 +1,5 @@
 extension(:people)
 extension(:model)
 extension(:enactment)
+extension(:structural)
+extension(:screens)

@@ -1,0 +1,20 @@
+namespace(:views)
+
+relvar(:screens) {
+  attribute :code,    String
+  attribute :label,   String
+  primary_key :code
+}
+
+relvar(:screen_fields) {
+  attribute :screen,         String
+  attribute :order,          Integer, :default => autonumber(:screen)
+  attribute :label,          String
+  attribute :entity,         Symbol
+  attribute :attribute,      Symbol
+  attribute :widget,         Symbol
+  attribute :widget_options, Object
+  primary_key(:screen, :order)
+  foreign_key :screen => views.screens
+  foreign_key [:entity, :attribute] => structural.entity_attributes
+}
