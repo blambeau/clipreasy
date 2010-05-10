@@ -28,7 +28,7 @@ module CliPrEasy
       
       # Checks if this scope is currently opened
       def pending?
-        tuple[:status] == :pending
+        @tuple[:status] == :pending
       end
       
       # Branches this scope as a new child one
