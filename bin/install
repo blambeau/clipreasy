@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+$root = File.join(File.dirname(__FILE__), '..')
+$LOAD_PATH.unshift(File.join($root, 'lib'))
+require 'clipreasy'
+require 'optparse'
+begin
+  r = CliPrEasy::Commands::Install.new
+  r.run File.dirname("."), ARGV, STDOUT
+rescue Interrupt => e
+  $stderr.puts
+  $stderr.puts "Interrupted"
+  raise e
+rescue OptionParser::ParseError => e
+  $stderr.puts e.message
+  raise e
+rescue => e
+  $stderr.puts e.message
+  raise e
+end

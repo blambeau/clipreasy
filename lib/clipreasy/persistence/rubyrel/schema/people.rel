@@ -17,7 +17,7 @@ relvar(:actors) {
   attribute :last_name,  String
   attribute :initials,   String
   attribute :role,       String
-  attribute :status,     String,  :default => :active
+  attribute :status,     Symbol,  :default => :active
   primary_key(:identifier)
   candidate_key(:login)
   foreign_key :role => people.roles

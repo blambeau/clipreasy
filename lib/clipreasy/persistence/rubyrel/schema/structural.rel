@@ -12,8 +12,8 @@ relvar(:entities) {
 relvar(:entity_attributes) {
   attribute :entity,        Symbol
   attribute :name,          Symbol
-  attribute :domain,        String
-  attribute :references,    String
+  attribute :domain,        Module
+  attribute :references,    Symbol
   attribute :default_value, Object
   attribute :description,   String
   primary_key(:entity, :name)
