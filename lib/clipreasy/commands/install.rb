@@ -49,6 +49,12 @@ module CliPrEasy
           end
         end
         
+        # 2.2) Install processes now
+        Dir[File.join(process_folder, "processes", "*.cpe")].each do |file|
+          process = CliPrEasy::Persistence::XML::decode_process_file(file)
+          process.save_on_relational_model(db.model)
+        end
+        
         # 3) Creates the database schema from what is in structural tables
         c = ::CliPrEasy::Structural::Entities2Schema.new(db)
         schema = c.generate_schema("schema", folder_name.to_sym)
@@ -65,16 +71,6 @@ module CliPrEasy
             db.instance_eval File.read(file)
           end
         end if File.exists?(data_folder)
-
-        # 5) Checks that screens can be generated safely...
-        cache_folder = File.join(process_folder, 'cache')
-        FileUtils.mkdir(cache_folder) unless File.exists?(cache_folder)
-        db.views.screens.each do |screen_tuple|
-          fields = db.views.screen_fields.restrict(:screen => screen_tuple.code)
-          File.open(File.join(cache_folder, "#{screen_tuple.code}.html"),'w') do |io|
-            ::CliPrEasy::WebTools::Screen2Html.new(db, folder_name.to_sym).render_screen(screen_tuple, fields, io)
-          end
-        end
       end
       
     end # class Cpe2Dot
