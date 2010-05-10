@@ -20,6 +20,9 @@ module CliPrEasy
           # then_clause's pseudo end to decision's pseudo_end
           graph.connect(tcpe, pe)
         end
+        if children.size == 1 
+          graph.connect(v, pe, :semantics => "else")
+        end
         
         # return my pair
         [ps, pe]
