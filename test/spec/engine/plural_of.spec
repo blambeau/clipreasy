@@ -5,8 +5,8 @@ describe "CliPrEasy::Commands::Engine#plural_of" do
   let(:engine) { ::CliPrEasy::Fixtures::work_and_coffee_engine }
 
   describe "when called on an existing entity name" do
-    subject{ engine.plural_of(:client) }
-    specify{ should == :clients }  
+    subject{ engine.plural_of(:employee) }
+    specify{ should == :employees }  
   end
   
   describe "when called on unexisting entity name" do 

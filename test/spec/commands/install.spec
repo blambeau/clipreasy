@@ -23,9 +23,7 @@ describe "CliPrEasy::Commands::Install" do
       db = ::Rubyrel::connect(db_handler)
       db.should respond_to(:work_and_coffee)
       db.namespace(:work_and_coffee, false).should_not be_nil
-      db.work_and_coffee.relvar(:clients, false).should_not be_nil
-      
-      db.work_and_coffee.clients.empty?.should be_false
+      db.work_and_coffee.relvar(:employees, false).should_not be_nil
       db.work_and_coffee.employees.empty?.should be_false
     }
   end

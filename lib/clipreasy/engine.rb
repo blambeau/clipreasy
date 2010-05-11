@@ -20,6 +20,11 @@ module CliPrEasy
     ### About structural entities
     ###########################################################################
     
+    # Returns an active tuple
+    def active_tuple(name, token)
+      ::CliPrEasy::Structural::ActiveTuple.new(self, name, token)
+    end
+    
     # Finds the tuple of some entity whose singular name is given.
     # Raises an UnknownEntityError if the entity does not exists.
     def entity_tuple(singular)
@@ -32,6 +37,11 @@ module CliPrEasy
         else
           raise "Unexpected case: more than one tuple for entity #{singular}"
       end
+    end
+    
+    # Returns attributes of an entity
+    def entity_attributes(entity)
+      db.structural.entity_attributes.restrict(:entity => entity.to_s)
     end
     
     # Finds the tuple for some entity attribute.
