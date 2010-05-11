@@ -89,7 +89,7 @@ module CliPrEasy
     
     # Renders a screen
     def render_screen(code, formdata = {})
-      renderer = ::CliPrEasy::WebTools::Screen2Html.new(self)
+      rendered = ::CliPrEasy::WebTools::Screen2Html.new(self)
       rendered.render_screen(code, formdata)
     end
     

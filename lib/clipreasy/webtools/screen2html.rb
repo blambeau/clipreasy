@@ -14,7 +14,7 @@ module CliPrEasy
       
       # Finds the candidates for a given screen_field tuple
       def find_candidates(screen_field_tuple)
-        engine.candidates(screen_field_tuple.entity, screen_field_tuple.attribute)
+        engine.candidates_for(screen_field_tuple.entity, screen_field_tuple.attribute)
       end
       
       # Renders a screen from tuples
@@ -43,7 +43,7 @@ module CliPrEasy
         name = "#{screen_field_tuple.entity}.#{screen_field_tuple.attribute}"
         candidates = find_candidates(screen_field_tuple)
         
-        self.send(kind, name, candidates, formdata, options.merge(:value => :code, :label => :libelle))
+        self.send(kind, name, candidates, formdata, options)
       end
       
     end # module Scree2Html

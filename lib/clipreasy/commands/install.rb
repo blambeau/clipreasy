@@ -41,6 +41,14 @@ module CliPrEasy
         end
       end
       
+      # Installs the processes
+      def install_processes!(db, folder)
+        Dir[File.join(folder, "*.cpe")].each do |file|
+          process = CliPrEasy::Persistence::XML::decode_process_file(file)
+          process.save_on_relational_model(db.model)
+        end
+      end
+      
       # Runs the sub-class defined command
       def _run(root_folder, arguments)
         exit("Missing database handler", true) unless arguments.size == 1
@@ -57,10 +65,7 @@ module CliPrEasy
         install_meta_model!(db, metamodel_folder)
         
         # 2.2) Install processes now
-        Dir[File.join(process_folder, "processes", "*.cpe")].each do |file|
-          process = CliPrEasy::Persistence::XML::decode_process_file(file)
-          process.save_on_relational_model(db.model)
-        end
+        install_processes!(db, File.join(process_folder, "processes"))
         
         # 3) Creates the database schema from what is in structural tables
         c = ::CliPrEasy::Structural::Entities2Schema.new(db)
@@ -72,7 +77,7 @@ module CliPrEasy
         db = ::Rubyrel::connect(handler)
         
         # 4) fill the database schema with data found in data subfolder
-        data_folder = File.join(process_folder, 'data')
+        data_folder = File.join(process_folder, 'model')
         db.transaction do |t|
           Dir[File.join(data_folder, '*.data')].each do |file|
             db.instance_eval File.read(file)
