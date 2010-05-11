@@ -1,9 +1,11 @@
 namespace(:views)
 
 relvar(:screens) {
-  attribute :code,    String
-  attribute :label,   String
+  attribute :code,        String
+  attribute :label,       String
+  attribute :entity,      Symbol
   primary_key :code
+  foreign_key(:entity => structural.entities)
 }
 
 relvar(:screen_fields) {

@@ -1,3 +1,3 @@
 views.screens = [
-  {:code => "start_project", :label => "Start a project"},
+  {:code => "start_project", :label => "Start a project", :entity => :project},
 ]
