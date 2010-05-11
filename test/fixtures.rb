@@ -16,6 +16,15 @@ module CliPrEasy
       File.expand_path(File.join(File.dirname(__FILE__), 'fixtures'))
     end
     
+    # Returns an engine instance on the work_and_coffee process
+    def work_and_coffee_engine
+      return @work_and_coffee_engine if @work_and_coffee_engine
+      process_folder = File.expand_path(File.join(fixtures_folder, "work_and_coffee"))
+      db_handler = "sqlite://#{process_folder}/database.db"
+      ::CliPrEasy::Commands::Install.new.run(__FILE__, ["--process-folder", process_folder, db_handler], STDOUT)
+      ::CliPrEasy::Engine.new(db_handler, :work_and_coffee)
+    end
+    
     # Returns an array with process files
     def process_files
       Dir[File.join(fixtures_folder, '**', '*.cpe')]
@@ -70,5 +79,6 @@ module CliPrEasy
       execs.flatten.all?{|e| not(e.pending?)}
     end
     
+    extend Fixtures
   end # module Fixtures
 end # module CliPrEasy

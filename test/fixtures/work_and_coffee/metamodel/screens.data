@@ -1,0 +1,3 @@
+views.screens = [
+  {:code => "say_hello", :label => "Say hello"},
+]

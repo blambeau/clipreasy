@@ -1,0 +1,5 @@
+structural.entities = [
+  {:name => :employee, :plural => :employees    },
+  {:name => :client,   :plural => :clients      },
+  {:name => :report,   :plural => :reports      },
+]

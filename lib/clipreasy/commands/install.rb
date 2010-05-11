@@ -27,27 +27,34 @@ module CliPrEasy
         true
       end
       
+      # Installs the base database
+      def install_base_database!(handler)
+        ::CliPrEasy::Persistence::Rubyrel::install_schema!(handler)
+      end
+      
+      # Installs the meta model
+      def install_meta_model!(db, folder) 
+        [:roles, :actors, :entities, :entity_attributes, :screens, :screen_fields].each do |relvar_name|
+          file = File.join(folder, "#{relvar_name}.data")
+          next unless File.exists?(file)
+          db.instance_eval File.read(file)
+        end
+      end
+      
       # Runs the sub-class defined command
       def _run(root_folder, arguments)
         exit("Missing database handler", true) unless arguments.size == 1
         handler = arguments[0]
         
         # 1) Install database schema
-        db = ::CliPrEasy::Persistence::Rubyrel::install_schema!(handler)
+        db = install_base_database!(handler)
         
         # 2) Install meta-model data
         return unless process_folder
         folder_name = File.basename(process_folder)
         metamodel_folder = File.join(process_folder, "metamodel")
         exit("Missing metamodel subfolder", true) unless File.exists?(metamodel_folder)
-        
-        db.transaction do |t|
-          ["roles", "actors", "entities", "entity_attributes", "screens", "screen_fields"].each do |relvar_name|
-            file = File.join(metamodel_folder, "#{relvar_name}.data")
-            exit("Missing file #{file}", true) unless File.exists?(file)
-            t.instance_eval File.read(file)
-          end
-        end
+        install_meta_model!(db, metamodel_folder)
         
         # 2.2) Install processes now
         Dir[File.join(process_folder, "processes", "*.cpe")].each do |file|

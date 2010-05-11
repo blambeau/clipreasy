@@ -1,0 +1,3 @@
+views.screen_fields = [
+  {:screen => "say_hello", :label => "Your name:", :entity => :report, :attribute => :employee, :widget => :combobox, :widget_options => {:value => :pkey, :label => :name}}
+]

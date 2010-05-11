@@ -1,0 +1,4 @@
+work_and_coffee.clients = [
+  {:name => "Svenson"},
+  {:name => "Mattews"}
+]

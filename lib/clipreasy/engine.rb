@@ -1,4 +1,4 @@
-module CLiPrEasy
+module CliPrEasy
   class Engine
     
     # The underlying rubyrel database
@@ -20,16 +20,43 @@ module CLiPrEasy
     ### About structural entities
     ###########################################################################
     
+    # Finds the tuple of some entity whose singular name is given.
+    # Raises an UnknownEntityError if the entity does not exists.
+    def entity_tuple(singular)
+      tuples = db.structural.entities.restrict(:name => singular.to_s).to_a
+      case tuples.size
+        when 0
+          raise ::CliPrEasy::UnknownEntityError, "Unknown entity #{singular}"
+        when 1
+          tuples[0]
+        else
+          raise "Unexpected case: more than one tuple for entity #{singular}"
+      end
+    end
+    
+    # Finds the tuple for some entity attribute.
+    # Raises an UnknownEntityAttributeError if the attribute is unknown.
+    def entity_attribute(entity, attribute)
+      tuples = db.structural.entity_attributes.restrict(:entity => entity.to_s, :name => attribute.to_s).to_a
+      case tuples.size
+        when 0
+          raise ::CliPrEasy::UnknownEntityAttributeError, "Unknown entity attribute #{entity}.#{attribute}"
+        when 1
+          tuples[0]
+        else
+          raise "Unexpected case: more than one tuple for entity #{singular}"
+      end
+    end
+    
     # Returns the plural form of singular entity name
     def plural_of(singular)
-      db.structural.entities.restrict(:name => singular.to_s).tuple_extract.plural
+      entity_tuple(singular).plural
     end
     
     # Returns candidates for an entity, attribute pair
-    def candidates(entity, attribute)
-      tuple = db.structural.entity_attributes.restrict(:entity => entity.to_s, :name => attribute.to_s).tuple_extract
-      if tuple.references
-        model_namespace.relvar(plural_of(tuple.references))
+    def candidates_for(entity, attribute)
+      if ref = entity_attribute(entity, attribute).references
+        model_namespace.relvar(plural_of(ref))
       else
         []
       end

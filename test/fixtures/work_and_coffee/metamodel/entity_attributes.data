@@ -1,0 +1,6 @@
+structural.entity_attributes = [
+  {:entity => :employee, :name => :name,     :domain => String},
+  {:entity => :client,   :name => :name,     :domain => String},
+  {:entity => :report,   :name => :client,   :domain => String, :references => :client},
+  {:entity => :report,   :name => :employee, :domain => String, :references => :employee}
+]

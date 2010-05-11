@@ -1,0 +1,4 @@
+work_and_coffee.employees = [
+  {:name => "Lamborgh"},
+  {:name => "Derthieu"}
+]
