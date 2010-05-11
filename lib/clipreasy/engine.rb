@@ -84,7 +84,7 @@ module CliPrEasy
     
     # Returns fields of a given screen
     def screen_fields(screen)
-      db.views.screen_fields.restrict(:screen => screen_tuple(scren).code)
+      db.views.screen_fields.restrict(:screen => screen_tuple(screen).code)
     end
     
     # Renders a screen
