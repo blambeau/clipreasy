@@ -13,7 +13,10 @@ module CliPrEasy
   # Raised when some model refers to an entity which is unknown
   class UnknownEntityError < StandardError; end
   
-  # Raised when some model refers to an entity which is unknown
+  # Raised when some model refers to an entity attribute which is unknown
   class UnknownEntityAttributeError < StandardError; end
+  
+  # Raised when some model refers to a screen which is unknown
+  class UnknownScreenError < StandardError; end
   
 end # module CliPrEasy

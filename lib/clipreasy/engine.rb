@@ -65,22 +65,32 @@ module CliPrEasy
     ###########################################################################
     ### About screens
     ###########################################################################
-    
-    # Returns a tuple containing screen master information
-    def screen(code)
-      db.views.screens.restrict(:code => code.to_s).tuple_extract
+
+    # Finds the tuple of some screen whose code is given.
+    # Raises an UnknownScreenError if the screen does not exists.
+    def screen_tuple(code)
+      return code if code.kind_of?(::Rubyrel::Tuple)
+      tuples = db.views.screens.restrict(:code => code.to_s).to_a
+      case tuples.size
+        when 0
+          raise ::CliPrEasy::UnknownScreenError, "Unknown screen #{code}"
+        when 1
+          tuples[0]
+        else
+          raise "Unexpected case: more than one tuple for screen #{screen}"
+      end
     end
+    alias :screen :screen_tuple
     
-    # Returns 
+    # Returns fields of a given screen
     def screen_fields(screen)
-      screen = screen.kind_of?(::Rubyrel::Tuple) ? screen.code : screen
-      db.views.screen_fields.restrict(:screen => screen.to_s)
+      db.views.screen_fields.restrict(:screen => screen_tuple(scren).code)
     end
     
     # Renders a screen
     def render_screen(code, formdata = {})
-      renderer = ::CliPrEasy::WebTools::Screen2Html.new(self, formdata)
-      rendered.render_screen(code)
+      renderer = ::CliPrEasy::WebTools::Screen2Html.new(self)
+      rendered.render_screen(code, formdata)
     end
     
     ###########################################################################
