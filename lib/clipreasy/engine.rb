@@ -99,13 +99,12 @@ module CliPrEasy
     
     # Finds a process from its identifier
     def process(process_id)
-      @processes[process_id] ||= ::CliPrEasy::Persistence::Rubyrel::load_process(database, process_id)
+      @processes[process_id] ||= ::CliPrEasy::Persistence::Rubyrel::load_process(database, process_id.to_s)
     end
     
     # Finds a statement inside a process
     def statement(process_id, statement_id)
-      process = process(process_id)
-      process ? process.statement_by(:identifier, statement_id) : nil
+      process(process_id).statement_by(:identifier, statement_id)
     end
     
   end # class Engine

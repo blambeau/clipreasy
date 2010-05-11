@@ -19,4 +19,7 @@ module CliPrEasy
   # Raised when some model refers to a screen which is unknown
   class UnknownScreenError < StandardError; end
   
+  # Raised when some model refers to a process which is unknown
+  class UnknownProcessError < StandardError; end
+  
 end # module CliPrEasy

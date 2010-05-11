@@ -37,10 +37,18 @@ module CliPrEasy
       
       # Loads a process instance
       def load_process(db, process_id)
-        tuple = db.model.processes.restrict(:identifier => process_id).tuple_extract
-        ::CliPrEasy::Lang::Decoder.new(false).process(tuple.to_h) {|parent|
-          load_process_statement(db, parent, tuple.identifier, tuple.main_id)
-        }
+        tuples = db.model.processes.restrict(:identifier => process_id).to_a
+        case tuples.size
+          when 0
+            raise ::CliPrEasy::UnknownProcessError, "Unknown process #{process_id}"
+          when 1
+            tuple = tuples.first
+            ::CliPrEasy::Lang::Decoder.new(false).process(tuple.to_h) {|parent|
+              load_process_statement(db, parent, tuple.identifier, tuple.main_id)
+            }
+          else
+            raise "Unexpected case: more than one process tuple for #{process_id}"
+        end
       end
       
       # Loads a process statement
