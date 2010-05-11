@@ -60,12 +60,6 @@ module CliPrEasy
       process('work_and_coffee')
     end
     
-    # Returns the rxth_v2 process decoded through the XML
-    # persistence decoder.
-    def rxth_v2_process
-      process('rxth_v2')
-    end
-    
     # Checks if some executions are pending (and not ended)
     def pending?(*execs)
       execs.flatten.all?{|e| e.pending?}

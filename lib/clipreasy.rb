@@ -10,6 +10,7 @@ require 'clipreasy/hmsc'
 require 'clipreasy/enactment'
 require 'clipreasy/persistence'
 require 'clipreasy/structural'
+require 'clipreasy/webtools'
 require 'clipreasy/commands'
 
 #

@@ -14,10 +14,6 @@ describe ::CliPrEasy::Persistence::Rubyrel do
     model.untils.tuple_count.should == work_and_coffee_process.select{|s| ::CliPrEasy::Lang::Until === s}.size
     model.whiles.tuple_count.should == work_and_coffee_process.select{|s| ::CliPrEasy::Lang::While === s}.size
     
-    rxth_v2_process.save_on_relational_model(db.model, db.schema.namespace(:model))
-    model.processes.tuple_count.should == 2
-    model.statements.tuple_count.should == work_and_coffee_process.inject(0){|memo,i| memo+1} + rxth_v2_process.inject(0){|memo,i| memo+1}
-    
     p = ::CliPrEasy::Lang::process("identifier" => "test") {
       sequence {
         activity('label' => "test_activity_1")
@@ -32,6 +28,9 @@ describe ::CliPrEasy::Persistence::Rubyrel do
       }
     }
     p.save_on_relational_model(db.model, db.schema.namespace(:model))
+
+    model.processes.tuple_count.should == 2
+    model.statements.tuple_count.should == work_and_coffee_process.inject(0){|memo,i| memo+1} + p.inject(0){|memo,i| memo+1}
   end
   
   it 'should provide facade helper to reload processes' do 
