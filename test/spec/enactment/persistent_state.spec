@@ -1,4 +1,5 @@
-require 'clipreasy'
+require File.expand_path('../../../spec_helper', __FILE__)
+
 describe ::CliPrEasy::Enactment::PersistentState do
   include ::CliPrEasy::Fixtures
   

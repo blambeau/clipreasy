@@ -29,7 +29,7 @@ module CliPrEasy
   def install_default_plugins
     DEFAULT_PLUGINS.each do |plugin|
       [:Node, :Activity, :Decision, :Parallel, :Sequence, :Until, 
-       :When, :While, :Process].each do |modname|
+       :When, :While, :Process, :Forall].each do |modname|
          target = ::CliPrEasy::Lang.const_get(modname)
          source = plugin.const_get(modname)
          target.instance_eval { include(source) }

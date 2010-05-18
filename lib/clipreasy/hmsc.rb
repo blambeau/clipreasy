@@ -66,6 +66,13 @@ module CliPrEasy
          :label => semantics.condition}
       end
     end
+    module ForallNode
+      def default_dot_attributes
+        {:shape => 'Mcircle', :style => nil,
+         :fixedsize => true, :width => 0.7, :height => 0.7,
+         :label => semantics.iterated}
+      end
+    end
   end # module HMSC
 end # module CliPrEasy
 require "clipreasy/hmsc/activity"
@@ -74,4 +81,5 @@ require "clipreasy/hmsc/parallel"
 require "clipreasy/hmsc/sequence"
 require "clipreasy/hmsc/until"
 require "clipreasy/hmsc/while"
+require "clipreasy/hmsc/forall"
 require "clipreasy/hmsc/process"

@@ -51,6 +51,11 @@ module CliPrEasy
         @evaluator.call(expression, self)
       end
       
+      # Inspects this state
+      def inspect
+        @variables.inspect
+      end
+      
     end # class State
   end # module Enactment
 end # module CliPrEasy

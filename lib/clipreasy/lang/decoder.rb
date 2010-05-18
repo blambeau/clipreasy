@@ -3,7 +3,7 @@ module CliPrEasy
     class Decoder
       
       # Statements of the decoder
-      STATEMENTS = [:activity, :decision, :when, :parallel, :sequence, :while, :until]
+      STATEMENTS = [:activity, :decision, :when, :parallel, :sequence, :while, :until, :forall]
       
       # Aliases
       ALIASES = {

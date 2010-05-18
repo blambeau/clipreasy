@@ -6,6 +6,7 @@ require 'clipreasy/lang/sequence'
 require 'clipreasy/lang/until'
 require 'clipreasy/lang/when'
 require 'clipreasy/lang/while'
+require 'clipreasy/lang/forall'
 require 'clipreasy/lang/process'
 require 'clipreasy/lang/decoder'
 module CliPrEasy

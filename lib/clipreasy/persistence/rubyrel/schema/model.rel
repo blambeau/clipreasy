@@ -87,3 +87,12 @@ relvar(:whiles) {
   primary_key(:process_id, :identifier)
   foreign_key [:process_id, :identifier] => model.statements
 }
+
+# Forall statements
+relvar(:foralls) {
+  attribute :process_id,    String
+  attribute :identifier,    Integer
+  attribute :iterated,      String
+  primary_key(:process_id, :identifier)
+  foreign_key [:process_id, :identifier] => model.statements
+}

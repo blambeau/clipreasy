@@ -11,6 +11,7 @@ module CliPrEasy
         CliPrEasy::Lang::Sequence => :sequences,
         CliPrEasy::Lang::Until    => :untils,
         CliPrEasy::Lang::While    => :whiles,
+        CliPrEasy::Lang::Forall   => :foralls,
         CliPrEasy::Lang::Process  => :processes,
         CliPrEasy::Lang::Node     => :statements
       }

@@ -1,0 +1,8 @@
+<process business_id="forall_1" identifier="forall_1" label="Forall Brick Fixture Process (non empty)" version="0.0.1" status="test">
+  <description>A single forall process with one activity</description>
+  <formaldef>
+    <forall business_id="forall" iterated="collection" as="c">
+      <activity business_id="activity" label="Activity"/>
+    </forall>
+  </formaldef>
+</process>

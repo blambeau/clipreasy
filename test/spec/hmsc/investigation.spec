@@ -1,5 +1,5 @@
-require 'clipreasy'
-require 'clipreasy/hmsc'
+require File.expand_path('../../../spec_helper', __FILE__)
+
 describe "Convertion of a process to an hMSC graph" do
   include ::CliPrEasy::Fixtures
   
