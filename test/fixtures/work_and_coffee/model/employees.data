@@ -1,4 +1,0 @@
-work_and_coffee.employees = [
-  {:token => 1, :name => "Lamborgh", :department => 1},
-  {:token => 2, :name => "Derthieu", :department => 2}
-]

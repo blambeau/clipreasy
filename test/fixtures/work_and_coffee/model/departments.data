@@ -1,4 +1,0 @@
-work_and_coffee.departments = [
-  {:token => 1, :name => "Computer Science"},
-  {:token => 2, :name => "History"},
-]

@@ -1,3 +1,0 @@
-views.screen_fields = [
-  {:screen => "start_project", :label => "Who are you?",  :entity => :project,  :attribute => :employee, :widget => :combobox, :widget_options => {:value => :pkey, :label => :name}}
-]

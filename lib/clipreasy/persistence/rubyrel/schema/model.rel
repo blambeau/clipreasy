@@ -11,7 +11,6 @@ relvar(:processes) {
   attribute :main_id,     Integer
   primary_key(:identifier)
   candidate_key(:label, :version)
-  #foreign_key [:identifier, :main] => model.statements
 }
 
 # Process statements
@@ -25,6 +24,10 @@ relvar(:statements) {
   foreign_key :process_id => model.processes
   foreign_key [:process_id, :parent_id] => model.statements
 }
+
+# relvar(:processes) {
+#   foreign_key [:identifier, :main_id] => model.statements
+# }
 
 # Activities
 relvar(:activities) {

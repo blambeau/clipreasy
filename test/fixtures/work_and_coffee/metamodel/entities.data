@@ -1,7 +1,0 @@
-structural.entities = [
-  {:name => :department,  :plural => :departments  },
-  {:name => :employee,    :plural => :employees    },
-  {:name => :project,     :plural => :projects,    :weak_of => :employee,  :cardinality => "0:n"},
-  {:name => :work_unit,   :plural => :work_units,  :weak_of => :project,   :cardinality => "0:n"},
-  {:name => :work_item,   :plural => :work_items,  :weak_of => :work_unit, :cardinality => "0:n"}
-]
