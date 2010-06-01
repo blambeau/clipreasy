@@ -44,7 +44,8 @@ module CliPrEasy
             
       # Fired by children when they are ended
       def ended(child, child_context)
-        parent.ended(self, child_context.close)
+        my_context = child_context.close
+        my_context.all_children_ended? ? parent.ended(self, my_context) : []
       end
       
     end # class Decision

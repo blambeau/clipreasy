@@ -27,14 +27,17 @@ module CliPrEasy
       # Starts the activity
       def start(context)
         my_context = context.started(self)
-        then_clause.start(my_context)
+        if value = my_context.evaluate(condition)
+          parent.ended(self, my_context)
+        else
+          then_clause.start(my_context)
+        end
       end
             
       # Fired by children when they are ended
       def ended(child, child_context)
         my_context = child_context.close
-        value = my_context.evaluate(condition)
-        if value
+        if value = my_context.evaluate(condition)
           parent.ended(self, my_context)
         else
           then_clause.start(my_context)

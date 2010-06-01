@@ -27,15 +27,17 @@ module CliPrEasy
       # Starts the while statement
       def start(context)
         my_context = context.started(self)
-        value = my_context.evaluate(condition)
-        then_clause.start(my_context) if value
+        if value = my_context.evaluate(condition)
+          then_clause.start(my_context)
+        else
+          parent.ended(self, my_context)
+        end
       end
             
       # Fired by children when they are ended
       def ended(child, child_context)
         my_context = child_context.close
-        value = my_context.evaluate(condition)
-        if value
+        if value = my_context.evaluate(condition)
           then_clause.start(my_context)
         else
           parent.ended(self, my_context)
