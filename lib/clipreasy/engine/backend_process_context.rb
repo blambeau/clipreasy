@@ -6,6 +6,9 @@ module CliPrEasy
     #
     class BackendProcessContext < ProcessContext
       
+      # Attributes
+      attr_reader :attributes
+      
       #
       # Provides the Backend companion of BackendProcessContext
       #
